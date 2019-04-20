@@ -4,7 +4,7 @@ import { Container, Text } from 'native-base';
 const AttendanceTab = () => {
   return (
     <Container>
-      <Text>AttendanceTab</Text>
+      <Text>Attendance Tab</Text>
     </Container>
   );
 };
