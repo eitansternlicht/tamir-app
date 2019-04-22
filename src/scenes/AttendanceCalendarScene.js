@@ -12,14 +12,14 @@ import {
   Text
 } from 'native-base';
 import { Agenda } from 'react-native-calendars';
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { appName } from '../../app.json';
 
 const rowHasChanged = (r1, r2) => r1.name !== r2.name;
 
 const timeToString = time => new Date(time).toISOString().split('T')[0];
 
-export default class AttendanceCalendarScene extends Component {
+class AttendanceCalendarScene extends Component {
   constructor(props) {
     super(props);
     this.loadItems = this.loadItems.bind(this);
@@ -103,39 +103,11 @@ const styles = StyleSheet.create({
     marginTop: 17
   },
   emptyDate: {
-    backgroundColor: 'rgba(52, 52, 52, 0)',
+    backgroundColor: 'rgba(0, 0, 0, 0)',
     height: 15,
     flex: 1,
     paddingTop: 30
   }
 });
-
-// const AGENDA_HEADER_HEIGHT = 104;
-// const AttendanceCalendarScene = () => (
-//   <Container style={{ flex: 1 }}>
-//     <Header>
-//       <Left />
-//       <Body>
-//         <Title>בחירת יום</Title>
-//       </Body>
-//       <Right>
-//         <Button transparent>
-//           <Icon name="menu" />
-//         </Button>
-//       </Right>
-//     </Header>
-//     <Content>
-//       <Agenda
-//         style={{ height: Dimensions.get('window').height - AGENDA_HEADER_HEIGHT }}
-//         items={{
-//           '2019-04-22': [{ text: 'item 1 - any js object' }],
-//           '2019-04-23': [{ text: 'item 2 - any js object' }],
-//           '2019-04-24': [],
-//           '2019-04-25': [{ text: 'item 3 - any js object' }, { text: 'any js object' }]
-//         }}
-//       />
-//     </Content>
-//   </Container>
-// );
 
 export { AttendanceCalendarScene };
