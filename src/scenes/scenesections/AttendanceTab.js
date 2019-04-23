@@ -3,9 +3,9 @@ import { StyleSheet, FlatList } from 'react-native';
 import { Container, Button, Text, Icon } from 'native-base';
 
 const activities = [
-  { shortTitle: 'פעילות א׳', key: 1 },
-  { shortTitle: 'פעילות ב׳', key: 2 },
-  { shortTitle: 'פעילות ג׳', key: 3 }
+  { shortTitle: 'פעילות א׳', key: 'a' },
+  { shortTitle: 'פעילות ב׳', key: 'b' },
+  { shortTitle: 'פעילות ג׳', key: 'c' }
 ];
 const AttendanceTab = () => {
   return (
