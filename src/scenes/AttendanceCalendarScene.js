@@ -101,7 +101,6 @@ class AttendanceCalendarScene extends Component {
         });
         // eslint-disable-next-line react/no-access-state-in-setstate
         this.setState({ ...this.state });
-        console.log(this.state.items);
       }
     }
   }
@@ -171,9 +170,6 @@ class AttendanceCalendarScene extends Component {
             loadItemsForMonth={this.loadItems}
             selected="2019-04-09"
             maxDate="2019-04-22"
-            onDayPress={day => {
-              console.log('day pressed:', day);
-            }}
             renderItem={this.renderItem}
             renderEmptyDate={this.renderAddNewItem}
             rowHasChanged={rowHasChanged}
