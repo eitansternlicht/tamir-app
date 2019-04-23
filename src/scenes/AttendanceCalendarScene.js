@@ -17,6 +17,7 @@ import { Agenda } from 'react-native-calendars';
 import { StyleSheet, Dimensions } from 'react-native';
 import { Divider } from 'react-native-elements';
 import { appName } from '../../app.json';
+import { formatDate, toClockRange, getDaysInMonth } from '../utils/date-utils';
 
 const rowHasChanged = (r1, r2) =>
   r1.startTime.timestamp !== r2.startTime.timestamp ||
@@ -24,25 +25,6 @@ const rowHasChanged = (r1, r2) =>
 
 const AGENDA_HEADER_HEIGHT = 104;
 
-const toClockRange = ({ startTime, endTime }) =>
-  `${toClockTime(startTime)} - ${toClockTime(endTime)}`;
-
-const toClockTime = date => `${padWithZero(date.getHours())}:${padWithZero(date.getMinutes())}`;
-
-const padWithZero = num => (num <= 9 ? `0${num}` : num);
-
-const formatDate = date =>
-  `${date.getFullYear()}-${padWithZero(date.getMonth() + 1)}-${padWithZero(date.getDate())}`;
-
-const getDaysInMonth = ({ year, month }) => {
-  const date = new Date(year, month - 1, 1);
-  const days = [];
-  while (date.getMonth() === month - 1) {
-    days.push(formatDate(date));
-    date.setDate(date.getDate() + 1);
-  }
-  return days;
-};
 const ADD_ITEM = { startTime: true, endTime: true };
 const INITIAL_STATE = {
   items: {
