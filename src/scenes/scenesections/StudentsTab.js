@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
-import { Container, Item, Input, Icon, List, ListItem, Fab, Button, Text } from 'native-base';
+import { Icon, Container, Item, Input, List, ListItem, Fab, Button, Text } from 'native-base';
+import MDIcon from 'react-native-vector-icons/MaterialIcons';
 
 class StudentsTab extends Component {
   constructor(props) {
@@ -11,7 +12,7 @@ class StudentsTab extends Component {
   }
 
   renderFabIcon() {
-    return this.state.active ? <Icon name="close" /> : <Icon name="add" />;
+    return this.state.active ? <Icon name="close" /> : <MDIcon name="edit" />;
   }
 
   render() {
