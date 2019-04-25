@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
-import { MainScene, AttendanceCalendarScene } from './scenes';
+import { MainScene, AttendanceCalendarScene, GroupParticipantsAttendanceScene } from './scenes';
 
 const App = () => <MainScene />;
 
