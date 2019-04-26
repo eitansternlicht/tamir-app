@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyleSheet, FlatList, TouchableOpacity } from 'react-native';
-import { Container, Button, Text, Icon } from 'native-base';
+import { StyleSheet, FlatList, TouchableOpacity, View } from 'react-native';
+import { Button, Text, Icon } from 'native-base';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import { toClockTime } from '../../utils/date-utils';
 
@@ -70,42 +70,44 @@ class AttendanceTab extends React.Component {
 
   render() {
     return (
-      <Container style={styles.container}>
-        <Container style={styles.section}>
+      <View style={styles.container}>
+        <View style={styles.section}>
           <Button>
             <Icon name="calendar" />
             <Text>עריכת נוכחות</Text>
           </Button>
-        </Container>
-        <Container style={styles.section}>
+        </View>
+        <View style={styles.section}>
           {this.renderTime({ startTime: this.state.startTime })}
           <Button onPress={this.showStartTimePicker}>
             <Text>כניסה</Text>
           </Button>
-        </Container>
-        <Container style={styles.section}>
+        </View>
+        <View style={styles.section}>
           {this.renderTime({ endTime: this.state.endTime })}
           <Button onPress={this.showEndTimePicker}>
             <Text>יציאה</Text>
           </Button>
-        </Container>
+        </View>
 
-        <Container style={[styles.section, { padding: 0, paddingTop: 0 }]}>
+        <View style={styles.section}>
           <Text style={styles.activities}>פעילויות</Text>
           <Icon name="arrow-dropdown" />
-        </Container>
-        <FlatList data={activities} renderItem={({ item }) => <Text>{item.shortTitle}</Text>} />
-
-        <Container style={[styles.section, { padding: 0, paddingTop: 0 }]}>
+        </View>
+        <FlatList
+          data={activities}
+          renderItem={({ item }) => <Text style={styles.activityListItem}>{item.shortTitle}</Text>}
+        />
+        <View style={styles.section}>
           <Text style={styles.activities}>הוסף פעילות</Text>
           <Icon name="add-circle" />
-        </Container>
+        </View>
 
-        <Container style={[styles.section, { justifyContent: 'center' }]}>
+        <View style={[styles.section, { justifyContent: 'center' }]}>
           <Button>
             <Text>שמור</Text>
           </Button>
-        </Container>
+        </View>
         <DateTimePicker
           mode="time"
           isVisible={this.state.startTimePickerOpen}
@@ -118,7 +120,7 @@ class AttendanceTab extends React.Component {
           onConfirm={this.handleEndTimePicked}
           onCancel={this.hideEndTimePicker}
         />
-      </Container>
+      </View>
     );
   }
 }
@@ -141,8 +143,12 @@ const styles = StyleSheet.create({
     color: 'blue'
   },
   activities: {
+    textAlign: 'right',
     paddingRight: 10,
     fontSize: 18
+  },
+  activityListItem: {
+    textAlign: 'right'
   }
 });
 
