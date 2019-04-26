@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, FlatList, View } from 'react-native';
+import { StyleSheet, FlatList, View, TouchableOpacity } from 'react-native';
 import { Icon, Container, Item, Input, Fab, Button, Text } from 'native-base';
 import MDIcon from 'react-native-vector-icons/MaterialIcons';
 
@@ -81,7 +81,9 @@ class StudentsTab extends React.Component {
           renderItem={({ item: { sid, firstName, groupName } }) => (
             <View style={styles.listItem}>
               {sid ? (
-                <Text style={styles.studentName}>{firstName}</Text>
+                <TouchableOpacity>
+                  <Text style={styles.studentName}>{firstName}</Text>
+                </TouchableOpacity>
               ) : (
                 <Text style={styles.groupName}>{groupName}</Text>
               )}
