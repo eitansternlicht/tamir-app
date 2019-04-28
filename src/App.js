@@ -4,7 +4,8 @@ import {
   MainScene,
   AttendanceCalendarScene,
   StudentDetailsScene,
-  GroupParticipantsAttendanceScene
+  GroupParticipantsAttendanceScene,
+  GroupActivityDetailsScene
 } from './scenes';
 
 const App = () => <MainScene />;
