@@ -4,10 +4,15 @@ const fieldTypes = {
     valuesAnd: [
       { valuesOr: ['יב', 'יא', 'י', 'ט', 'ח', 'ז', 'ו', 'ה', 'ד', 'ג', 'ב', 'א'] },
       { valuesOr: [1, 2, 3, 4, 5, 6, 7, 8, 9] }
-    ]
+    ],
+    format: ([grade, num]) => `${grade} ${num}`
   },
   GENDER: { valuesOr: ['זכר', 'נקבה'] },
-  DATE: { validate: undefined, errorMsg: 'תאריך לא חוקי' },
+  DATE: {
+    validate: undefined,
+    errorMsg: 'תאריך לא חוקי',
+    format: date => date.toLocaleDateString()
+  },
   GOV_ID: { validate: undefined, errorMsg: 'ת.ז. לא חוקית' },
   EMAIL: { validate: undefined, errorMsg: 'כתובת אימייל לא חוקית' },
   SHIRT_SIZE: { valuesOr: ['XS', 'S', 'M', 'L', 'XL', 'XXL'] }
@@ -41,4 +46,15 @@ const studentLastFields = [{ name: 'הערות' }];
 
 const studentFieldOrdering = studentFirstFields.concat(studentLastFields);
 
-export { studentFieldOrdering, fieldTypes };
+const studentToOrderedFieldsAndValues = student =>
+  studentFieldOrdering
+    .map(({ name, type }) =>
+      student[name]
+        ? {
+            field: name,
+            value: type && type.format ? type.format(student[name]) : student[name]
+          }
+        : undefined
+    )
+    .filter(x => x !== undefined);
+export { studentToOrderedFieldsAndValues, fieldTypes };
