@@ -1,20 +1,7 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import {
-  Container,
-  Header,
-  Left,
-  Right,
-  Body,
-  Icon,
-  Text,
-  Content,
-  Button,
-  Title,
-  Fab
-} from 'native-base';
+import { Container, Header, Left, Right, Body, Icon, Button, Title, Fab } from 'native-base';
 import MDIcon from 'react-native-vector-icons/MaterialIcons';
-import { studentToOrderedFieldsAndValues } from '../utils/student-utils';
+import { StudentDetails } from '../components';
 
 const student = {
   'שם פרטי': 'חניך',
@@ -52,30 +39,8 @@ const StudentDetailsScene = () => (
     <Fab active style={{ backgroundColor: '#5067FF' }} position="bottomLeft">
       <MDIcon name="edit" />
     </Fab>
-    <Content style={{ flexDirection: 'column' }}>
-      {studentToOrderedFieldsAndValues(student).map(({ field, value }) => (
-        <View key={field} style={{ flexDirection: 'row-reverse' }}>
-          <Text style={styles.fieldName}>{field}</Text>
-          <Text style={styles.fieldValues}>{value}</Text>
-        </View>
-      ))}
-    </Content>
+    <StudentDetails student={student} />
   </Container>
 );
-const styles = StyleSheet.create({
-  fieldName: {
-    textAlign: 'right',
-    fontSize: 19,
-    paddingVertical: 10,
-    paddingRight: 10,
-    alignSelf: 'center',
-    width: 135
-  },
-  fieldValues: {
-    alignSelf: 'center',
-    textAlign: 'right',
-    fontSize: 19,
-    paddingVertical: 10
-  }
-});
+
 export { StudentDetailsScene };
