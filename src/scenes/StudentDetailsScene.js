@@ -14,7 +14,6 @@ import {
   Fab
 } from 'native-base';
 import MDIcon from 'react-native-vector-icons/MaterialIcons';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { studentToOrderedFieldsAndValues } from '../utils/student-utils';
 
 const student = {
