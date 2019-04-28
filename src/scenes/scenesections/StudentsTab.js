@@ -94,7 +94,6 @@ class StudentsTab extends React.Component {
         <Fab
           active={this.state.fabMenuOpen}
           direction="up"
-          containerStyle={{}}
           style={{ backgroundColor: '#5067FF' }}
           position="bottomRight"
           // eslint-disable-next-line react/no-access-state-in-setstate
