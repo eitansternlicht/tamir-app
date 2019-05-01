@@ -3,6 +3,7 @@ import { StyleSheet, FlatList, TouchableOpacity, View } from 'react-native';
 import { Button, Text, Icon } from 'native-base';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import { toClockTime } from '../../utils/date-utils';
+import { right } from '../../utils/style-utils';
 
 const activities = [
   { shortTitle: 'פעילות א׳', key: 'a' },
@@ -143,12 +144,12 @@ const styles = StyleSheet.create({
     color: 'blue'
   },
   activities: {
-    textAlign: 'right',
+    textAlign: right,
     paddingRight: 10,
     fontSize: 18
   },
   activityListItem: {
-    textAlign: 'right'
+    textAlign: right
   }
 });
 

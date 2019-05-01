@@ -15,6 +15,7 @@ import {
   CheckBox
 } from 'native-base';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
+import { right } from '../utils/style-utils';
 
 const INITIAL_STATE = {
   previousActivities: [
@@ -195,7 +196,7 @@ class GroupParticipantsAttendanceScene extends React.Component {
                 fontWeight: 'bold',
                 paddingTop: 10,
                 marginRight: 20,
-                textAlign: 'right'
+                textAlign: right
               }}>
               שם החניך
             </Text>
@@ -229,7 +230,7 @@ class GroupParticipantsAttendanceScene extends React.Component {
                 </View>
                 <Text
                   style={{
-                    textAlign: 'right',
+                    textAlign: right,
                     marginRight: 30,
                     marginLeft: 100,
                     paddingLeft: 20,

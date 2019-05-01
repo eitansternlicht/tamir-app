@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { Content } from 'native-base';
 import { studentToOrderedFieldsAndValues } from '../utils/student-utils';
+import { right } from '../utils/style-utils';
 
 const StudentDetails = props => (
   <Content style={{ flexDirection: 'column' }}>
@@ -16,7 +17,7 @@ const StudentDetails = props => (
 
 const styles = StyleSheet.create({
   fieldName: {
-    textAlign: 'right',
+    textAlign: right,
     fontSize: 19,
     paddingVertical: 10,
     paddingRight: 10,
@@ -25,7 +26,7 @@ const styles = StyleSheet.create({
   },
   fieldValues: {
     alignSelf: 'center',
-    textAlign: 'right',
+    textAlign: right,
     fontSize: 19,
     paddingVertical: 10
   }

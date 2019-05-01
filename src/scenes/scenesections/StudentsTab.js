@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, FlatList, View, TouchableOpacity } from 'react-native';
 import { Icon, Container, Item, Input, Fab, Button, Text } from 'native-base';
 import MDIcon from 'react-native-vector-icons/MaterialIcons';
+import { right } from '../../utils/style-utils';
 
 const groups = [
   {
@@ -113,14 +114,14 @@ class StudentsTab extends React.Component {
 
 const styles = StyleSheet.create({
   searchBox: {
-    textAlign: 'right'
+    textAlign: right
   },
   listItem: {
     borderBottomWidth: 1,
     borderBottomColor: '#CCCCCC'
   },
   groupName: {
-    textAlign: 'right',
+    textAlign: right,
     fontSize: 25,
     color: '#666666',
     paddingVertical: 10,
@@ -131,7 +132,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     paddingVertical: 10,
     paddingRight: 20,
-    textAlign: 'right'
+    textAlign: right
   },
   spaceAtTheEnd: {
     height: 100
