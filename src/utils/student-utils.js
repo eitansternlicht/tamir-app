@@ -57,4 +57,15 @@ const studentToOrderedFieldsAndValues = student =>
         : undefined
     )
     .filter(x => x !== undefined);
-export { studentToOrderedFieldsAndValues, fieldTypes };
+
+const toFlatGroups = groups =>
+  groups
+    .map(({ name, students }) =>
+      [{ groupName: name }].concat(students.map(student => ({ ...student, groupName: name })))
+    )
+    .reduce((acc, curr) => acc.concat(curr), []);
+
+const getStudentName = ({ 'שם משפחה': lastName, 'שם פרטי': firstName }) =>
+  `${firstName} ${lastName || ''}`;
+
+export { studentToOrderedFieldsAndValues, fieldTypes, toFlatGroups, getStudentName };

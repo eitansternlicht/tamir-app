@@ -2,8 +2,10 @@ import React from 'react';
 import { Container, Header, Left, Right, Body, Icon, Button, Title, Fab } from 'native-base';
 import MDIcon from 'react-native-vector-icons/MaterialIcons';
 import { StudentDetails } from '../components';
+import { getStudentName } from '../utils/student-utils';
 
 const student = {
+  sid: 'a',
   'שם פרטי': 'חניך',
   'שם משפחה': 'א׳',
   נייד: '050-222-2222',
@@ -28,7 +30,7 @@ const StudentDetailsScene = () => (
         </Button>
       </Left>
       <Body>
-        <Title>{`${student['שם פרטי']} ${student['שם משפחה']}`}</Title>
+        <Title>{getStudentName(student)}</Title>
       </Body>
       <Right>
         <Button transparent>

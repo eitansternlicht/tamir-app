@@ -1,3 +1,6 @@
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+
 import React from 'react';
 import { View, FlatList, StyleSheet, ScrollView } from 'react-native';
 import update from 'immutability-helper';
@@ -18,104 +21,122 @@ import EntypoIcon from 'react-native-vector-icons/Entypo';
 import { right } from '../utils/style-utils';
 
 const INITIAL_STATE = {
-  previousActivities: [
-    {
-      startTime: new Date(2019, 3, 20),
-      participantsAttended: [
-        {
-          sid: 'a',
-          firstName: 'student A',
-          attended: true
-        },
-        {
-          sid: 'b',
-          firstName: 'student B',
-          attended: true
-        },
-        {
-          sid: 'c',
-          firstName: 'student C',
-          attended: true
-        }
-      ]
-    },
-    {
-      startTime: new Date(2019, 3, 3),
-      participantsAttended: [
-        {
-          sid: 'a',
-          firstName: 'student A',
-          attended: true
-        },
-        {
-          sid: 'b',
-          firstName: 'student B',
-          attended: true
-        }
-      ]
-    },
-    {
-      startTime: new Date(2019, 2, 15),
-      participantsAttended: [
-        {
-          sid: 'a',
-          firstName: 'student A',
-          attended: true
-        },
-        {
-          sid: 'c',
-          firstName: 'student B',
-          attended: true
-        }
-      ]
-    }
-  ],
-  groupParticipants: [
-    {
-      sid: 'a',
-      firstName: 'חניך א׳',
-      attended: false
-    },
-    {
-      sid: 'b',
-      firstName: 'חניך ב׳',
-      attended: false
-    },
-    {
-      sid: 'c',
-      firstName: 'חניך ג׳',
-      attended: false
-    }
-  ],
-  allSelected: false
+  // previousActivities: [
+  //   {
+  //     startTime: new Date(2019, 3, 20),
+  //     participantsAttended: [
+  //       {
+  //         sid: 'a',
+  //         firstName: 'student A',
+  //         attended: true
+  //       },
+  //       {
+  //         sid: 'b',
+  //         firstName: 'student B',
+  //         attended: true
+  //       },
+  //       {
+  //         sid: 'c',
+  //         firstName: 'student C',
+  //         attended: true
+  //       }
+  //     ]
+  //   },
+  //   {
+  //     startTime: new Date(2019, 3, 3),
+  //     participantsAttended: [
+  //       {
+  //         sid: 'a',
+  //         firstName: 'student A',
+  //         attended: true
+  //       },
+  //       {
+  //         sid: 'b',
+  //         firstName: 'student B',
+  //         attended: true
+  //       }
+  //     ]
+  //   },
+  //   {
+  //     startTime: new Date(2019, 2, 15),
+  //     participantsAttended: [
+  //       {
+  //         sid: 'a',
+  //         firstName: 'student A',
+  //         attended: true
+  //       },
+  //       {
+  //         sid: 'c',
+  //         firstName: 'student B',
+  //         attended: true
+  //       }
+  //     ]
+  //   }
+  // ],
+  // groupParticipants: [
+  // {
+  //   sid: 'a',
+  //   firstName: 'חניך א׳',
+  //   attended: false
+  // },
+  // {
+  //   sid: 'b',
+  //   firstName: 'חניך ב׳',
+  //   attended: false
+  // },
+  // {
+  //   sid: 'c',
+  //   firstName: 'חניך ג׳',
+  //   attended: false
+  // }
+  // ],
+  participants: [],
+  allSelected: false,
+  loading: true
 };
 
 class GroupParticipantsAttendanceScene extends React.Component {
   constructor(props) {
     super(props);
+    const { selectedGroupID, activityID } = props;
     this.selectAll = this.selectAll.bind(this);
     this.onPressCheckboxOnListItem = this.onPressCheckboxOnListItem.bind(this);
     this.state = INITIAL_STATE;
+    const db = firebase.firestore();
+    db.collection('Activities')
+      .doc(activityID)
+      .get()
+      .then(doc => {
+        this.setState({
+          participants: doc
+            .data()
+            .groups.filter(({ groupID }) => selectedGroupID === groupID.id)[0]
+            .participants.map(p => ({ ...p, studentID: p.studentID.id }))
+        });
+      })
+      .catch(error => {
+        console.log('Error getting documents: ', error);
+      });
   }
 
   onPressCheckboxOnListItem(item) {
-    const { groupParticipants, allSelected } = this.state;
+    const { participants, allSelected } = this.state;
     this.setState({
-      groupParticipants: update(groupParticipants, {
-        [groupParticipants.indexOf(item)]: {
-          attended: { $set: !item.attended }
+      participants: update(participants, {
+        [participants.indexOf(item)]: {
+          arrived: { $set: !item.arrived }
         }
       }),
-      allSelected: item.attended && allSelected ? !allSelected : allSelected
+      allSelected: item.arrived && allSelected ? !allSelected : allSelected
     });
   }
 
   selectAll() {
-    const { groupParticipants, allSelected } = this.state;
+    const { participants, allSelected } = this.state;
     this.setState({
-      groupParticipants: groupParticipants.map(p => ({
+      participants: participants.map(p => ({
         ...p,
-        attended: !allSelected
+        arrived: !allSelected
       })),
       allSelected: !allSelected
     });
@@ -125,11 +146,11 @@ class GroupParticipantsAttendanceScene extends React.Component {
     return this.state.previousActivities
       .map(({ startTime, participantsAttended }) => ({
         startTime,
-        attended:
-          participantsAttended.filter(({ sid, attended }) => sid === _sid && attended).length !== 0
+        arrived:
+          participantsAttended.filter(({ sid, arrived }) => sid === _sid && arrived).length !== 0
       }))
-      .map(({ startTime, attended }) =>
-        attended ? (
+      .map(({ startTime, arrived }) =>
+        arrived ? (
           <EntypoIcon
             key={startTime.toJSON()}
             name="check"
@@ -155,7 +176,7 @@ class GroupParticipantsAttendanceScene extends React.Component {
             </Button>
           </Left>
           <Body>
-            <Title>{this.props.groupName}</Title>
+            <Title>bla</Title>
           </Body>
           <Right>
             <Button transparent>
@@ -211,9 +232,9 @@ class GroupParticipantsAttendanceScene extends React.Component {
             </Text>
           </View>
           <FlatList
-            extraData={this.state}
-            data={this.state.groupParticipants}
-            keyExtractor={groupParticipant => groupParticipant.sid}
+            // extraData={this.state}
+            data={this.state.participants}
+            keyExtractor={participant => participant.studentID}
             renderItem={({ item }) => (
               <View
                 style={{
@@ -224,7 +245,7 @@ class GroupParticipantsAttendanceScene extends React.Component {
                 }}>
                 <View style={{ alignItems: 'center', marginRight: 17 }}>
                   <CheckBox
-                    checked={item.attended}
+                    checked={item.arrived}
                     onPress={() => this.onPressCheckboxOnListItem(item)}
                   />
                 </View>
@@ -237,16 +258,16 @@ class GroupParticipantsAttendanceScene extends React.Component {
                     paddingTop: 20,
                     paddingBottom: 20
                   }}>
-                  {item.firstName}
+                  {item.studentID}
                 </Text>
-                <ScrollView
+                {/* <ScrollView
                   horizontal
                   style={{
                     flex: 3,
                     flexDirection: 'row-reverse'
                   }}>
                   {this.renderCheckMarks(item)}
-                </ScrollView>
+                </ScrollView> */}
               </View>
             )}
           />
