@@ -59,13 +59,29 @@ const studentToOrderedFieldsAndValues = student =>
     .filter(x => x !== undefined);
 
 const toFlatGroups = groups =>
-  groups
-    .map(({ name, students }) =>
-      [{ groupName: name }].concat(students.map(student => ({ ...student, groupName: name })))
+  Object.keys(groups)
+    .map(groupUID =>
+      [{ groupUID, categoryName: groups[groupUID].name }].concat(
+        Object.keys(groups[groupUID].students).map(studentUID => ({
+          groupUID,
+          groupName: groups[groupUID].name,
+          studentUID,
+          'שם פרטי': groups[groupUID].students[studentUID]['שם פרטי']
+        }))
+      )
     )
-    .reduce((acc, curr) => acc.concat(curr), []);
+    .reduce((acc, curr) => acc.concat(curr));
+
+const toFlatStudents = students =>
+  Object.keys(students).map(studentUID => ({ ...students[studentUID], studentUID }));
 
 const getStudentName = ({ 'שם משפחה': lastName, 'שם פרטי': firstName }) =>
   `${firstName} ${lastName || ''}`;
 
-export { studentToOrderedFieldsAndValues, fieldTypes, toFlatGroups, getStudentName };
+export {
+  studentToOrderedFieldsAndValues,
+  fieldTypes,
+  toFlatGroups,
+  toFlatStudents,
+  getStudentName
+};
