@@ -78,10 +78,8 @@ const toFlatStudents = students =>
 const getStudentName = ({ 'שם משפחה': lastName, 'שם פרטי': firstName }) =>
   `${firstName} ${lastName || ''}`;
 
-export {
-  studentToOrderedFieldsAndValues,
-  fieldTypes,
-  toFlatGroups,
-  toFlatStudents,
-  getStudentName
+const normalizeData = (withCategories, multiselect, data) => {
+  const flattened = withCategories ? toFlatGroups(data) : toFlatStudents(data);
+  return !multiselect ? flattened : flattened.map(obj => ({ ...obj, selected: false }));
 };
+export { studentToOrderedFieldsAndValues, fieldTypes, getStudentName, normalizeData };
