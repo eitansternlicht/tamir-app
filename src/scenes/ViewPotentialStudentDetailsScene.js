@@ -1,6 +1,6 @@
 import React from 'react';
-import { Container, Header, Left, Right, Body, Icon, Button, Title, Text } from 'native-base';
-import { StudentDetails } from '../components';
+import { Container, Left, Right, Body, Icon, Button, Title, Text } from 'native-base';
+import { StudentDetails, Header } from '../components';
 
 const student = {
   'שם פרטי': 'חניך',
@@ -23,21 +23,7 @@ const ViewPotentialStudentDetailsScene = () => {
   const { buttonTowStyle, buttonOnStyle, textStyle } = styles;
   return (
     <Container style={{ flexDirection: 'column' }}>
-      <Header>
-        <Left>
-          <Button bordered>
-            <Icon name="arrow-back" />
-          </Button>
-        </Left>
-        <Body>
-          <Title>{`${student['שם פרטי']} ${student['שם משפחה']}`}</Title>
-        </Body>
-        <Right>
-          <Button borderedt>
-            <Icon name="menu" />
-          </Button>
-        </Right>
-      </Header>
+      <Header title={`${student['שם פרטי']} ${student['שם משפחה']}`} back />
       <StudentDetails student={student} />
 
       <Button style={buttonOnStyle}>
