@@ -7,3 +7,4 @@ export * from './PotentialStudentsScene';
 export * from './SelectMultipleStudentsScene';
 export * from './ManageGroupParticipantsScene';
 export * from './ChooseStudentScene';
+export * from './LogInScene';
