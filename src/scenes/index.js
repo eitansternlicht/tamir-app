@@ -5,3 +5,4 @@ export * from './StudentDetailsScene';
 export * from './GroupActivityDetailsScene';
 export * from './PotentialStudentsScene';
 export * from './SelectMultipleStudentsScene';
+export * from './ManageGroupParticipantsScene';
