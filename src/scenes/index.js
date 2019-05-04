@@ -8,3 +8,4 @@ export * from './SelectMultipleStudentsScene';
 export * from './ManageGroupParticipantsScene';
 export * from './ChooseStudentScene';
 export * from './LogInScene';
+export * from './ViewPotentialStudentDetailsScene';

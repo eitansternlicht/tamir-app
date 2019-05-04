@@ -1,14 +1,7 @@
 /* eslint-disable no-unused-vars */
 import firebase from 'firebase/app';
 import React from 'react';
-import {
-  MainScene,
-  AttendanceCalendarScene,
-  StudentDetailsScene,
-  GroupParticipantsAttendanceScene,
-  GroupActivityDetailsScene,
-  PotentialStudentsScene
-} from './scenes';
+import { MainScene } from './scenes';
 
 class App extends React.Component {
   constructor(props) {
