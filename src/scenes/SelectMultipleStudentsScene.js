@@ -10,11 +10,11 @@ const students = {
   studentE_UID: { 'שם פרטי': 'חניך ה׳' }
 };
 
-const PotentialStudentsScene = () => (
+const SelectMultipleStudentsScene = ({ title, actionTitle, onAction }) => (
   <Container>
-    <Header title="חניכים פוטנציאלים" back />
-    <FilterableList data={students} />
+    <Header title={title} back />
+    <FilterableList data={students} multiselect actionTitle={actionTitle} onAction={onAction} />
   </Container>
 );
 
-export { PotentialStudentsScene };
+export { SelectMultipleStudentsScene };

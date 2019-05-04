@@ -1,61 +1,47 @@
 import React from 'react';
-import { StyleSheet, FlatList, View, TouchableOpacity } from 'react-native';
-import { Icon, Container, Item, Input, Fab, Button, Text } from 'native-base';
+import { View } from 'react-native';
+import { Icon, Fab, Button } from 'native-base';
 import MDIcon from 'react-native-vector-icons/MaterialIcons';
-import { right } from '../../utils/style-utils';
+import { FilterableList } from '../../components';
 
-const groups = [
-  {
+const groups = {
+  groupA_UID: {
     name: 'קבוצה א׳',
-    students: [
-      { sid: 'a', firstName: 'חניך א׳' },
-      { sid: 'b', firstName: 'חניך ב׳' },
-      { sid: 'c', firstName: 'חניך ג׳' },
-      { sid: 'd', firstName: 'חניך ד׳' },
-      { sid: 'e', firstName: 'חניך ה׳' }
-    ]
+    students: {
+      studentA_UID: { 'שם פרטי': 'חניך א׳' },
+      studentB_UID: { 'שם פרטי': 'חניך ב׳' },
+      studentC_UID: { 'שם פרטי': 'חניך ג׳' },
+      studentD_UID: { 'שם פרטי': 'חניך ד׳' },
+      studentE_UID: { 'שם פרטי': 'חניך ה׳' }
+    }
   },
-  {
+  groupB_UID: {
     name: 'קבוצה ב׳',
-    students: [
-      { sid: 'a', firstName: 'חניך ו׳' },
-      { sid: 'b', firstName: 'חניך א׳' },
-      { sid: 'c', firstName: 'חניך ז׳' },
-      { sid: 'd', firstName: 'חניך ח׳' },
-      { sid: 'e', firstName: 'חניך ט׳' }
-    ]
+    students: {
+      studentA_UID: { 'שם פרטי': 'חניך א׳' },
+      studentF_UID: { 'שם פרטי': 'חניך ו׳' },
+      studentG_UID: { 'שם פרטי': 'חניך ז׳' },
+      studentH_UID: { 'שם פרטי': 'חניך ח׳' },
+      studentI_UID: { 'שם פרטי': 'חניך ט׳' }
+    }
   },
-  {
+  noGroup_UID: {
     name: 'לא בקבוצה',
-    students: [{ sid: 'a', firstName: 'חניך י׳' }, { sid: 'b', firstName: 'חניך יא׳' }]
+    students: {
+      studentJ_UID: { 'שם פרטי': 'חניך י׳' },
+      studentK_UID: { 'שם פרטי': 'חניך יא׳' }
+    }
   }
-];
-const flatGroups = groups
-  .map(({ name, students }) =>
-    [{ groupName: name }].concat(students.map(student => ({ ...student, groupName: name })))
-  )
-  .reduce((acc, curr) => acc.concat(curr), []);
+};
 
 const INITIAL_STATE = {
-  fabMenuOpen: false,
-  searchText: '',
-  filteredStudents: flatGroups
+  fabMenuOpen: false
 };
 
 class StudentsTab extends React.Component {
   constructor(props) {
     super(props);
     this.state = INITIAL_STATE;
-    this.onSearch = this.onSearch.bind(this);
-  }
-
-  onSearch(searchText) {
-    this.setState({
-      searchText,
-      filteredStudents: flatGroups.filter(
-        ({ sid, firstName }) => !sid || searchText === '' || firstName.includes(searchText)
-      )
-    });
   }
 
   renderFabIcon() {
@@ -64,34 +50,12 @@ class StudentsTab extends React.Component {
 
   render() {
     return (
-      <Container>
-        <Item>
-          <Input
-            placeholder="חיפוש"
-            style={styles.searchBox}
-            value={this.state.searchText}
-            onChangeText={this.onSearch}
-          />
-          <Icon active name="search" />
-        </Item>
-        <FlatList
-          extraData={this.state.filteredStudents}
-          data={this.state.filteredStudents}
-          ListFooterComponent={<View style={styles.spaceAtTheEnd} />}
-          keyExtractor={({ sid, groupName }) => (sid ? sid + groupName : groupName)}
-          renderItem={({ item: { sid, firstName, groupName } }) => (
-            <View style={styles.listItem}>
-              {sid ? (
-                <TouchableOpacity>
-                  <Text style={styles.studentName}>{firstName}</Text>
-                </TouchableOpacity>
-              ) : (
-                <Text style={styles.groupName}>{groupName}</Text>
-              )}
-            </View>
-          )}
+      <View style={{ flex: 1 }}>
+        <FilterableList
+          withCategories
+          data={groups}
+          onPress={item => console.log('item pressed', item)}
         />
-
         <Fab
           active={this.state.fabMenuOpen}
           direction="up"
@@ -107,36 +71,9 @@ class StudentsTab extends React.Component {
             <Icon name="person" />
           </Button>
         </Fab>
-      </Container>
+      </View>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  searchBox: {
-    textAlign: right
-  },
-  listItem: {
-    borderBottomWidth: 1,
-    borderBottomColor: '#CCCCCC'
-  },
-  groupName: {
-    textAlign: right,
-    fontSize: 25,
-    color: '#666666',
-    paddingVertical: 10,
-    paddingRight: 10,
-    backgroundColor: '#f6f6f6'
-  },
-  studentName: {
-    fontSize: 22,
-    paddingVertical: 10,
-    paddingRight: 20,
-    textAlign: right
-  },
-  spaceAtTheEnd: {
-    height: 100
-  }
-});
 
 export { StudentsTab };

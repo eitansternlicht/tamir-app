@@ -82,4 +82,29 @@ const normalizeData = (withCategories, multiselect, data) => {
   const flattened = withCategories ? toFlatGroups(data) : toFlatStudents(data);
   return !multiselect ? flattened : flattened.map(obj => ({ ...obj, selected: false }));
 };
-export { studentToOrderedFieldsAndValues, fieldTypes, getStudentName, normalizeData };
+
+const filterBy = (searchText, studentField, data) =>
+  data
+    .filter(
+      student =>
+        searchText === '' || !student[studentField] || student[studentField].includes(searchText)
+    )
+    .filter(
+      (elem, i, arr) =>
+        !elem.categoryName || (arr[i + 1] && arr[i + 1].groupName === elem.categoryName)
+    );
+
+const getUniqueKey = withCategories => elem => {
+  if (!withCategories) return elem.studentUID;
+  if (elem.categoryName) return elem.categoryName;
+  return elem.groupUID + elem.studentUID;
+};
+
+export {
+  studentToOrderedFieldsAndValues,
+  fieldTypes,
+  getStudentName,
+  normalizeData,
+  filterBy,
+  getUniqueKey
+};
