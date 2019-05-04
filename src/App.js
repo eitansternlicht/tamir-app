@@ -17,12 +17,7 @@ class App extends React.Component {
   }
 
   render() {
-    return (
-      <GroupParticipantsAttendanceScene
-        activityID="lh1Ssm0wYPEiBCQxjvco"
-        selectedGroupID="hTy8OP7gIPFyhX4cVjAR"
-      />
-    );
+    return <MainScene />;
   }
 }
 
