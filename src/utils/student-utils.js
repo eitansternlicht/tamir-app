@@ -52,6 +52,7 @@ const studentToOrderedFieldsAndValues = student =>
       student[name]
         ? {
             field: name,
+            type,
             value: type && type.format ? type.format(student[name]) : student[name]
           }
         : undefined
