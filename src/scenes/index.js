@@ -9,3 +9,5 @@ export * from './ManageGroupParticipantsScene';
 export * from './ChooseStudentScene';
 export * from './LogInScene';
 export * from './ViewPotentialStudentDetailsScene';
+export * from './ChooseActivityTypeScene';
+export * from './EditDiscussionDetailsScene';
