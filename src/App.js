@@ -10,14 +10,19 @@ import {
   PotentialStudentsScene,
   SelectMultipleStudentsScene,
   ManageGroupParticipantsScene,
-  ChooseStudentScene
+  ChooseStudentScene,
+  ChooseActivityTypeScene,
+  EditDiscussionDetailsScene
 } from './scenes';
 
 const AppContainer = createAppContainer(
   createStackNavigator(
     {
       MainScene,
-      StudentDetailsScene
+      StudentDetailsScene,
+      ChooseActivityTypeScene,
+      EditDiscussionDetailsScene,
+      ChooseStudentScene
     },
     {
       initialRouteName: 'MainScene'

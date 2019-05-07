@@ -37,5 +37,4 @@ class MainScene extends React.PureComponent {
     );
   }
 }
-
 export { MainScene };
