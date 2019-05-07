@@ -11,7 +11,7 @@ const fieldTypes = {
   DATE: {
     validate: undefined,
     errorMsg: 'תאריך לא חוקי',
-    format: date => date.toLocaleDateString()
+    format: date => date.toDate().toLocaleDateString()
   },
   GOV_ID: { validate: undefined, errorMsg: 'ת.ז. לא חוקית' },
   EMAIL: { validate: undefined, errorMsg: 'כתובת אימייל לא חוקית' },
@@ -63,11 +63,11 @@ const toFlatGroups = groups =>
   Object.keys(groups)
     .map(groupUID =>
       [{ groupUID, categoryName: groups[groupUID].name }].concat(
-        Object.keys(groups[groupUID].students).map(studentUID => ({
+        Object.keys(groups[groupUID].participants).map(studentUID => ({
           groupUID,
           groupName: groups[groupUID].name,
           studentUID,
-          'שם פרטי': groups[groupUID].students[studentUID]['שם פרטי']
+          ...groups[groupUID].participants[studentUID]
         }))
       )
     )
