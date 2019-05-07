@@ -2,14 +2,12 @@ import React from 'react';
 import { StyleSheet, FlatList, TouchableOpacity, View } from 'react-native';
 import { Button, Text, Icon } from 'native-base';
 import DateTimePicker from 'react-native-modal-datetime-picker';
+import { NavigationEvents } from 'react-navigation';
 import { toClockTime } from '../../utils/date-utils';
 import { right } from '../../utils/style-utils';
+import { getStudentName } from '../../utils/student-utils';
+import { addToEndIfDoesntExistAtEnd } from '../../utils/general-utils';
 
-const activities = [
-  { shortTitle: 'פעילות א׳', key: 'a' },
-  { shortTitle: 'פעילות ב׳', key: 'b' },
-  { shortTitle: 'פעילות ג׳', key: 'c' }
-];
 class AttendanceTab extends React.Component {
   constructor(props) {
     super(props);
@@ -20,6 +18,7 @@ class AttendanceTab extends React.Component {
     this.handleStartTimePicked = this.handleStartTimePicked.bind(this);
     this.handleEndTimePicked = this.handleEndTimePicked.bind(this);
     this.state = {
+      activities: [],
       startTime: null,
       endTime: null,
       startTimePickerOpen: false,
@@ -49,6 +48,7 @@ class AttendanceTab extends React.Component {
 
   handleEndTimePicked(time) {
     this.setState({ endTime: time, endTimePickerOpen: false });
+    this.props.navigation.navigate('ChooseActivityTypeScene', { db: this.props.db });
   }
 
   renderTime({ startTime, endTime }) {
@@ -72,6 +72,17 @@ class AttendanceTab extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+        <NavigationEvents
+          onDidFocus={payload => {
+            if (payload.state.params.newActivity)
+              this.setState(state => ({
+                activities: addToEndIfDoesntExistAtEnd(
+                  payload.state.params.newActivity,
+                  state.activities
+                )
+              }));
+          }}
+        />
         <View style={styles.section}>
           <Button>
             <Icon name="calendar" />
@@ -96,13 +107,26 @@ class AttendanceTab extends React.Component {
           <Icon name="arrow-dropdown" />
         </View>
         <FlatList
-          data={activities}
-          renderItem={({ item }) => <Text style={styles.activityListItem}>{item.shortTitle}</Text>}
+          data={this.state.activities}
+          keyExtractor={item => JSON.stringify(item)}
+          renderItem={({ item }) => (
+            <Text style={styles.activityListItem}>
+              {item.discussion
+                ? `שיחה אישית - ${item.discussion.type} עם: ${getStudentName(
+                    item.discussion.student
+                  )}`
+                : 'TODO'}
+            </Text>
+          )}
         />
-        <View style={styles.section}>
+        <TouchableOpacity
+          onPress={() =>
+            this.props.navigation.navigate('ChooseActivityTypeScene', { db: this.props.db })
+          }
+          style={styles.section}>
           <Text style={styles.activities}>הוסף פעילות</Text>
           <Icon name="add-circle" />
-        </View>
+        </TouchableOpacity>
 
         <View style={[styles.section, { justifyContent: 'center' }]}>
           <Button>
