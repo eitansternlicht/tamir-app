@@ -102,7 +102,7 @@ class GroupActivityDetailsScene extends Component {
         </Content>
         <Footer>
           <Button style={[button, { justifyContent: 'center' }]}>
-            <Text style={{ fontSize: 30 }}>שמור</Text>
+            <Text style={{ fontSize: 35 }}>שמור</Text>
           </Button>
         </Footer>
       </Container>
