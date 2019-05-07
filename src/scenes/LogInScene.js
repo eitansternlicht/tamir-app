@@ -1,4 +1,3 @@
-/* eslint-disable react/prefer-stateless-function */
 import React from 'react';
 import { Container, Text, Card, Header, Content, Form, Item, Input, Label } from 'native-base';
 import { TouchableOpacity } from 'react-native';
@@ -53,8 +52,7 @@ const styles = {
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',
-    paddingTop: 10,
-    paddingBottom: 10
+    paddingVertical: 10
   },
   textTitle: {
     alignSelf: 'center',
@@ -70,8 +68,7 @@ const styles = {
     borderWidth: 1,
     backgroundColor: '#007aff',
     borderColor: '#007aff',
-    marginLeft: 80,
-    marginRight: 80,
+    marginHorizontal: 80,
     marginBottom: 10,
     marginTop: 70
   },
@@ -81,8 +78,7 @@ const styles = {
     borderWidth: 1,
     backgroundColor: '#007aff',
     borderColor: '#007aff',
-    marginLeft: 80,
-    marginRight: 80,
+    marginHorizontal: 80,
     marginBottom: 10,
     marginTop: 35
   }
