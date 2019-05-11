@@ -12,7 +12,8 @@ import {
   ManageGroupParticipantsScene,
   ChooseStudentScene,
   ChooseActivityTypeScene,
-  EditDiscussionDetailsScene
+  EditDiscussionDetailsScene,
+  LogInScene
 } from './scenes';
 
 const AppContainer = createAppContainer(
