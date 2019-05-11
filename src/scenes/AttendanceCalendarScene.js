@@ -134,17 +134,6 @@ class AttendanceCalendarScene extends Component {
   render() {
     return (
       <Container>
-        <Header>
-          <Left />
-          <Body>
-            <Title>{appName}</Title>
-          </Body>
-          <Right>
-            <Button transparent>
-              <Icon name="menu" />
-            </Button>
-          </Right>
-        </Header>
         <Content>
           <Agenda
             style={{ height: Dimensions.get('window').height - AGENDA_HEADER_HEIGHT }}

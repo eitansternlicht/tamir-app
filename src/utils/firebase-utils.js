@@ -4,6 +4,11 @@ import { entriesToObj, zip } from './general-utils';
 
 const COLLECTIONS = ['Activities', 'Groups', 'Students'];
 
+// const f = () => {
+//   firebase.auth().languageCode = 'he';
+//   firebase.auth().signInWithPhoneNumber()
+// }
+
 const groupsWithStudentDetails = db =>
   update(db.Groups, {
     $set: entriesToObj(

@@ -3,12 +3,12 @@ import { StyleSheet, FlatList, TouchableOpacity, View } from 'react-native';
 import { Button, Text, Icon } from 'native-base';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import { NavigationEvents } from 'react-navigation';
-import { toClockTime } from '../../utils/date-utils';
-import { right } from '../../utils/style-utils';
-import { getStudentName } from '../../utils/student-utils';
-import { addToEndIfDoesntExistAtEnd } from '../../utils/general-utils';
+import { toClockTime } from '../utils/date-utils';
+import { right } from '../utils/style-utils';
+import { getStudentName } from '../utils/student-utils';
+import { addToEndIfDoesntExistAtEnd } from '../utils/general-utils';
 
-class AttendanceTab extends React.Component {
+class AttendanceTabScene extends React.Component {
   constructor(props) {
     super(props);
     this.showStartTimePicker = this.showStartTimePicker.bind(this);
@@ -24,6 +24,7 @@ class AttendanceTab extends React.Component {
       startTimePickerOpen: false,
       endTimePickerOpen: false
     };
+    console.log(props.navigation.state.params);
   }
 
   showStartTimePicker() {
@@ -48,7 +49,6 @@ class AttendanceTab extends React.Component {
 
   handleEndTimePicked(time) {
     this.setState({ endTime: time, endTimePickerOpen: false });
-    this.props.navigation.navigate('ChooseActivityTypeScene', { db: this.props.db });
   }
 
   renderTime({ startTime, endTime }) {
@@ -74,7 +74,7 @@ class AttendanceTab extends React.Component {
       <View style={styles.container}>
         <NavigationEvents
           onDidFocus={payload => {
-            if (payload.state.params.newActivity)
+            if (payload.state.params && payload.state.params.newActivity)
               this.setState(state => ({
                 activities: addToEndIfDoesntExistAtEnd(
                   payload.state.params.newActivity,
@@ -84,20 +84,26 @@ class AttendanceTab extends React.Component {
           }}
         />
         <View style={styles.section}>
-          <Button>
+          <Button onPress={() => this.props.navigation.navigate('AttendanceCalendarScene')}>
             <Icon name="calendar" />
             <Text>עריכת נוכחות</Text>
           </Button>
         </View>
         <View style={styles.section}>
           {this.renderTime({ startTime: this.state.startTime })}
-          <Button onPress={this.showStartTimePicker}>
+          <Button onPress={() => this.setState({ startTime: new Date() })}>
             <Text>כניסה</Text>
           </Button>
         </View>
         <View style={styles.section}>
           {this.renderTime({ endTime: this.state.endTime })}
-          <Button onPress={this.showEndTimePicker}>
+          <Button
+            onPress={() => {
+              this.setState({ endTime: new Date() });
+              this.props.navigation.navigate('ChooseActivityTypeScene', {
+                db: this.props.navigation.state.params.db
+              });
+            }}>
             <Text>יציאה</Text>
           </Button>
         </View>
@@ -177,4 +183,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export { AttendanceTab };
+export { AttendanceTabScene };

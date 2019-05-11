@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Container, Content, Textarea, Form, Icon, Button, Body } from 'native-base';
-import EntypoIcon from 'react-native-vector-icons/Entypo';
 import { right } from '../utils/style-utils';
 import { getStudentName } from '../utils/student-utils';
 
 const showStudent = student => (
   <Text style={styles.studentName}>
     {student ? getStudentName(student) : 'בחירת חניך'}
-    {student ? <EntypoIcon size={20} name="edit" /> : <Icon name="person-add" />}
+    {student ? <Icon type="Entypo" size={20} name="edit" /> : <Icon name="person-add" />}
   </Text>
 );
 
@@ -56,7 +55,7 @@ class EditDiscussionDetailsScene extends Component {
           <Button
             onPress={() => {
               if (this.props.navigation.state.params.student) {
-                this.props.navigation.navigate('MainScene', {
+                this.props.navigation.navigate('AttendanceTabScene', {
                   newActivity: {
                     discussion: {
                       type: this.props.navigation.state.params.data,

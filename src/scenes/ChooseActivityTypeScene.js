@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { Icon } from 'native-base';
-import EntypoIcon from 'react-native-vector-icons/Entypo';
 import { right } from '../utils/style-utils';
 
 const groups = [
@@ -57,7 +56,7 @@ class ChooseActivityTypeScene extends React.Component {
                   })
                 }>
                 <Text style={styles.studentName}>
-                  <EntypoIcon key={title + sid} name="chevron-right" /> {data}
+                  <Icon type="Entypo" key={title + sid} name="chevron-right" /> {data}
                 </Text>
               </TouchableOpacity>
             ) : (
