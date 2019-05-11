@@ -48,7 +48,6 @@ class AttendanceTab extends React.Component {
 
   handleEndTimePicked(time) {
     this.setState({ endTime: time, endTimePickerOpen: false });
-    this.props.navigation.navigate('ChooseActivityTypeScene', { db: this.props.db });
   }
 
   renderTime({ startTime, endTime }) {
@@ -84,20 +83,24 @@ class AttendanceTab extends React.Component {
           }}
         />
         <View style={styles.section}>
-          <Button>
+          <Button onPress={() => this.props.navigation.navigate('AttendanceCalendarScene')}>
             <Icon name="calendar" />
             <Text>עריכת נוכחות</Text>
           </Button>
         </View>
         <View style={styles.section}>
           {this.renderTime({ startTime: this.state.startTime })}
-          <Button onPress={this.showStartTimePicker}>
+          <Button onPress={() => this.setState({ startTime: new Date() })}>
             <Text>כניסה</Text>
           </Button>
         </View>
         <View style={styles.section}>
           {this.renderTime({ endTime: this.state.endTime })}
-          <Button onPress={this.showEndTimePicker}>
+          <Button
+            onPress={() => {
+              this.setState({ endTime: new Date() });
+              this.props.navigation.navigate('ChooseActivityTypeScene', { db: this.props.db });
+            }}>
             <Text>יציאה</Text>
           </Button>
         </View>

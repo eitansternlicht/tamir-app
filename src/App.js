@@ -19,14 +19,17 @@ import {
 const AppContainer = createAppContainer(
   createStackNavigator(
     {
+      LogInScene,
       MainScene,
       StudentDetailsScene,
       ChooseActivityTypeScene,
       EditDiscussionDetailsScene,
-      ChooseStudentScene
+      ChooseStudentScene,
+      AttendanceCalendarScene
     },
     {
-      initialRouteName: 'MainScene'
+      initialRouteName: 'LogInScene',
+      headerLayoutPreset: 'center'
     }
   )
 );

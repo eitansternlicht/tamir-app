@@ -34,7 +34,9 @@ class LogInScene extends React.Component {
             </Form>
           </Card>
 
-          <TouchableOpacity style={styles.buttonOneStyle}>
+          <TouchableOpacity
+            style={styles.buttonOneStyle}
+            onPress={() => this.props.navigation.navigate('MainScene')}>
             <Text style={styles.textStyle}>Sign In</Text>
           </TouchableOpacity>
 

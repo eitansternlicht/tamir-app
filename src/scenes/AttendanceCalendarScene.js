@@ -63,8 +63,11 @@ const INITIAL_STATE = {
     '2019-04-11': [ADD_ITEM]
   }
 };
-
 class AttendanceCalendarScene extends Component {
+  static navigationOptions = {
+    title: 'עריכת נוכחות'
+  };
+
   constructor(props) {
     super(props);
     this.loadItems = this.loadItems.bind(this);
@@ -134,17 +137,6 @@ class AttendanceCalendarScene extends Component {
   render() {
     return (
       <Container>
-        <Header>
-          <Left />
-          <Body>
-            <Title>{appName}</Title>
-          </Body>
-          <Right>
-            <Button transparent>
-              <Icon name="menu" />
-            </Button>
-          </Right>
-        </Header>
         <Content>
           <Agenda
             style={{ height: Dimensions.get('window').height - AGENDA_HEADER_HEIGHT }}

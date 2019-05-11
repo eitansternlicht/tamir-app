@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { Container, Content, Textarea, Form, Icon, Button, Body } from 'native-base';
+import { Container, Footer, Content, Textarea, Form, Icon, Button, Body } from 'native-base';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 import { right } from '../utils/style-utils';
 import { getStudentName } from '../utils/student-utils';
@@ -52,7 +52,7 @@ class EditDiscussionDetailsScene extends Component {
             />
           </Form>
         </Content>
-        <Body style={{ justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
+        <Footer>
           <Button
             onPress={() => {
               if (this.props.navigation.state.params.student) {
@@ -72,7 +72,7 @@ class EditDiscussionDetailsScene extends Component {
             style={{ justifyContent: 'center', alignItems: 'center', marginBottom: 150 }}>
             <Text style={{ fontSize: 30, textAlign: 'center' }}>שמור</Text>
           </Button>
-        </Body>
+        </Footer>
       </Container>
     );
   }
