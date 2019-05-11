@@ -84,11 +84,17 @@ const normalizeData = (withCategories, multiselect, data) => {
   return !multiselect ? flattened : flattened.map(obj => ({ ...obj, selected: false }));
 };
 
-const filterBy = (searchText, studentField, data) =>
+const anyFieldsInclude = (searchText, map, fields) =>
+  fields.map(field => map[field] && map[field].includes(searchText)).filter(includes => includes)
+    .length !== 0;
+
+const filterBy = (searchText, studentFields, data) =>
   data
     .filter(
       student =>
-        searchText === '' || !student[studentField] || student[studentField].includes(searchText)
+        searchText === '' ||
+        student.categoryName ||
+        anyFieldsInclude(searchText, student, studentFields)
     )
     .filter(
       (elem, i, arr) =>

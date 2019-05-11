@@ -19,7 +19,12 @@ import {
 const AppContainer = createAppContainer(
   createStackNavigator(
     {
-      LogInScene,
+      LogInScene: {
+        screen: LogInScene,
+        navigationOptions: {
+          header: null
+        }
+      },
       MainScene,
       StudentDetailsScene,
       ChooseActivityTypeScene,

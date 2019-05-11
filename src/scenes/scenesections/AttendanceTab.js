@@ -73,7 +73,7 @@ class AttendanceTab extends React.Component {
       <View style={styles.container}>
         <NavigationEvents
           onDidFocus={payload => {
-            if (payload.state.params.newActivity)
+            if (payload.state.params && payload.state.params.newActivity)
               this.setState(state => ({
                 activities: addToEndIfDoesntExistAtEnd(
                   payload.state.params.newActivity,
