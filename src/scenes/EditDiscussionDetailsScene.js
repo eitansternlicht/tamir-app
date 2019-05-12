@@ -70,7 +70,10 @@ class EditDiscussionDetailsScene extends Component {
               }
             }}
             style={{ justifyContent: 'center', alignItems: 'center', marginBottom: 150 }}>
-            <Text style={{ fontSize: 30, textAlign: 'center' }}>שמור</Text>
+            <Text
+              style={{ fontSize: 30, textAlign: 'center', paddingHorizontal: 20, color: 'white' }}>
+              שמור
+            </Text>
           </Button>
         </Footer>
       </Container>

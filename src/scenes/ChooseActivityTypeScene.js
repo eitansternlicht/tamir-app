@@ -6,17 +6,16 @@ import { right } from '../utils/style-utils';
 
 const groups = [
   { title: 'פעילות קבוצתית' },
-  { sid: 'a', title: 'פעילות קבוצתית', data: '8סרט' },
-  { sid: 'b', title: 'פעילות קבוצתית', data: '2סרט' },
-  { sid: 'c', title: 'פעילות קבוצתית', data: '3סרט' },
-  { sid: 'd', title: 'פעילות קבוצתית', data: '4סרט' },
-  { sid: 'e', title: 'פעילות קבוצתית', data: '5סרט' },
+  { sid: 'a', title: 'פעילות קבוצתית', data: 'תהליך תוכן' },
+  { sid: 'b', title: 'פעילות קבוצתית', data: 'מפגש עם דמות להזדהות' },
+  { sid: 'c', title: 'פעילות קבוצתית', data: ' חוויה ערכית / משמעותית / קודש' },
+  { sid: 'd', title: 'פעילות קבוצתית', data: 'שונות' },
   { title: 'שיחה אישית' },
   { sid: 'a', title: 'שיחה אישית', data: 'מזדמנת' },
   { sid: 'b', title: 'שיחה אישית', data: 'הכרות' },
   { sid: 'c', title: 'שיחה אישית', data: 'עמוקה' },
   { sid: 'd', title: 'שיחה אישית', data: 'קושי/בעיה' },
-  { sid: 'e', title: 'שיחה אישית', data: 'חניך ט׳' },
+  { sid: 'd', title: 'שיחה אישית', data: 'שונות' },
   { title: 'שונות' },
   { sid: 'a', title: 'שונות', data: 'שונות' }
 ];
