@@ -7,9 +7,6 @@ import {
   createSwitchNavigator
 } from 'react-navigation';
 import {
-  // MainScene,
-  AttendanceTabScene,
-  StudentsTabScene,
   AttendanceCalendarScene,
   StudentDetailsScene,
   GroupParticipantsAttendanceScene,
@@ -25,78 +22,110 @@ import {
   SettingsScene,
   AuthLoadingScene
 } from './scenes';
+import MainScene from './scenes/MainScene';
 
-const StudentsTabStack = createStackNavigator(
+const MainStack = createStackNavigator(
   {
-    StudentsTabScene: {
-      screen: StudentsTabScene
+    MainScene: {
+      screen: MainScene
     },
     StudentDetailsScene: {
       screen: StudentDetailsScene
     },
     ManageGroupsScene: {
       screen: ManageGroupsScene
+    },
+    ChooseActivityTypeScene: {
+      screen: ChooseActivityTypeScene,
+      navigationOptions: {
+        title: 'פעילות שבוצעה'
+      }
+    },
+    EditDiscussionDetailsScene: {
+      screen: EditDiscussionDetailsScene,
+      navigationOptions: {
+        title: 'שיחה אישית'
+      }
+    },
+    ChooseStudentScene,
+    GroupActivityDetailsScene: {
+      screen: GroupActivityDetailsScene,
+      navigationOptions: {
+        title: 'פעילות קבוצתית'
+      }
+    },
+    AttendanceCalendarScene: {
+      screen: AttendanceCalendarScene,
+      navigationOptions: {
+        title: 'נוכחות קודמת'
+      }
     }
   },
   {
-    initialRouteName: 'StudentsTabScene',
+    initialRouteName: 'MainScene',
     navigationOptions: {
       title: 'חניכים'
-    },
+    }
+  },
+  {
     headerMode: 'none'
   }
 );
 
-const AttendanceTabStack = createStackNavigator(
-  {
-    AttendanceTabScene,
-    ChooseActivityTypeScene,
-    EditDiscussionDetailsScene,
-    ChooseStudentScene,
-    AttendanceCalendarScene
-  },
-  {
-    initialRouteName: 'AttendanceTabScene',
-    navigationOptions: {
-      title: 'נוכחות'
-    },
-    headerMode: 'none'
-  }
-);
+// const AttendanceTabStack = createStackNavigator(
+//   {
+//     AttendanceTabScene,
+//     ChooseActivityTypeScene,
+//     EditDiscussionDetailsScene,
+//     ChooseStudentScene,
+//     AttendanceCalendarScene
+//   },
+//   {
+//     initialRouteName: 'AttendanceTabScene',
+//     navigationOptions: {
+//       title: 'נוכחות'
+//     }
+//     // ,
+//     // headerMode: 'none'
+//   }
+// );
 
-const MainTabs = createMaterialTopTabNavigator(
-  {
-    StudentsTabStack: {
-      screen: StudentsTabStack
-    },
-    AttendanceTabStack: {
-      screen: AttendanceTabStack
-    }
-  },
-  {
-    initialRouteName: 'StudentsTabStack',
-    order: ['StudentsTabStack', 'AttendanceTabStack'],
-    animationEnabled: true,
-    navigationOptions: {
-      title: 'טמיר'
-    }
-  }
-);
-
-const MainTabsInStack = createStackNavigator({ MainTabsInStack: MainTabs });
+// const MainTabs = createMaterialTopTabNavigator(
+//   {
+//     StudentsTabStack: {
+//       screen: StudentsTabStack
+//     },
+//     AttendanceTabStack: {
+//       screen: AttendanceTabStack
+//     }
+//   },
+//   {
+//     initialRouteName: 'StudentsTabStack',
+//     order: ['StudentsTabStack', 'AttendanceTabStack'],
+//     animationEnabled: true,
+//     navigationOptions: {
+//       title: 'טמיר'
+//     }
+//   }
+// );
+// [1, 3, 5, 5, 3, 1, 4]
+// const MainTabsInStack = createStackNavigator({ MainTabsInStack: MainTabs });
 
 const AppWithDrawer = createDrawerNavigator(
   {
-    MainTabs: {
-      screen: MainTabsInStack
+    MainStack: {
+      screen: MainStack,
+      navigationOptions: {
+        title: 'חזרה לבית'
+      }
     },
     SettingsScene: {
       screen: SettingsScene
     }
   },
   {
-    initialRouteName: 'MainTabs',
-    order: ['MainTabs', 'SettingsScene'],
+    initialRouteName: 'MainStack',
+    order: ['MainStack', 'SettingsScene'],
     drawerPosition: 'right'
   }
 );

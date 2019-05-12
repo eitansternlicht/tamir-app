@@ -58,7 +58,11 @@ const studentToOrderedFieldsAndValues = student =>
         : undefined
     )
     .filter(x => x !== undefined);
-
+/**
+ * 
+ * @param {*} groups 
+ * 
+ */
 const toFlatGroups = groups =>
   Object.keys(groups)
     .map(groupUID =>

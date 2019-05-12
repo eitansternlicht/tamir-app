@@ -86,7 +86,7 @@ class AttendanceTabScene extends React.Component {
         <View style={styles.section}>
           <Button onPress={() => this.props.navigation.navigate('AttendanceCalendarScene')}>
             <Icon name="calendar" />
-            <Text>עריכת נוכחות</Text>
+            <Text>נוכחות קודמת</Text>
           </Button>
         </View>
         <View style={styles.section}>

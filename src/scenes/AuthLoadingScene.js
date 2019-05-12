@@ -10,8 +10,7 @@ class AuthLoadingScene extends React.Component {
     initFirebase();
     getDB().then(db => {
       const userLoggedIn = true;
-      if (userLoggedIn) props.navigation.navigate('AttendanceTabScene', { db });
-      if (userLoggedIn) props.navigation.navigate('StudentsTabScene', { db });
+      if (userLoggedIn) props.navigation.navigate('MainScene', { db });
     });
   }
 

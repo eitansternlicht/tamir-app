@@ -65,6 +65,10 @@ const INITIAL_STATE = {
 };
 
 class AttendanceCalendarScene extends Component {
+  // static navigationOptions = {
+  //   title: ''
+  // };
+
   constructor(props) {
     super(props);
     this.loadItems = this.loadItems.bind(this);

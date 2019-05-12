@@ -8,11 +8,12 @@ class StudentsTabScene extends React.Component {
   //   title: 'טמיר'
   // };
   render() {
+    console.log('db', this.props.db);
     return (
       <View style={{ flex: 1 }}>
         <FilterableList
           withCategories
-          data={groupsWithStudentDetails(this.props.navigation.state.params.db)}
+          data={groupsWithStudentDetails(this.props.db)}
           onPress={student => {
             this.props.navigation.navigate('StudentDetailsScene', { student });
           }}
@@ -24,9 +25,9 @@ class StudentsTabScene extends React.Component {
           type="MaterialIcons"
           buttons={[
             {
-              onPress: () => 
+              onPress: () =>
                 this.props.navigation.navigate('ManageGroupsScene', {
-                  db: this.props.navigation.state.params.db
+                  db: this.props.db
                 }),
               backgroundColor: '#3B5998',
               name: 'people'

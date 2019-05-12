@@ -1,12 +1,20 @@
 import React from 'react';
-import { View, Button } from 'native-base';
+import { Button, Text, Container } from 'native-base';
 
-const SettingsScene = () => {
-  return (
-    <View>
-      <Button>Log Out</Button>
-    </View>
-  );
-};
+class SettingsScene extends React.Component {
+  static navigationOptions = {
+    title: 'הגדרות'
+  };
+
+  render() {
+    return (
+      <Container>
+        <Button>
+          <Text>Log Out</Text>
+        </Button>
+      </Container>
+    );
+  }
+}
 
 export { SettingsScene };
