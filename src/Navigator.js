@@ -130,7 +130,12 @@ const AppWithDrawer = createDrawerNavigator(
   }
 );
 
-const AuthStack = createStackNavigator({ LogInScene });
+const AuthStack = createStackNavigator(
+  { LogInScene },
+  {
+    headerMode: 'none'
+  }
+);
 
 const AppWithAuth = createSwitchNavigator(
   {
