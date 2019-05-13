@@ -131,7 +131,7 @@ class AttendanceTabScene extends React.Component {
           }
           style={styles.section}>
           <Text style={styles.activities}>הוסף פעילות</Text>
-          <Icon name="add-circle" />
+          <Icon type="MaterialIcons" name="add-circle-outline" />
         </TouchableOpacity>
 
         <View style={[styles.section, { justifyContent: 'center' }]}>
