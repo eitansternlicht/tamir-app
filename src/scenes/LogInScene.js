@@ -13,7 +13,7 @@ import {
   Button
 } from 'native-base';
 import { TouchableOpacity } from 'react-native';
-import { initFirebase, getDB } from '../utils/firebase-utils';
+import { initFirebase, initNativeFirebase, getDB } from '../utils/firebase-utils';
 import { ignoreFirebaseLoadingWarnings } from '../utils/react-native-utils';
 
 const INITIAL_STATE = { loading: false, phone: '', password: '' };
@@ -53,15 +53,16 @@ class LogInScene extends React.Component {
             onPress={() => {
               this.setState({ loading: true });
               ignoreFirebaseLoadingWarnings();
-              initFirebase();
-              // signIn().then(
-              const signedIn = true;
-              if (signedIn) {
-                getDB().then(db => {
-                  this.setState({ loading: false });
-                  this.props.navigation.navigate('MainScene', { db });
-                });
-              }
+              initNativeFirebase().then(() => {
+                // signIn().then(
+                const signedIn = true;
+                if (signedIn) {
+                  getDB().then(db => {
+                    this.setState({ loading: false });
+                    this.props.navigation.navigate('MainScene', { db });
+                  });
+                }
+              });
             }}>
             {this.state.loading ? <Spinner /> : <Text style={styles.textStyle}>Sign In</Text>}
           </Button>
