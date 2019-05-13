@@ -102,6 +102,7 @@ const styles = {
   },
   buttonTwoStyle: {
     alignSelf: 'stretch',
+    padding: 10,
     borderRadius: 5,
     borderWidth: 1,
     backgroundColor: '#007aff',
