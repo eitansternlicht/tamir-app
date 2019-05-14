@@ -1,23 +1,22 @@
 import React from 'react';
 import { StyleSheet, View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { Icon } from 'native-base';
-import EntypoIcon from 'react-native-vector-icons/Entypo';
 import { right } from '../utils/style-utils';
 
 const groups = [
-  { title: 'פעילות קבוצתית' },
-  { sid: 'a', title: 'פעילות קבוצתית', data: 'תהליך תוכן' },
-  { sid: 'b', title: 'פעילות קבוצתית', data: 'מפגש עם דמות להזדהות' },
-  { sid: 'c', title: 'פעילות קבוצתית', data: ' חוויה ערכית / משמעותית / קודש' },
-  { sid: 'd', title: 'פעילות קבוצתית', data: 'שונות' },
-  { title: 'שיחה אישית' },
-  { sid: 'a', title: 'שיחה אישית', data: 'מזדמנת' },
-  { sid: 'b', title: 'שיחה אישית', data: 'הכרות' },
-  { sid: 'c', title: 'שיחה אישית', data: 'עמוקה' },
-  { sid: 'd', title: 'שיחה אישית', data: 'קושי/בעיה' },
-  { sid: 'd', title: 'שיחה אישית', data: 'שונות' },
-  { title: 'שונות' },
-  { sid: 'a', title: 'שונות', data: 'שונות' }
+  { categoryName: 'פעילות קבוצתית' },
+  { groupName: 'פעילות קבוצתית', title: 'תהליך תוכן' },
+  { groupName: 'פעילות קבוצתית', title: 'מפגש עם דמות להזדהות' },
+  { groupName: 'פעילות קבוצתית', title: ' חוויה ערכית / משמעותית / קודש' },
+  { groupName: 'פעילות קבוצתית', title: 'שונות' },
+  { categoryName: 'שיחה אישית' },
+  { groupName: 'שיחה אישית', title: 'מזדמנת' },
+  { groupName: 'שיחה אישית', title: 'הכרות' },
+  { groupName: 'שיחה אישית', title: 'עמוקה' },
+  { groupName: 'שיחה אישית', title: 'קושי/בעיה' },
+  { groupName: 'שיחה אישית', title: 'שונות' },
+  { categoryName: 'שונות' },
+  { groupName: 'שונות', title: 'שונות' }
 ];
 function tIcon(title) {
   if (title === 'פעילות קבוצתית') return <Icon name="people" />;
@@ -28,10 +27,6 @@ const INITIAL_STATE = {
   filteredStudents: groups
 };
 class ChooseActivityTypeScene extends React.Component {
-  static navigationOptions = {
-    title: 'פעילות שבוצעה'
-  };
-
   constructor(props) {
     super(props);
     this.state = INITIAL_STATE;
@@ -43,26 +38,36 @@ class ChooseActivityTypeScene extends React.Component {
         extraData={this.state.filteredStudents}
         data={this.state.filteredStudents}
         ListFooterComponent={<View style={styles.spaceAtTheEnd} />}
-        keyExtractor={({ title, data }) => data + title}
-        renderItem={({ item: { sid, title, data } }) => (
+        keyExtractor={({ categoryName, groupName, title }) => categoryName || groupName + title}
+        renderItem={({ item: { categoryName, groupName, title } }) => (
           <View style={styles.listItem}>
-            {sid ? (
+            {!categoryName ? (
               <TouchableOpacity
-                onPress={() =>
-                  this.props.navigation.navigate('EditDiscussionDetailsScene', {
-                    title,
-                    data,
-                    db: this.props.navigation.state.params.db
-                  })
-                }>
+                onPress={() => {
+                  if (groupName === 'שיחה אישית') {
+                    this.props.navigation.navigate('EditDiscussionDetailsScene', {
+                      groupName,
+                      title,
+                      db: this.props.navigation.state.params.db
+                    });
+                  } else if (groupName === 'פעילות קבוצתית') {
+                    this.props.navigation.navigate('GroupActivityDetailsScene', {
+                      groupName,
+                      title,
+                      db: this.props.navigation.state.params.db
+                    });
+                  } else {
+                    // TODO
+                  }
+                }}>
                 <Text style={styles.studentName}>
-                  <EntypoIcon key={title + sid} name="chevron-right" /> {data}
+                  <Icon type="Entypo" key={groupName + title} name="chevron-right" /> {title}
                 </Text>
               </TouchableOpacity>
             ) : (
               <Text style={styles.groupName}>
-                {title}
-                {tIcon(title)}
+                {categoryName}
+                {tIcon(categoryName)}
               </Text>
             )}
           </View>

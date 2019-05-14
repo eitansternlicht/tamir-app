@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {
   Container,
-  Header,
   Content,
   Textarea,
   Form,
@@ -9,10 +8,7 @@ import {
   Icon,
   Button,
   Footer,
-  Title,
-  Left,
-  Body,
-  Right
+  Title
 } from 'native-base';
 import { View, StyleSheet, Text } from 'react-native';
 
@@ -64,22 +60,6 @@ class GroupActivityDetailsScene extends Component {
     const { groupsContainer, button } = styles;
     return (
       <Container>
-        <Header>
-          <Left>
-            <Button transparent>
-              <Icon name="arrow-back" />
-            </Button>
-          </Left>
-          <Body>
-            <Title>פעילות קבוצתית</Title>
-          </Body>
-          <Right>
-            <Button transparent>
-              <Icon name="menu" />
-            </Button>
-          </Right>
-        </Header>
-
         <Content padder>
           <Title style={{ color: 'black' }}>מפגש עם דמות להזדהות</Title>
           <Form style={{ padding: 10 }}>
@@ -102,7 +82,15 @@ class GroupActivityDetailsScene extends Component {
         </Content>
         <Footer>
           <Button style={[button, { justifyContent: 'center' }]}>
-            <Text style={{ fontSize: 35 }}>שמור</Text>
+            <Text
+              style={{
+                fontSize: 30,
+                textAlign: 'center',
+                paddingHorizontal: 20,
+                color: 'white'
+              }}>
+              שמור
+            </Text>
           </Button>
         </Footer>
       </Container>

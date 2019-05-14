@@ -1,5 +1,5 @@
 const fieldTypes = {
-  PHONE: { validate: undefined, errorMsg: 'מספר פלאפון לא חוקי' },
+  PHONE: { validate: phone => true, errorMsg: 'מספר פלאפון לא חוקי' },
   SCHOOL_GRADE: {
     valuesAnd: [
       { valuesOr: ['יב', 'יא', 'י', 'ט', 'ח', 'ז', 'ו', 'ה', 'ד', 'ג', 'ב', 'א'] },
@@ -58,7 +58,11 @@ const studentToOrderedFieldsAndValues = student =>
         : undefined
     )
     .filter(x => x !== undefined);
-
+/**
+ *
+ * @param {*} groups
+ *
+ */
 const toFlatGroups = groups =>
   Object.keys(groups)
     .map(groupUID =>
