@@ -11,16 +11,17 @@ import {
   Title
 } from 'native-base';
 import { View, StyleSheet, Text } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const INITIAL_STATE = { comments: '' };
 
-const groupsAttendance = {
-  'קבוצה א': [{ attended: true }, { attended: false }, { attended: true }, { attended: true }],
-  'קבוצה ב': [{ attended: true }, { attended: true }, { attended: true }, { attended: true }],
-  'קבוצה ג': [{ attended: true }, { attended: false }, { attended: false }, { attended: true }],
-  'קבוצה ד': [{ attended: false }, { attended: false }, { attended: false }, { attended: false }],
-  'קבוצה ה': [{ attended: true }, { attended: true }, { attended: false }, { attended: false }]
-};
+// const groupsAttendance = {
+//   'קבוצה א': [{ attended: true }, { attended: false }, { attended: true }, { attended: true }],
+//   'קבוצה ב': [{ attended: true }, { attended: true }, { attended: true }, { attended: true }],
+//   'קבוצה ג': [{ attended: true }, { attended: false }, { attended: false }, { attended: true }],
+//   'קבוצה ד': [{ attended: false }, { attended: false }, { attended: false }, { attended: false }],
+//   'קבוצה ה': [{ attended: true }, { attended: true }, { attended: false }, { attended: false }]
+// };
 
 class GroupActivityDetailsScene extends Component {
   constructor(props) {
@@ -31,37 +32,43 @@ class GroupActivityDetailsScene extends Component {
   // eslint-disable-next-line class-methods-use-this
   renderRow({ groupAttendance, groupName }) {
     const { groupRow, rowItem } = styles;
-    const attendedCounter = groupAttendance.filter(({ attended }) => attended).length;
-    if (attendedCounter !== 0) {
+    let attendedCounter;
+    if (groupAttendance)
+      attendedCounter = groupAttendance.filter(({ attended }) => attended).length;
+    else {
       return (
-        <View key={groupName} style={groupRow}>
-          <CheckBox checked style={[rowItem, { marginHorizontal: 10 }]} />
+        <TouchableOpacity
+          // onPress={}
+          key={groupName}
+          style={groupRow}>
+          <CheckBox style={[rowItem, { marginHorizontal: 10 }]} />
           <Text style={rowItem}>{groupName}</Text>
-          <Text style={rowItem}>
+          {/* <Text style={rowItem}>
             חניכים {attendedCounter}/{groupAttendance.length}
-          </Text>
-          <Icon
+          </Text> */}
+          {/* <Icon
             name="create"
             style={{ fontSize: 20, color: 'blue', paddingTop: 5, paddingRight: 5 }}
-          />
-        </View>
+          /> */}
+        </TouchableOpacity>
       );
     }
 
-    return (
-      <View key={groupName} style={groupRow}>
-        <CheckBox checked style={[rowItem, { marginHorizontal: 10 }]} />
-        <Text style={rowItem}>{groupName}</Text>
-      </View>
-    );
+    // return (
+    //   <View key={groupName} style={groupRow}>
+    //     <CheckBox checked style={[rowItem, { marginHorizontal: 10 }]} />
+    //     <Text style={rowItem}>{groupName}</Text>
+    //   </View>
+    // );
   }
 
   render() {
     const { groupsContainer, button } = styles;
+    const { title, db, groupAttendance } = this.props.navigation.state.params;
     return (
       <Container>
         <Content padder>
-          <Title style={{ color: 'black' }}>מפגש עם דמות להזדהות</Title>
+          <Title style={{ color: 'black' }}>{title}</Title>
           <Form style={{ padding: 10 }}>
             <Textarea
               rowSpan={5}
@@ -72,10 +79,10 @@ class GroupActivityDetailsScene extends Component {
             />
           </Form>
           <View style={groupsContainer}>
-            {Object.keys(groupsAttendance)
-              .map(groupName => ({
-                groupAttendance: groupsAttendance[groupName],
-                groupName
+            {Object.keys(db.Groups)
+              .map(groupUID => ({
+                groupAttendance,
+                groupName: db.Groups[groupUID].name
               }))
               .map(this.renderRow)}
           </View>
