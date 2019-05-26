@@ -18,9 +18,11 @@ import {
   ChooseStudentScene,
   ChooseActivityTypeScene,
   EditDiscussionDetailsScene,
-  LogInScene,
+  PhoneInputScene,
+  SmsCodeConfirmScene,
   SettingsScene,
-  AuthLoadingScene
+  AuthLoadingScene,
+  EditStudentDetailsScene
 } from './scenes';
 import MainScene from './scenes/MainScene';
 
@@ -59,7 +61,8 @@ const MainStack = createStackNavigator(
       navigationOptions: {
         title: 'נוכחות קודמת'
       }
-    }
+    },
+    EditStudentDetailsScene
   },
   {
     initialRouteName: 'MainScene',
@@ -71,45 +74,6 @@ const MainStack = createStackNavigator(
     headerMode: 'none'
   }
 );
-
-// const AttendanceTabStack = createStackNavigator(
-//   {
-//     AttendanceTabScene,
-//     ChooseActivityTypeScene,
-//     EditDiscussionDetailsScene,
-//     ChooseStudentScene,
-//     AttendanceCalendarScene
-//   },
-//   {
-//     initialRouteName: 'AttendanceTabScene',
-//     navigationOptions: {
-//       title: 'נוכחות'
-//     }
-//     // ,
-//     // headerMode: 'none'
-//   }
-// );
-
-// const MainTabs = createMaterialTopTabNavigator(
-//   {
-//     StudentsTabStack: {
-//       screen: StudentsTabStack
-//     },
-//     AttendanceTabStack: {
-//       screen: AttendanceTabStack
-//     }
-//   },
-//   {
-//     initialRouteName: 'StudentsTabStack',
-//     order: ['StudentsTabStack', 'AttendanceTabStack'],
-//     animationEnabled: true,
-//     navigationOptions: {
-//       title: 'טמיר'
-//     }
-//   }
-// );
-// [1, 3, 5, 5, 3, 1, 4]
-// const MainTabsInStack = createStackNavigator({ MainTabsInStack: MainTabs });
 
 const AppWithDrawer = createDrawerNavigator(
   {
@@ -130,12 +94,17 @@ const AppWithDrawer = createDrawerNavigator(
   }
 );
 
-const AuthStack = createStackNavigator(
-  { LogInScene },
-  {
-    headerMode: 'none'
+const AuthStack = createStackNavigator({
+  PhoneInputScene: {
+    screen: PhoneInputScene,
+    navigationOptions: {
+      title: 'התחברות'
+    }
+  },
+  SmsCodeConfirmScene: {
+    screen: SmsCodeConfirmScene
   }
-);
+});
 
 const AppWithAuth = createSwitchNavigator(
   {
