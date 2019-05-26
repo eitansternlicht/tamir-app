@@ -2,7 +2,6 @@
 import {
   createStackNavigator,
   createAppContainer,
-  createMaterialTopTabNavigator,
   createDrawerNavigator,
   createSwitchNavigator
 } from 'react-navigation';
@@ -102,7 +101,10 @@ const AuthStack = createStackNavigator({
     }
   },
   SmsCodeConfirmScene: {
-    screen: SmsCodeConfirmScene
+    screen: SmsCodeConfirmScene,
+    navigationOptions: {
+      title: 'אמת סיסמה'
+    }
   }
 });
 
