@@ -2,7 +2,7 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 
 import React from 'react';
-import { View, FlatList, StyleSheet } from 'react-native';
+import { View, FlatList, StyleSheet, ScrollView } from 'react-native';
 import update from 'immutability-helper';
 import {
   Container,
@@ -17,9 +17,79 @@ import {
   Footer,
   CheckBox
 } from 'native-base';
+import EntypoIcon from 'react-native-vector-icons/Entypo';
 import { right } from '../utils/style-utils';
 
 const INITIAL_STATE = {
+  // previousActivities: [
+  //   {
+  //     startTime: new Date(2019, 3, 20),
+  //     participantsAttended: [
+  //       {
+  //         sid: 'a',
+  //         firstName: 'student A',
+  //         attended: true
+  //       },
+  //       {
+  //         sid: 'b',
+  //         firstName: 'student B',
+  //         attended: true
+  //       },
+  //       {
+  //         sid: 'c',
+  //         firstName: 'student C',
+  //         attended: true
+  //       }
+  //     ]
+  //   },
+  //   {
+  //     startTime: new Date(2019, 3, 3),
+  //     participantsAttended: [
+  //       {
+  //         sid: 'a',
+  //         firstName: 'student A',
+  //         attended: true
+  //       },
+  //       {
+  //         sid: 'b',
+  //         firstName: 'student B',
+  //         attended: true
+  //       }
+  //     ]
+  //   },
+  //   {
+  //     startTime: new Date(2019, 2, 15),
+  //     participantsAttended: [
+  //       {
+  //         sid: 'a',
+  //         firstName: 'student A',
+  //         attended: true
+  //       },
+  //       {
+  //         sid: 'c',
+  //         firstName: 'student B',
+  //         attended: true
+  //       }
+  //     ]
+  //   }
+  // ],
+  // groupParticipants: [
+  // {
+  //   sid: 'a',
+  //   firstName: 'חניך א׳',
+  //   attended: false
+  // },
+  // {
+  //   sid: 'b',
+  //   firstName: 'חניך ב׳',
+  //   attended: false
+  // },
+  // {
+  //   sid: 'c',
+  //   firstName: 'חניך ג׳',
+  //   attended: false
+  // }
+  // ],
   participants: [],
   allSelected: false,
   loading: true
@@ -81,15 +151,13 @@ class GroupParticipantsAttendanceScene extends React.Component {
       }))
       .map(({ startTime, arrived }) =>
         arrived ? (
-          <Icon
-            type="Entypo"
+          <EntypoIcon
             key={startTime.toJSON()}
             name="check"
             style={styles.previousAttendanceIcons}
           />
         ) : (
-          <Icon
-            type="Entypo"
+          <EntypoIcon
             key={startTime.toJSON()}
             name="minus"
             style={styles.previousAttendanceIcons}
