@@ -20,8 +20,7 @@ import {
   PhoneInputScene,
   SmsCodeConfirmScene,
   SettingsScene,
-  AuthLoadingScene,
-  EditStudentDetailsScene
+  AuthLoadingScene
 } from './scenes';
 import MainScene from './scenes/MainScene';
 
@@ -60,8 +59,7 @@ const MainStack = createStackNavigator(
       navigationOptions: {
         title: 'נוכחות קודמת'
       }
-    },
-    EditStudentDetailsScene
+    }
   },
   {
     initialRouteName: 'MainScene',
