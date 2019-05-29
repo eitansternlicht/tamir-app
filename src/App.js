@@ -11,7 +11,6 @@ import {
   SelectMultipleStudentsScene,
   ManageGroupParticipantsScene,
   ChooseStudentScene,
-  ManageGroupsList,
   ChooseActivityTypeScene,
   EditDiscussionDetailsScene
 } from './scenes';
@@ -23,8 +22,7 @@ const AppContainer = createAppContainer(
       StudentDetailsScene,
       ChooseActivityTypeScene,
       EditDiscussionDetailsScene,
-      ChooseStudentScene,
-      ManageGroupsList
+      ChooseStudentScene
     },
     {
       initialRouteName: 'MainScene'
