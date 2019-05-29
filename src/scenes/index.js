@@ -11,3 +11,4 @@ export * from './LogInScene';
 export * from './ViewPotentialStudentDetailsScene';
 export * from './ChooseActivityTypeScene';
 export * from './EditDiscussionDetailsScene';
+export * from './ManageGroupsList';
