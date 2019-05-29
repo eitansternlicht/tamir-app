@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.tamir.tamirapp">
+  package="com.tamirapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
 

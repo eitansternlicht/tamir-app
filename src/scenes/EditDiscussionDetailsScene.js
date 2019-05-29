@@ -1,20 +1,21 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { Container, Content, Textarea, Form, Icon, Button, Body, Footer } from 'native-base';
+import { Container, Content, Textarea, Form, Icon, Button, Body } from 'native-base';
+import EntypoIcon from 'react-native-vector-icons/Entypo';
 import { right } from '../utils/style-utils';
 import { getStudentName } from '../utils/student-utils';
 
 const showStudent = student => (
   <Text style={styles.studentName}>
     {student ? getStudentName(student) : 'בחירת חניך'}
-    {student ? <Icon type="Entypo" size={20} name="edit" /> : <Icon name="person-add" />}
+    {student ? <EntypoIcon size={20} name="edit" /> : <Icon name="person-add" />}
   </Text>
 );
 
 class EditDiscussionDetailsScene extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
-      title: navigation.state.params.groupName
+      title: navigation.state.params.title
     };
   };
 
@@ -29,12 +30,8 @@ class EditDiscussionDetailsScene extends Component {
     return (
       <Container>
         <Content padder>
-          <Text style={styles.titleName}>{this.props.navigation.state.params.title}</Text>
-          <Body
-            style={{
-              textAlign: right,
-              marginLeft: 'auto'
-            }}>
+          <Text style={styles.titleName}>{this.props.navigation.state.params.data}</Text>
+          <Body style={{ textAlign: right, marginLeft: 'auto' }}>
             <TouchableOpacity
               onPress={() =>
                 this.props.navigation.push('ChooseStudentScene', {
@@ -55,36 +52,27 @@ class EditDiscussionDetailsScene extends Component {
             />
           </Form>
         </Content>
-        <Footer>
+        <Body style={{ justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
           <Button
             onPress={() => {
               if (this.props.navigation.state.params.student) {
                 this.props.navigation.navigate('MainScene', {
                   newActivity: {
                     discussion: {
-                      type: this.props.navigation.state.params.title,
+                      type: this.props.navigation.state.params.data,
                       student: this.props.navigation.state.params.student,
                       comments: this.state.comments
                     }
                   }
                 });
               } else {
-                // TODO
                 console.log('No Student was Picked! This WILL BE a dialog');
               }
             }}
             style={{ justifyContent: 'center', alignItems: 'center', marginBottom: 150 }}>
-            <Text
-              style={{
-                fontSize: 30,
-                textAlign: 'center',
-                paddingHorizontal: 20,
-                color: 'white'
-              }}>
-              שמור
-            </Text>
+            <Text style={{ fontSize: 30, textAlign: 'center' }}>שמור</Text>
           </Button>
-        </Footer>
+        </Body>
       </Container>
     );
   }
@@ -111,8 +99,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingRight: 10,
     textDecorationLine: 'underline',
-    fontSize: 25,
-    textAlign: right
+    fontSize: 25
   },
   studentName: {
     fontSize: 18,

@@ -1,6 +1,35 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
-import Navigator from './Navigator';
+import { createStackNavigator, createAppContainer } from 'react-navigation';
+import {
+  MainScene,
+  AttendanceCalendarScene,
+  StudentDetailsScene,
+  GroupParticipantsAttendanceScene,
+  GroupActivityDetailsScene,
+  PotentialStudentsScene,
+  SelectMultipleStudentsScene,
+  ManageGroupParticipantsScene,
+  ChooseStudentScene,
+  ChooseActivityTypeScene,
+  EditDiscussionDetailsScene
+} from './scenes';
 
-const App = () => <Navigator />;
+const AppContainer = createAppContainer(
+  createStackNavigator(
+    {
+      MainScene,
+      StudentDetailsScene,
+      ChooseActivityTypeScene,
+      EditDiscussionDetailsScene,
+      ChooseStudentScene
+    },
+    {
+      initialRouteName: 'MainScene'
+    }
+  )
+);
+
+const App = () => <AppContainer />;
 
 export default App;

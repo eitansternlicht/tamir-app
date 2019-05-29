@@ -322,5 +322,3 @@ Temporary Items
 .apdisk
 
 # End of https://www.gitignore.io/api/reactnative
-
-package-lock.json

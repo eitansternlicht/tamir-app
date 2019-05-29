@@ -1,6 +1,7 @@
 import React from 'react';
 import { Icon, Fab, Button, Container } from 'native-base';
-import { FilterableList } from '../components';
+import MDIcon from 'react-native-vector-icons/MaterialIcons';
+import { FilterableList, Header } from '../components';
 
 const selectedGroup = 'קבוצה ב׳';
 const students = {
@@ -21,17 +22,13 @@ class ManageGroupParticipantsScene extends React.Component {
   }
 
   renderFabIcon() {
-    return this.state.fabMenuOpen ? (
-      <Icon name="close" type="Ionicons" />
-    ) : (
-      <Icon name="edit" type="MaterialIcons" />
-    );
+    return this.state.fabMenuOpen ? <Icon name="close" /> : <MDIcon name="edit" />;
   }
 
   render() {
     return (
       <Container>
-        {/* <Header title={selectedGroup} back /> */}
+        <Header title={selectedGroup} back />
         <FilterableList data={students} onPress={item => console.log('item pressed', item)} />
         <Fab
           active={this.state.fabMenuOpen}

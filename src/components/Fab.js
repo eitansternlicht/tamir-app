@@ -1,5 +1,6 @@
 import React from 'react';
 import { Fab as NBFab, Button, Icon } from 'native-base';
+import MDIcon from 'react-native-vector-icons/MaterialIcons';
 
 const INITIAL_STATE = {
   fabMenuOpen: false
@@ -25,21 +26,9 @@ class Fab extends React.Component {
             fabMenuOpen: !state.fabMenuOpen
           }))
         }>
-        {this.state.fabMenuOpen ? (
-          <Icon type="Ionicons" name="close" />
-        ) : (
-          <Icon type={this.props.type} name={this.props.iconName} />
-        )}
+        {this.state.fabMenuOpen ? <Icon name="close" /> : <MDIcon name={mdIcon} />}
         {buttons.map(({ backgroundColor: bgColor, name, onPress }, i) => (
-          <Button
-            key={i.toString()}
-            style={{ backgroundColor: bgColor }}
-            onPress={() => {
-              this.setState({
-                fabMenuOpen: false
-              });
-              onPress();
-            }}>
+          <Button key={i.toString()} style={{ backgroundColor: bgColor }} onPress={onPress}>
             <Icon name={name} />
           </Button>
         ))}

@@ -1,5 +1,5 @@
 const fieldTypes = {
-  PHONE: { validate: phone => true, errorMsg: 'מספר פלאפון לא חוקי' },
+  PHONE: { validate: undefined, errorMsg: 'מספר פלאפון לא חוקי' },
   SCHOOL_GRADE: {
     valuesAnd: [
       { valuesOr: ['יב', 'יא', 'י', 'ט', 'ח', 'ז', 'ו', 'ה', 'ד', 'ג', 'ב', 'א'] },
@@ -58,11 +58,7 @@ const studentToOrderedFieldsAndValues = student =>
         : undefined
     )
     .filter(x => x !== undefined);
-/**
- *
- * @param {*} groups
- *
- */
+
 const toFlatGroups = groups =>
   Object.keys(groups)
     .map(groupUID =>
@@ -88,17 +84,11 @@ const normalizeData = (withCategories, multiselect, data) => {
   return !multiselect ? flattened : flattened.map(obj => ({ ...obj, selected: false }));
 };
 
-const anyFieldsInclude = (searchText, map, fields) =>
-  fields.map(field => map[field] && map[field].includes(searchText)).filter(includes => includes)
-    .length !== 0;
-
-const filterBy = (searchText, studentFields, data) =>
+const filterBy = (searchText, studentField, data) =>
   data
     .filter(
       student =>
-        searchText === '' ||
-        student.categoryName ||
-        anyFieldsInclude(searchText, student, studentFields)
+        searchText === '' || !student[studentField] || student[studentField].includes(searchText)
     )
     .filter(
       (elem, i, arr) =>
