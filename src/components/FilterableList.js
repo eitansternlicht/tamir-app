@@ -22,7 +22,7 @@ class FilterableList extends React.Component {
     const { normalizedData } = this.state;
     this.setState({
       searchText,
-      filteredData: filterBy(searchText, 'שם פרטי', normalizedData)
+      filteredData: filterBy(searchText, ['שם פרטי', 'שם משפחה'], normalizedData)
     });
   }
 
@@ -57,7 +57,11 @@ class FilterableList extends React.Component {
                       });
                       this.setState({
                         normalizedData: newNormalizedData,
-                        filteredData: filterBy(searchText, 'שם פרטי', newNormalizedData)
+                        filteredData: filterBy(
+                          searchText,
+                          ['שם פרטי', 'שם משפחה'],
+                          newNormalizedData
+                        )
                       });
                     }
                   }}

@@ -1,22 +1,8 @@
 import React, { Component } from 'react';
-import {
-  Container,
-  Header,
-  Content,
-  Title,
-  Left,
-  Right,
-  Body,
-  Icon,
-  Button,
-  Text,
-  List,
-  ListItem
-} from 'native-base';
+import { Container, Content, Icon, Text, List, ListItem } from 'native-base';
 import { Agenda } from 'react-native-calendars';
 import { StyleSheet, Dimensions } from 'react-native';
 import { Divider } from 'react-native-elements';
-import { appName } from '../../app.json';
 import { formatDate, toClockRange, getDaysInMonth } from '../utils/date-utils';
 
 const rowHasChanged = (r1, r2) =>
@@ -63,8 +49,11 @@ const INITIAL_STATE = {
     '2019-04-11': [ADD_ITEM]
   }
 };
-
 class AttendanceCalendarScene extends Component {
+  static navigationOptions = {
+    title: 'עריכת נוכחות'
+  };
+
   constructor(props) {
     super(props);
     this.loadItems = this.loadItems.bind(this);
@@ -72,6 +61,7 @@ class AttendanceCalendarScene extends Component {
   }
 
   loadItems(month) {
+    // TODO refactor, make better
     if (new Date().getTime() >= month.timestamp) {
       // in the past!
       if (!this.state.items[formatDate(new Date(month.timestamp))]) {
@@ -98,7 +88,11 @@ class AttendanceCalendarScene extends Component {
           borderBottomColor: '#BDC0C9',
           borderBottomWidth: 1
         }}>
-        <Icon name="add-circle" style={{ paddingTop: 35, paddingRight: 20, color: '#9EA1A8' }} />
+        <Icon
+          type="MaterialIcons"
+          name="add-circle-outline"
+          style={{ paddingTop: 35, paddingRight: 20, color: '#9EA1A8' }}
+        />
         <Container
           style={{
             borderBottomColor: 'black',
@@ -134,17 +128,6 @@ class AttendanceCalendarScene extends Component {
   render() {
     return (
       <Container>
-        <Header>
-          <Left />
-          <Body>
-            <Title>{appName}</Title>
-          </Body>
-          <Right>
-            <Button transparent>
-              <Icon name="menu" />
-            </Button>
-          </Right>
-        </Header>
         <Content>
           <Agenda
             style={{ height: Dimensions.get('window').height - AGENDA_HEADER_HEIGHT }}

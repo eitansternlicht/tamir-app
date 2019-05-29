@@ -1,6 +1,5 @@
 import React from 'react';
-import { Container, Fab } from 'native-base';
-import MDIcon from 'react-native-vector-icons/MaterialIcons';
+import { Container, Fab, Icon } from 'native-base';
 import { StudentDetails } from '../components';
 import { getStudentName } from '../utils/student-utils';
 
@@ -15,7 +14,7 @@ class StudentDetailsScene extends React.PureComponent {
     return (
       <Container>
         <Fab active style={{ backgroundColor: '#5067FF' }} position="bottomLeft">
-          <MDIcon name="edit" />
+          <Icon name="edit" type="MaterialIcons" />
         </Fab>
         <StudentDetails student={this.props.navigation.state.params.student} />
       </Container>

@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React from 'react';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import {
@@ -33,5 +32,9 @@ const AppContainer = createAppContainer(
 );
 
 const App = () => <AppContainer />;
+
+import Navigator from './Navigator';
+
+const App = () => <Navigator />;
 
 export default App;

@@ -1,40 +1,41 @@
 import React from 'react';
-import { Container, Tabs, Tab, Spinner } from 'native-base';
+import { Container, Tabs, Tab, Button, Icon } from 'native-base';
 import { appName } from '../../app.json';
-import { AttendanceTab, StudentsTab } from './scenesections';
-import { initFirebase, getDB } from '../utils/firebase-utils';
+import { AttendanceTabScene, StudentsTabScene } from '.';
 
 class MainScene extends React.PureComponent {
-  static navigationOptions = {
-    title: appName
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: appName,
+      headerLeft: null,
+      headerRight: (
+        <Button transparent onPress={() => navigation.openDrawer()}>
+          <Icon name="menu" />
+        </Button>
+      )
+    };
   };
-
-  constructor(props) {
-    super(props);
-    this.state = { loading: true };
-    initFirebase();
-    getDB().then(db => {
-      this.setState({ db, loading: false });
-    });
-  }
 
   render() {
     return (
       <Container>
-        {this.state.loading ? (
-          <Spinner />
-        ) : (
-          <Tabs>
-            <Tab heading="חניכים">
-              <StudentsTab db={this.state.db} navigation={this.props.navigation} />
-            </Tab>
-            <Tab heading="נוכחות">
-              <AttendanceTab db={this.state.db} navigation={this.props.navigation} />
-            </Tab>
-          </Tabs>
-        )}
+        <Tabs>
+          <Tab heading="חניכים">
+            <StudentsTabScene
+              navigation={this.props.navigation}
+              db={this.props.navigation.state.params.db}
+            />
+          </Tab>
+          <Tab heading="נוכחות">
+            <AttendanceTabScene
+              navigation={this.props.navigation}
+              db={this.props.navigation.state.params.db}
+            />
+          </Tab>
+        </Tabs>
       </Container>
     );
   }
 }
-export { MainScene };
+
+export default MainScene;
