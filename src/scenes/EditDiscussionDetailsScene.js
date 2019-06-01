@@ -30,11 +30,7 @@ class EditDiscussionDetailsScene extends Component {
       <Container>
         <Content padder>
           <Text style={styles.titleName}>{this.props.navigation.state.params.title}</Text>
-          <Body
-            style={{
-              textAlign: right,
-              marginLeft: 'auto'
-            }}>
+          <Body style={styles.messageBox}>
             <TouchableOpacity
               onPress={() =>
                 this.props.navigation.push('ChooseStudentScene', {
@@ -73,16 +69,8 @@ class EditDiscussionDetailsScene extends Component {
                 console.log('No Student was Picked! This WILL BE a dialog');
               }
             }}
-            style={{ justifyContent: 'center', alignItems: 'center', marginBottom: 150 }}>
-            <Text
-              style={{
-                fontSize: 30,
-                textAlign: 'center',
-                paddingHorizontal: 20,
-                color: 'white'
-              }}>
-              שמור
-            </Text>
+            style={styles.afterSubmit}>
+            <Text style={styles.messageTextDysplay}>שמור</Text>
           </Button>
         </Footer>
       </Container>
@@ -123,6 +111,24 @@ const styles = StyleSheet.create({
   },
   spaceAtTheEnd: {
     height: 100
+  },
+
+  messageBox: {
+    textAlign: right,
+    marginLeft: 'auto'
+  },
+
+  afterSubmit: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 150
+  },
+
+  messageTextDysplay: {
+    fontSize: 30,
+    textAlign: 'center',
+    paddingHorizontal: 20,
+    color: 'white'
   }
 });
 

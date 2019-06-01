@@ -89,15 +89,7 @@ class GroupActivityDetailsScene extends Component {
         </Content>
         <Footer>
           <Button style={[button, { justifyContent: 'center' }]}>
-            <Text
-              style={{
-                fontSize: 30,
-                textAlign: 'center',
-                paddingHorizontal: 20,
-                color: 'white'
-              }}>
-              שמור
-            </Text>
+            <Text style={styles.textStyle}>שמור</Text>
           </Button>
         </Footer>
       </Container>
@@ -121,6 +113,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     paddingTop: 5
+  },
+
+  textStyle: {
+    fontSize: 30,
+    textAlign: 'center',
+    paddingHorizontal: 20,
+    color: 'white'
   }
 });
 

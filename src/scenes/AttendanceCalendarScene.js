@@ -79,27 +79,10 @@ class AttendanceCalendarScene extends Component {
 
   renderAddNewItem = () => {
     return (
-      <Container
-        style={{
-          flexDirection: 'column',
-          alignItems: 'flex-end',
-          height: 100,
-          backgroundColor: 'rgba(0, 0, 0, 0)',
-          borderBottomColor: '#BDC0C9',
-          borderBottomWidth: 1
-        }}>
-        <Icon
-          type="MaterialIcons"
-          name="add-circle-outline"
-          style={{ paddingTop: 35, paddingRight: 20, color: '#9EA1A8' }}
-        />
-        <Container
-          style={{
-            borderBottomColor: 'black',
-            borderBottomWidth: 3
-          }}
-        />
-        <Divider style={{ backgroundColor: 'blue', height: 4 }} />
+      <Container style={styles.containerAddNewItem}>
+        <Icon type="MaterialIcons" name="add-circle-outline" style={styles.iconAddItem} />
+        <Container style={styles.insideContainerAddNewItem} />
+        <Divider style={styles.dividerAddNewItem} />
       </Container>
     );
   };
@@ -130,7 +113,7 @@ class AttendanceCalendarScene extends Component {
       <Container>
         <Content>
           <Agenda
-            style={{ height: Dimensions.get('window').height - AGENDA_HEADER_HEIGHT }}
+            style={styles.agenda}
             items={this.state.items}
             loadItemsForMonth={this.loadItems}
             selected="2019-04-09"
@@ -159,6 +142,35 @@ const styles = StyleSheet.create({
     height: 15,
     flex: 1,
     paddingTop: 30
+  },
+
+  iconAddItem: {
+    paddingTop: 35,
+    paddingRight: 20,
+    color: '#9EA1A8'
+  },
+
+  containerAddNewItem: {
+    flexDirection: 'column',
+    alignItems: 'flex-end',
+    height: 100,
+    backgroundColor: 'rgba(0, 0, 0, 0)',
+    borderBottomColor: '#BDC0C9',
+    borderBottomWidth: 1
+  },
+
+  insideContainerAddNewItem: {
+    borderBottomColor: 'black',
+    borderBottomWidth: 3
+  },
+
+  dividerAddNewItem: {
+    backgroundColor: 'blue',
+    height: 4
+  },
+
+  agenda: {
+    height: Dimensions.get('window').height - AGENDA_HEADER_HEIGHT
   }
 });
 
