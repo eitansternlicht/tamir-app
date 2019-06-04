@@ -1591,6 +1591,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.tamir.tamirapp;
 				PRODUCT_NAME = TamirApp;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=*]" = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
