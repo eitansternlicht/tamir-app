@@ -19,4 +19,10 @@ const getDaysInMonth = ({ year, month }) => {
   return days;
 };
 
-export { formatDate, toClockTime, toClockRange, getDaysInMonth };
+const getDaysCountInMonth = date => new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+
+const removeTime = date => {
+  return new Date(date.setHours(0, 0, 0, 0));
+};
+
+export { removeTime, formatDate, toClockTime, toClockRange, getDaysInMonth, getDaysCountInMonth };
