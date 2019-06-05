@@ -11,8 +11,8 @@ import {
   Spinner,
   Text
 } from 'native-base';
-import { initNativeFirebase, getDB } from '../utils/firebase-utils';
-import { ignoreFirebaseLoadingWarnings } from '../utils/react-native-utils';
+import { firebase } from '../utils/firebase/firebase-db';
+import { ignoreFirebaseLoadingWarnings } from '../utils/firebase/react-native-utils';
 
 const INITIAL_STATE = { loading: false, code: '' };
 
@@ -37,18 +37,16 @@ class SmsCodeConfirmScene extends React.Component {
           <Button
             style={styles.buttonOneStyle}
             onPress={() => {
-              console.log('phone', this.props.navigation.state.params.phone);
+              const { phone } = this.props.navigation.state.params;
               this.setState({ loading: true });
               ignoreFirebaseLoadingWarnings();
-              initNativeFirebase().then(() => {
-                // signIn().then(
-                const signedIn = true;
-                if (signedIn) {
-                  getDB().then(db => {
-                    this.props.navigation.navigate('MainScene', { db });
-                  });
-                }
-              });
+              // TODO change to real phone auth
+              firebase
+                .auth()
+                .signInWithEmailAndPassword('pass123456@test.com', '123456')
+                .then(() => {
+                  console.log('signed in with uid', firebase.auth().currentUser.uid);
+                });
             }}>
             {this.state.loading ? <Spinner /> : <Text style={styles.textStyle}>Confirm</Text>}
           </Button>
