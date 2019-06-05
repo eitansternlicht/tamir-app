@@ -1,27 +1,47 @@
 import React from 'react';
+import { Button } from 'react-native';
 import { StudentForm } from '../components';
 import { stripNonPermittedFields, formattedStudentToStudent } from '../utils/student/student-utils';
 import { updateDoc } from '../utils/firebase/firebase-db';
 
-const EditStudentDetailsScene = props => (
-  <StudentForm
-    onSubmit={newStudent => {
-      updateDoc(
-        'Students',
-        newStudent.studentUID,
-        formattedStudentToStudent(stripNonPermittedFields(newStudent))
-      );
-      console.log(
-        `updating Students collection doc: ${newStudent.studentUID}, to`,
-        newStudent,
-        'stripped',
-        formattedStudentToStudent(stripNonPermittedFields(newStudent))
-      );
-      console.log('navigating to MainScene');
-      props.navigation.navigate('MainScene');
-    }}
-    student={props.navigation.state.params.student}
-  />
-);
+class EditStudentDetailsScene extends React.PureComponent {
+  static navigationOptions = ({ navigation }) => {
+    return {
+      headerRight: (
+        <Button
+          onPress={() =>
+            navigation.navigate('EditStudentDetailsScene', {
+              student: navigation.state.params.student
+            })
+          }
+          title="שמור"
+        />
+      )
+    };
+  };
+
+  render() {
+    return (
+      <StudentForm
+        onSubmit={newStudent => {
+          updateDoc(
+            'Students',
+            newStudent.studentUID,
+            formattedStudentToStudent(stripNonPermittedFields(newStudent))
+          );
+          console.log(
+            `updating Students collection doc: ${newStudent.studentUID}, to`,
+            newStudent,
+            'stripped',
+            formattedStudentToStudent(stripNonPermittedFields(newStudent))
+          );
+          console.log('navigating to MainScene');
+          this.props.navigation.navigate('MainScene');
+        }}
+        student={this.props.navigation.state.params.student}
+      />
+    );
+  }
+}
 
 export { EditStudentDetailsScene };

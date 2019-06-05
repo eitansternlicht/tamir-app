@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React from 'react';
 import { StyleSheet, FlatList, View, TouchableOpacity } from 'react-native';
 import { Icon, Item, Input, Text, Button, Footer } from 'native-base';
@@ -45,7 +46,7 @@ class FilterableList extends React.Component {
   }
 
   render() {
-    const { withCategories, multiselect, onPress } = this.props;
+    const { withCategories, multiselect, onPress, editableCategories } = this.props;
     return (
       <View style={{ flex: 1 }}>
         <Item>
@@ -94,6 +95,26 @@ class FilterableList extends React.Component {
                     style={[{ fontSize: 40 }, !item.selected && { display: 'none' }]}
                   />
                 </TouchableOpacity>
+              ) : editableCategories ? (
+                <View
+                  style={{
+                    flexDirection: 'row-reverse',
+                    justifyContent: 'space-between',
+                    padding: 5,
+                    paddingLeft: 10,
+                    backgroundColor: '#f6f6f6',
+                    alignItems: 'center'
+                  }}>
+                  <Text style={{ textAlign: right, fontSize: 25, color: '#666666' }}>
+                    {item.categoryName}
+                  </Text>
+                  <Button
+                    transparent
+                    icon
+                    onPress={() => this.props.onAddToCategory(item.groupUID)}>
+                    <Icon type="Entypo" name="plus" />
+                  </Button>
+                </View>
               ) : (
                 <Text style={styles.groupName}>{item.categoryName}</Text>
               )}

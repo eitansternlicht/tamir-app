@@ -34,7 +34,10 @@ const MainStack = createStackNavigator(
       screen: StudentDetailsScene
     },
     EditStudentDetailsScene: {
-      screen: EditStudentDetailsScene
+      screen: EditStudentDetailsScene,
+      navigationOptions: {
+        title: 'עריכת חניך'
+      }
     },
     ManageGroupsScene: {
       screen: ManageGroupsScene
@@ -52,7 +55,10 @@ const MainStack = createStackNavigator(
       }
     },
     ChooseStudentScene: {
-      screen: ChooseStudentScene
+      screen: ChooseStudentScene,
+      navigationOptions: {
+        title: 'בחירת חניך'
+      }
     },
     GroupActivityDetailsScene: {
       screen: GroupActivityDetailsScene,

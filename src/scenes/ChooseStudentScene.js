@@ -3,10 +3,6 @@ import { Container } from 'native-base';
 import { FilterableList } from '../components';
 
 class ChooseStudentScene extends React.PureComponent {
-  static navigationOptions = {
-    title: 'בחירת חניך'
-  };
-
   render() {
     return (
       <Container>

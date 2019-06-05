@@ -84,14 +84,18 @@ const StudentForm = props => {
       }}>
       {_props => (
         <Container>
-          <ScrollView>
+          <ScrollView style={{ paddingRight: 10 }}>
             {studentToOrderedFieldsAndValues(_props.values).map(toInput(_props))}
+            <Button danger iconRight onPress={_props.handleSubmit} style={styles.deleteButton}>
+              <Text>מחק חניך</Text>
+              <Icon name="trash" />
+            </Button>
           </ScrollView>
-          <Footer>
+          {/* <Footer>
             <Button onPress={_props.handleSubmit}>
               <Text>שמור</Text>
             </Button>
-          </Footer>
+          </Footer> */}
         </Container>
       )}
     </Formik>
@@ -99,14 +103,22 @@ const StudentForm = props => {
 };
 
 const styles = StyleSheet.create({
+  deleteButton: {
+    alignSelf: 'flex-end',
+    marginBottom: 70,
+    marginTop: 15
+  },
   formLabel: {
+    marginRight: 15,
+    paddingRight: 15,
     textAlign: right
   },
   formItem: {
-    paddingRight: 10,
+    marginRight: 15,
     textAlign: right
   },
   fieldItem: {
+    marginRight: 15,
     flexDirection: 'row-reverse'
   }
 });

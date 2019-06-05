@@ -73,7 +73,9 @@ const filterBy = (searchText, fields, data) =>
     )
     .filter(
       (elem, i, arr) =>
-        !elem.categoryName || (arr[i + 1] && arr[i + 1].groupName === elem.categoryName)
+        searchText === '' ||
+        !elem.categoryName ||
+        (arr[i + 1] && arr[i + 1].groupName === elem.categoryName)
     );
 
 const getUniqueKey = withCategories => elem => {

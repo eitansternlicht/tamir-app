@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Content, Icon, Text, List, ListItem } from 'native-base';
+import { Container, Content, Icon, Text, List, ListItem, Button } from 'native-base';
 import { Agenda } from 'react-native-calendars';
 import { StyleSheet, Dimensions } from 'react-native';
 import { Divider } from 'react-native-elements';
@@ -50,10 +50,6 @@ const INITIAL_STATE = {
   }
 };
 class AttendanceCalendarScene extends Component {
-  static navigationOptions = {
-    title: 'עריכת נוכחות'
-  };
-
   constructor(props) {
     super(props);
     this.loadItems = this.loadItems.bind(this);
@@ -61,6 +57,7 @@ class AttendanceCalendarScene extends Component {
   }
 
   loadItems(month) {
+    console.log('eitan loading for month', month);
     // TODO refactor, make better
     if (new Date().getTime() >= month.timestamp) {
       // in the past!
@@ -80,8 +77,10 @@ class AttendanceCalendarScene extends Component {
   renderAddNewItem = () => {
     return (
       <Container style={styles.containerAddNewItem}>
-        <Icon type="MaterialIcons" name="add-circle-outline" style={styles.iconAddItem} />
-        <Container style={styles.insideContainerAddNewItem} />
+        <Button transparent iconRight style={{ alignSelf: 'flex-end', paddingTop: 10 }}>
+          <Text>הוספת משמרת</Text>
+          <Icon type="MaterialIcons" name="add-circle" />
+        </Button>
         <Divider style={styles.dividerAddNewItem} />
       </Container>
     );
