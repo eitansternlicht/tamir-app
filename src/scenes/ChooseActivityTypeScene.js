@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { Icon } from 'native-base';
 import { right } from '../utils/style-utils';
+import { getStudentName } from '../utils/student/student-utils';
 
 const groups = [
   { categoryName: 'פעילות קבוצתית' },
@@ -44,17 +45,28 @@ class ChooseActivityTypeScene extends React.Component {
             {!categoryName ? (
               <TouchableOpacity
                 onPress={() => {
+                  const { db } = this.props.navigation.state.params;
                   if (groupName === 'שיחה אישית') {
                     this.props.navigation.navigate('EditDiscussionDetailsScene', {
                       groupName,
-                      title,
-                      db: this.props.navigation.state.params.db
+                      subtype: title,
+                      db
                     });
                   } else if (groupName === 'פעילות קבוצתית') {
                     this.props.navigation.navigate('GroupActivityDetailsScene', {
-                      groupName,
-                      title,
-                      db: this.props.navigation.state.params.db
+                      subtype: title,
+                      groups: Object.keys(db.Groups).map(groupUID => ({
+                        uid: groupUID,
+                        groupName: db.Groups[groupUID].name,
+                        attended: false,
+                        participants: Object.keys(db.Groups[groupUID].participants).map(
+                          studentUID => ({
+                            uid: studentUID,
+                            attended: false,
+                            fullName: getStudentName(db.Students[studentUID])
+                          })
+                        )
+                      }))
                     });
                   } else {
                     // TODO

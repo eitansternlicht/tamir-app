@@ -1,7 +1,7 @@
 import React from 'react';
-import { Container, Fab, Icon } from 'native-base';
+import { Container, Content, Fab, Icon } from 'native-base';
 import { StudentDetails } from '../components';
-import { getStudentName } from '../utils/student-utils';
+import { getStudentName } from '../utils/student/student-utils';
 
 class StudentDetailsScene extends React.PureComponent {
   static navigationOptions = ({ navigation }) => {
@@ -13,10 +13,19 @@ class StudentDetailsScene extends React.PureComponent {
   render() {
     return (
       <Container>
-        <Fab active style={{ backgroundColor: '#5067FF' }} position="bottomLeft">
+        <Content>
+          <StudentDetails student={this.props.navigation.state.params.student} />
+        </Content>
+        <Fab
+          onPress={() => {
+            this.props.navigation.navigate('EditStudentDetailsScene', {
+              student: this.props.navigation.state.params.student
+            });
+          }}
+          style={{ backgroundColor: '#5067FF' }}
+          position="bottomLeft">
           <Icon name="edit" type="MaterialIcons" />
         </Fab>
-        <StudentDetails student={this.props.navigation.state.params.student} />
       </Container>
     );
   }

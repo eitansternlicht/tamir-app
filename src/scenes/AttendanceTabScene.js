@@ -1,185 +1,133 @@
 import React from 'react';
-import { StyleSheet, FlatList, TouchableOpacity, View } from 'react-native';
-import { Button, Text, Icon } from 'native-base';
-import DateTimePicker from 'react-native-modal-datetime-picker';
+import { StyleSheet, View } from 'react-native';
+import { Button, Text, Icon, Content, Container, Footer, Spinner } from 'native-base';
 import { NavigationEvents } from 'react-navigation';
-import { toClockTime } from '../utils/date-utils';
-import { right } from '../utils/style-utils';
-import { getStudentName } from '../utils/student-utils';
 import { addToEndIfDoesntExistAtEnd } from '../utils/general-utils';
+import { removeTime } from '../utils/date-utils';
+import { firebase } from '../utils/firebase/firebase-db';
 
+import { ShiftEditor } from '../components';
+
+const INITIAL_STATE = {
+  activities: [],
+  startTime: null,
+  endTime: null,
+  saveLoading: false
+};
 class AttendanceTabScene extends React.Component {
   constructor(props) {
     super(props);
-    this.showStartTimePicker = this.showStartTimePicker.bind(this);
-    this.showEndTimePicker = this.showEndTimePicker.bind(this);
-    this.hideEndTimePicker = this.hideEndTimePicker.bind(this);
-    this.hideStartTimePicker = this.hideStartTimePicker.bind(this);
+    this.state = INITIAL_STATE;
     this.handleStartTimePicked = this.handleStartTimePicked.bind(this);
     this.handleEndTimePicked = this.handleEndTimePicked.bind(this);
-    this.state = {
-      activities: [],
-      startTime: null,
-      endTime: null,
-      startTimePickerOpen: false,
-      endTimePickerOpen: false
-    };
-    console.log(props.navigation.state.params);
+    this.onSave = this.onSave.bind(this);
+    this.resetState = this.resetState.bind(this);
   }
 
-  showStartTimePicker() {
-    this.setState({ startTimePickerOpen: true });
+  onSave() {
+    const { startTime, endTime, activities } = this.state;
+    const attendanceDays = this.props.db.AttendanceDays;
+    if (Object.keys(attendanceDays).length !== 0) {
+      // exists, therefore update
+      const [attendanceDayUID, attendanceDay] = Object.keys(attendanceDays).map(key => [
+        key,
+        attendanceDays[key]
+      ])[0];
+      attendanceDay.shifts.push({ startTime, endTime, activities });
+      this.setState({ saveLoading: true });
+      firebase
+        .firestore()
+        .collection('AttendanceDays')
+        .doc(attendanceDayUID)
+        .set(attendanceDay, { merge: true })
+        .then(() => {
+          console.log('Document successfully updated!', attendanceDayUID);
+          this.resetState();
+        });
+    } else {
+      // create new
+      const attendanceDay = {
+        owners: { tutors: [firebase.auth().currentUser.uid] },
+        day: removeTime(new Date()), // TODO
+        shifts: [
+          {
+            startTime,
+            endTime,
+            activities
+          }
+        ]
+      };
+      this.setState({ saveLoading: true });
+      firebase
+        .firestore()
+        .collection('AttendanceDays')
+        .add(attendanceDay)
+        .then(ref => {
+          console.log('Document successfully created!', ref.id);
+          this.resetState();
+        });
+    }
   }
 
-  showEndTimePicker() {
-    this.setState({ endTimePickerOpen: true });
-  }
-
-  hideStartTimePicker() {
-    this.setState({ startTimePickerOpen: false });
-  }
-
-  hideEndTimePicker() {
-    this.setState({ endTimePickerOpen: false });
+  resetState() {
+    this.setState(INITIAL_STATE);
   }
 
   handleStartTimePicked(time) {
-    this.setState({ startTime: time, startTimePickerOpen: false });
+    this.setState({ startTime: time });
   }
 
   handleEndTimePicked(time) {
-    this.setState({ endTime: time, endTimePickerOpen: false });
-  }
-
-  renderTime({ startTime, endTime }) {
-    const time = startTime || endTime;
-    if (time) {
-      return (
-        <TouchableOpacity
-          style={{ flexDirection: 'row' }}
-          onPress={startTime ? this.showStartTimePicker : this.showEndTimePicker}>
-          <Icon
-            name="create"
-            style={{ fontSize: 20, color: 'blue', paddingTop: 5, paddingRight: 5 }}
-          />
-          <Text style={styles.time}>{toClockTime(time)}</Text>
-        </TouchableOpacity>
-      );
-    }
-    return <Text style={styles.time}>{toClockTime(time)}</Text>;
+    this.setState({ endTime: time });
   }
 
   render() {
+    const { navigation, db } = this.props;
     return (
-      <View style={styles.container}>
-        <NavigationEvents
-          onDidFocus={payload => {
-            if (payload.state.params && payload.state.params.newActivity)
-              this.setState(state => ({
-                activities: addToEndIfDoesntExistAtEnd(
-                  payload.state.params.newActivity,
-                  state.activities
-                )
-              }));
-          }}
-        />
-        <View style={styles.section}>
-          <Button onPress={() => this.props.navigation.navigate('AttendanceCalendarScene')}>
-            <Icon name="calendar" />
-            <Text>נוכחות קודמת</Text>
-          </Button>
-        </View>
-        <View style={styles.section}>
-          {this.renderTime({ startTime: this.state.startTime })}
-          <Button onPress={() => this.setState({ startTime: new Date() })}>
-            <Text>כניסה</Text>
-          </Button>
-        </View>
-        <View style={styles.section}>
-          {this.renderTime({ endTime: this.state.endTime })}
-          <Button
-            onPress={() => {
-              this.setState({ endTime: new Date() });
-              this.props.navigation.navigate('ChooseActivityTypeScene', {
-                db: this.props.navigation.state.params.db
-              });
-            }}>
-            <Text>יציאה</Text>
-          </Button>
-        </View>
+      <Container style={{ padding: 10 }}>
+        <Content>
+          <View style={[styles.section, { marginBottom: 30 }]}>
+            <Button onPress={() => navigation.navigate('AttendanceCalendarScene')}>
+              <Icon name="calendar" />
+              <Text>נוכחות קודמת</Text>
+            </Button>
+          </View>
+          <ShiftEditor
+            startTime={this.state.startTime}
+            endTime={this.state.endTime}
+            activities={this.state.activities}
+            onPressAddActivity={() => navigation.navigate('ChooseActivityTypeScene', { db })}
+            handleStartTimePicked={this.handleStartTimePicked}
+            handleEndTimePicked={this.handleEndTimePicked}
+          />
+          <NavigationEvents
+            onDidFocus={payload => {
+              if (payload.state.params && payload.state.params.newActivity)
+                this.setState(prevState => ({
+                  activities: addToEndIfDoesntExistAtEnd(
+                    payload.state.params.newActivity,
+                    prevState.activities
+                  )
+                }));
+            }}
+          />
+        </Content>
 
-        <View style={styles.section}>
-          <Text style={styles.activities}>פעילויות</Text>
-          <Icon name="arrow-dropdown" />
-        </View>
-        <FlatList
-          data={this.state.activities}
-          keyExtractor={item => JSON.stringify(item)}
-          renderItem={({ item }) => (
-            <Text style={styles.activityListItem}>
-              {item.discussion
-                ? `שיחה אישית - ${item.discussion.type} עם: ${getStudentName(
-                    item.discussion.student
-                  )}`
-                : 'TODO'}
-            </Text>
-          )}
-        />
-        <TouchableOpacity
-          onPress={() =>
-            this.props.navigation.navigate('ChooseActivityTypeScene', { db: this.props.db })
-          }
-          style={styles.section}>
-          <Text style={styles.activities}>הוסף פעילות</Text>
-          <Icon type="MaterialIcons" name="add-circle-outline" />
-        </TouchableOpacity>
-
-        <View style={[styles.section, { justifyContent: 'center' }]}>
-          <Button>
-            <Text>שמור</Text>
+        <Footer>
+          <Button onPress={this.onSave}>
+            {this.state.saveLoading ? <Spinner /> : <Text>שמור</Text>}
           </Button>
-        </View>
-        <DateTimePicker
-          mode="time"
-          isVisible={this.state.startTimePickerOpen}
-          onConfirm={this.handleStartTimePicked}
-          onCancel={this.hideStartTimePicker}
-        />
-        <DateTimePicker
-          mode="time"
-          isVisible={this.state.endTimePickerOpen}
-          onConfirm={this.handleEndTimePicked}
-          onCancel={this.hideEndTimePicker}
-        />
-      </View>
+        </Footer>
+      </Container>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    padding: 10
-  },
   section: {
-    flex: 4,
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    paddingTop: 5
-  },
-  time: {
-    padding: 5,
-    paddingRight: 50,
-    color: 'blue'
-  },
-  activities: {
-    textAlign: right,
-    paddingRight: 10,
-    fontSize: 18
-  },
-  activityListItem: {
-    textAlign: right
+    paddingBottom: 15
   }
 });
 

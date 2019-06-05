@@ -1,121 +1,50 @@
-import firebase from 'firebase/app';
-import 'firebase/firestore';
-
 import React from 'react';
-import { View, FlatList, StyleSheet } from 'react-native';
-import update from 'immutability-helper';
-import {
-  Container,
-  Header,
-  Title,
-  Left,
-  Right,
-  Body,
-  Icon,
-  Button,
-  Text,
-  Footer,
-  CheckBox
-} from 'native-base';
+import { View, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { Container, Left, Button, Text, Footer, CheckBox } from 'native-base';
 import { right } from '../utils/style-utils';
 
-const INITIAL_STATE = {
-  participants: [],
-  allSelected: false,
-  loading: true
-};
-
 class GroupParticipantsAttendanceScene extends React.Component {
+  static navigationOptions = ({ navigation }) => {
+    const { groups, index } = navigation.state.params;
+    return {
+      title: `נוכחות ${groups[index].groupName}`
+    };
+  };
+
   constructor(props) {
     super(props);
-    const { selectedGroupID, activityID } = props;
     this.selectAll = this.selectAll.bind(this);
     this.onPressCheckboxOnListItem = this.onPressCheckboxOnListItem.bind(this);
-    this.state = INITIAL_STATE;
-    const db = firebase.firestore();
-    db.collection('Activities')
-      .doc(activityID)
-      .get()
-      .then(doc => {
-        this.setState({
-          participants: doc
-            .data()
-            .groups.filter(({ groupID }) => selectedGroupID === groupID.id)[0]
-            .participants.map(p => ({ ...p, studentID: p.studentID.id }))
-        });
-      })
-      .catch(error => {
-        console.log('Error getting documents: ', error);
-      });
+    this.state = {
+      groups: JSON.parse(JSON.stringify(this.props.navigation.state.params.groups)),
+      allSelected: false
+    };
   }
 
-  onPressCheckboxOnListItem(item) {
-    const { participants, allSelected } = this.state;
-    this.setState({
-      participants: update(participants, {
-        [participants.indexOf(item)]: {
-          arrived: { $set: !item.arrived }
-        }
-      }),
-      allSelected: item.arrived && allSelected ? !allSelected : allSelected
+  onPressCheckboxOnListItem(participant, itemIndex) {
+    const { index } = this.props.navigation.state.params;
+    this.setState(prevState => {
+      const nextState = { ...prevState };
+      nextState.groups[index].participants[itemIndex].attended = !participant.attended;
+      if (participant.attended && prevState.allSelected) nextState.allSelected = false;
+      return nextState;
     });
   }
 
   selectAll() {
-    const { participants, allSelected } = this.state;
-    this.setState({
-      participants: participants.map(p => ({
-        ...p,
-        arrived: !allSelected
-      })),
-      allSelected: !allSelected
+    const { index } = this.props.navigation.state.params;
+    this.setState(prevState => {
+      const nextState = { ...prevState };
+      for (let i = 0; i < prevState.groups[index].participants.length; i += 1)
+        nextState.groups[index].participants[i].attended = !prevState.allSelected;
+      nextState.allSelected = !prevState.allSelected;
+      return nextState;
     });
-  }
-
-  renderCheckMarks({ sid: _sid }) {
-    return this.state.previousActivities
-      .map(({ startTime, participantsAttended }) => ({
-        startTime,
-        arrived:
-          participantsAttended.filter(({ sid, arrived }) => sid === _sid && arrived).length !== 0
-      }))
-      .map(({ startTime, arrived }) =>
-        arrived ? (
-          <Icon
-            type="Entypo"
-            key={startTime.toJSON()}
-            name="check"
-            style={styles.previousAttendanceIcons}
-          />
-        ) : (
-          <Icon
-            type="Entypo"
-            key={startTime.toJSON()}
-            name="minus"
-            style={styles.previousAttendanceIcons}
-          />
-        )
-      );
   }
 
   render() {
     return (
       <Container>
-        <Header>
-          <Left>
-            <Button transparent>
-              <Icon name="arrow-back" />
-            </Button>
-          </Left>
-          <Body>
-            <Title>bla</Title>
-          </Body>
-          <Right>
-            <Button transparent>
-              <Icon name="menu" />
-            </Button>
-          </Right>
-        </Header>
         <View style={{ flex: 1, flexDirection: 'column' }}>
           <View
             style={{
@@ -153,22 +82,14 @@ class GroupParticipantsAttendanceScene extends React.Component {
               }}>
               שם החניך
             </Text>
-            <Text
-              style={{
-                flex: 3,
-                fontWeight: 'bold',
-                alignSelf: 'center',
-                textAlign: 'center'
-              }}>
-              נוכחות בפעילויות הקודמות
-            </Text>
           </View>
           <FlatList
-            // extraData={this.state}
-            data={this.state.participants}
-            keyExtractor={participant => participant.studentID}
-            renderItem={({ item }) => (
-              <View
+            extraData={this.state}
+            data={this.state.groups[this.props.navigation.state.params.index].participants}
+            keyExtractor={participant => participant.uid}
+            renderItem={({ item, index }) => (
+              <TouchableOpacity
+                onPress={() => this.onPressCheckboxOnListItem(item, index)}
                 style={{
                   flexDirection: 'row-reverse',
                   borderBottomWidth: 1,
@@ -177,8 +98,8 @@ class GroupParticipantsAttendanceScene extends React.Component {
                 }}>
                 <View style={{ alignItems: 'center', marginRight: 17 }}>
                   <CheckBox
-                    checked={item.arrived}
-                    onPress={() => this.onPressCheckboxOnListItem(item)}
+                    checked={item.attended}
+                    onPress={() => this.onPressCheckboxOnListItem(item, index)}
                   />
                 </View>
                 <Text
@@ -190,23 +111,21 @@ class GroupParticipantsAttendanceScene extends React.Component {
                     paddingTop: 20,
                     paddingBottom: 20
                   }}>
-                  {item.studentID}
+                  {item.fullName}
                 </Text>
-                {/* <ScrollView
-                  horizontal
-                  style={{
-                    flex: 3,
-                    flexDirection: 'row-reverse'
-                  }}>
-                  {this.renderCheckMarks(item)}
-                </ScrollView> */}
-              </View>
+              </TouchableOpacity>
             )}
           />
         </View>
         <Footer>
           <Left>
-            <Button style={{ alignSelf: 'flex-start', marginLeft: 10 }}>
+            <Button
+              style={{ alignSelf: 'flex-start', marginLeft: 10 }}
+              onPress={() => {
+                const groups = [...this.state.groups];
+                groups[this.props.navigation.state.params.index].attended = true;
+                this.props.navigation.navigate('GroupActivityDetailsScene', { groups });
+              }}>
               <Text>שמור</Text>
             </Button>
           </Left>
