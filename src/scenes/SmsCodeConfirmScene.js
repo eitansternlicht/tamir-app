@@ -46,6 +46,7 @@ class SmsCodeConfirmScene extends React.Component {
                 .signInWithEmailAndPassword('pass123456@test.com', '123456')
                 .then(() => {
                   console.log('signed in with uid', firebase.auth().currentUser.uid);
+                  this.props.navigation.navigate('MainScene');
                 });
             }}>
             {this.state.loading ? <Spinner /> : <Text style={styles.textStyle}>Confirm</Text>}
