@@ -1,14 +1,14 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { Content } from 'native-base';
-import { studentToOrderedFieldsAndValues } from '../utils/student-utils';
+import { studentToOrderedFieldsAndValues } from '../utils/student/student-utils';
 import { right } from '../utils/style-utils';
 
-const StudentDetails = props => (
+const StudentDetails = ({ student }) => (
   <Content style={{ flexDirection: 'column' }}>
-    {studentToOrderedFieldsAndValues(props.student).map(({ field, value }) => (
+    {studentToOrderedFieldsAndValues(student).map(({ field, value, label }) => (
       <View key={field} style={{ flexDirection: 'row-reverse' }}>
-        <Text style={styles.fieldName}>{field}</Text>
+        <Text style={styles.fieldName}>{label}</Text>
         <Text style={styles.fieldValues}>{value}</Text>
       </View>
     ))}
