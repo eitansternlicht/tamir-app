@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container } from 'native-base';
-import { Header, FilterableList } from '../components';
+import { FilterableList } from '../components';
 
 const students = {
   studentA_UID: { 'שם פרטי': 'חניך א׳' },
@@ -12,7 +12,7 @@ const students = {
 
 const SelectMultipleStudentsScene = ({ title, actionTitle, onAction }) => (
   <Container>
-    <Header title={title} back />
+    {/* <Header title={title} back /> */}
     <FilterableList data={students} multiselect actionTitle={actionTitle} onAction={onAction} />
   </Container>
 );
