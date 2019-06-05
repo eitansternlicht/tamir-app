@@ -10,6 +10,7 @@ import {
   StudentDetailsScene,
   GroupParticipantsAttendanceScene,
   GroupActivityDetailsScene,
+  EditStudentDetailsScene,
   PotentialStudentsScene,
   SelectMultipleStudentsScene,
   ManageGroupParticipantsScene,

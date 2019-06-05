@@ -10,6 +10,7 @@ export * from './PhoneInputScene';
 export * from './ViewPotentialStudentDetailsScene';
 export * from './ChooseActivityTypeScene';
 export * from './EditDiscussionDetailsScene';
+export * from './EditStudentDetailsScene';
 export * from './SettingsScene';
 export * from './AuthLoadingScene';
 export * from './ManageGroupsScene';
