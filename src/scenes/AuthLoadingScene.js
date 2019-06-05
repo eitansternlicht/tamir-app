@@ -1,21 +1,36 @@
 import React from 'react';
-import { Container, Spinner } from 'native-base';
+import { StyleSheet, View } from 'react-native';
+import { Spinner } from 'native-base';
+import { initNativeFirebase, firebase } from '../utils/firebase/firebase-db';
 
 class AuthLoadingScene extends React.Component {
   constructor(props) {
     super(props);
-    if (!props.loggedIn) {
-      props.navigation.navigate('PhoneInputScene');
-    } else props.navigation.navigate('MainScene'); // WON'T HAPPEN
+    initNativeFirebase().then(() => {
+      const user = firebase.auth().currentUser;
+      if (user) {
+        console.log('signed in', user.uid);
+        props.navigation.navigate('MainScene');
+      } else {
+        console.log('not signed in');
+        props.navigation.navigate('PhoneInputScene');
+      }
+    });
   }
 
   render() {
     return (
-      <Container>
+      <View style={styles.container}>
         <Spinner />
-      </Container>
+      </View>
     );
   }
 }
-
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
+});
 export { AuthLoadingScene };
