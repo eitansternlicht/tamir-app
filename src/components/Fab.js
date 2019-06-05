@@ -12,14 +12,13 @@ class Fab extends React.Component {
   }
 
   render() {
-    const { position, backgroundColor, buttons, mdIcon } = this.props;
+    const { position, backgroundColor, buttons } = this.props;
     return (
       <NBFab
         active={this.state.fabMenuOpen}
         direction="up"
         style={{ backgroundColor }}
         position={position}
-        // eslint-disable-next-line react/no-access-state-in-setstate
         onPress={() =>
           this.setState(state => ({
             fabMenuOpen: !state.fabMenuOpen
