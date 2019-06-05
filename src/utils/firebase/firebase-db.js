@@ -1,8 +1,8 @@
 import { Platform } from 'react-native';
 import rnfirebase from 'react-native-firebase';
-import { entriesToObj, zip } from '../general-utils';
+import { entriesToObj } from '../general-utils';
 import { FIREBASE_APP_NAME, COLLECTIONS, CONFIG_ANDROID, CONFIG_IOS } from './constants';
-
+import { removeTime } from '../date-utils';
 /**
  * This is the variable to use to replace previous firebase web api's
  * */
@@ -57,28 +57,36 @@ const initNativeFirebase = () => firebase.onReady();
 //   const list = await Promise.all(promises);
 //   return entriesToObj(zip(COLLECTIONS, list));
 // };
+const toState = (collection, snapshot, prevState) => {
+  const otherCollections = COLLECTIONS.filter(c => c !== collection);
+  const existAlready = otherCollections.filter(c => prevState[c]);
+  if (otherCollections.length === existAlready.length)
+    return {
+      loadedAll: true,
+      [collection]: entriesToObj(snapshot.docs.map(doc => [doc.id, doc.data()]))
+    };
+  return { [collection]: entriesToObj(snapshot.docs.map(doc => [doc.id, doc.data()])) };
+};
 
 const readDB = (uid, that) => {
   COLLECTIONS.forEach(collection =>
-    firebase
-      .firestore()
-      .collection(collection)
-      .where('owners.tutors', 'array-contains', uid)
-      .onSnapshot(snapshot =>
-        that.setState(prevState => {
-          const otherCollections = COLLECTIONS.filter(c => c !== collection);
-          const existAlready = otherCollections.filter(c => prevState[c]);
-          if (otherCollections.length === existAlready.length)
-            return {
-              loadedAll: true,
-              [collection]: entriesToObj(snapshot.docs.map(doc => [doc.id, doc.data()]))
-            };
-          return { [collection]: entriesToObj(snapshot.docs.map(doc => [doc.id, doc.data()])) };
-        })
-      )
+    collection === 'AttendanceDays'
+      ? firebase
+          .firestore()
+          .collection(collection)
+          .where('owners.tutors', 'array-contains', uid)
+          .where('day', '==', removeTime(new Date()))
+          .onSnapshot(snapshot =>
+            that.setState(prevState => toState(collection, snapshot, prevState))
+          )
+      : firebase
+          .firestore()
+          .collection(collection)
+          .where('owners.tutors', 'array-contains', uid)
+          .onSnapshot(snapshot =>
+            that.setState(prevState => toState(collection, snapshot, prevState))
+          )
   );
-  // const list = await Promise.all(promises);
-  // return entriesToObj(zip(COLLECTIONS, list));
 };
 
 const updateDoc = (collection, uid, obj) =>

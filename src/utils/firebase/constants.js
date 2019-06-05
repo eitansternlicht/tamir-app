@@ -28,6 +28,6 @@ const CONFIG_ANDROID = {
 const FIREBASE_APP_NAME = 'tamirapp';
 
 // collections the we will download from firebase and store in local db
-const COLLECTIONS = ['Groups', 'Students', 'AttendanceDays'];
+const COLLECTIONS = ['Groups', 'Students', 'AttendanceDays', 'Users'];
 
 export { FIREBASE_APP_NAME, COLLECTIONS, CONFIG_ANDROID, CONFIG_IOS };
