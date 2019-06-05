@@ -15,60 +15,32 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const INITIAL_STATE = { comments: '' };
 
-// const groupsAttendance = {
-//   'קבוצה א': [{ attended: true }, { attended: false }, { attended: true }, { attended: true }],
-//   'קבוצה ב': [{ attended: true }, { attended: true }, { attended: true }, { attended: true }],
-//   'קבוצה ג': [{ attended: true }, { attended: false }, { attended: false }, { attended: true }],
-//   'קבוצה ד': [{ attended: false }, { attended: false }, { attended: false }, { attended: false }],
-//   'קבוצה ה': [{ attended: true }, { attended: true }, { attended: false }, { attended: false }]
-// };
-
 class GroupActivityDetailsScene extends Component {
   constructor(props) {
     super(props);
     this.state = INITIAL_STATE;
+    this.onSave = this.onSave.bind(this);
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  renderRow({ groupAttendance, groupName }) {
-    const { groupRow, rowItem } = styles;
-    let attendedCounter;
-    if (groupAttendance)
-      attendedCounter = groupAttendance.filter(({ attended }) => attended).length;
-    else {
-      return (
-        <TouchableOpacity
-          // onPress={}
-          key={groupName}
-          style={groupRow}>
-          <CheckBox style={[rowItem, { marginHorizontal: 10 }]} />
-          <Text style={rowItem}>{groupName}</Text>
-          {/* <Text style={rowItem}>
-            חניכים {attendedCounter}/{groupAttendance.length}
-          </Text> */}
-          {/* <Icon
-            name="create"
-            style={{ fontSize: 20, color: 'blue', paddingTop: 5, paddingRight: 5 }}
-          /> */}
-        </TouchableOpacity>
-      );
-    }
-
-    // return (
-    //   <View key={groupName} style={groupRow}>
-    //     <CheckBox checked style={[rowItem, { marginHorizontal: 10 }]} />
-    //     <Text style={rowItem}>{groupName}</Text>
-    //   </View>
-    // );
+  onSave() {
+    const { subtype, groups } = this.props.navigation.state.params;
+    this.props.navigation.navigate('MainScene', {
+      newActivity: {
+        type: 'פעילות קבוצתית',
+        subtype,
+        comments: this.state.comments,
+        groups
+      }
+    });
   }
 
   render() {
-    const { groupsContainer, button } = styles;
-    const { title, db, groupAttendance } = this.props.navigation.state.params;
+    const { groupsContainer, button, groupRow, rowItem } = styles;
+    const { subtype, groups } = this.props.navigation.state.params;
     return (
       <Container>
         <Content padder>
-          <Title style={{ color: 'black' }}>{title}</Title>
+          <Title style={{ color: 'black' }}>{subtype}</Title>
           <Form style={{ padding: 10 }}>
             <Textarea
               rowSpan={5}
@@ -79,17 +51,51 @@ class GroupActivityDetailsScene extends Component {
             />
           </Form>
           <View style={groupsContainer}>
-            {Object.keys(db.Groups)
-              .map(groupUID => ({
-                groupAttendance,
-                groupName: db.Groups[groupUID].name
-              }))
-              .map(this.renderRow)}
+            {groups.map(({ uid, groupName, attended, participants }, index) => (
+              <View key={uid} style={groupRow}>
+                <TouchableOpacity
+                  onPress={() => {
+                    if (attended) {
+                      groups[index].attended = !groups[index].attended;
+                      for (let i = 0; i < groups[index].participants.length; i += 1)
+                        groups[index].participants[i].attended = false;
+                      this.props.navigation.navigate('GroupActivityDetailsScene', {
+                        subtype,
+                        groups
+                      });
+                    } else {
+                      this.props.navigation.navigate('GroupParticipantsAttendanceScene', {
+                        groups,
+                        index
+                      });
+                    }
+                  }}>
+                  <CheckBox style={[rowItem, { marginHorizontal: 10 }]} checked={attended} />
+                  <Text style={rowItem}>{groupName}</Text>
+                </TouchableOpacity>
+                {attended ? (
+                  <TouchableOpacity style={{ flexDirection: 'row-reverse' }}>
+                    <Text>{groupName}: </Text>
+                    <Text>
+                      חניכים {participants.filter(({ attended }) => attended).length}/
+                      {participants.length}
+                    </Text>
+                    <Icon
+                      name="create"
+                      style={{ fontSize: 20, color: 'blue', paddingTop: 5, paddingRight: 5 }}
+                    />
+                  </TouchableOpacity>
+                ) : (
+                  <View />
+                )}
+              </View>
+            ))}
           </View>
         </Content>
         <Footer>
-          <Button style={[button, { justifyContent: 'center' }]}>
+          <Button style={[button, { justifyContent: 'center' }]} onPress={this.onSave}>
             <Text
+              onPress={this.onSave}
               style={{
                 fontSize: 30,
                 textAlign: 'center',
@@ -115,7 +121,8 @@ const styles = StyleSheet.create({
     padding: 5
   },
   rowItem: {
-    marginRight: 10
+    marginRight: 10,
+    flexDirection: 'row-reverse'
   },
   button: {
     flexDirection: 'row',
