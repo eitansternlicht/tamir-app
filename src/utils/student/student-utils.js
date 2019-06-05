@@ -11,14 +11,14 @@ const toLabel = studentFeild =>
 
 const stripNonPermittedFields = student =>
   entriesToObj(
-    studentToOrderedFieldsAndValues2(student)
+    studentToOrderedFieldsAndValues(student)
       .map(({ field, value }) => [field, value])
       .concat([['owners', student.owners]])
   );
 
 const formattedStudentToStudent = formattedStudent =>
   entriesToObj(
-    studentToOrderedFieldsAndValues2(formattedStudent)
+    studentToOrderedFieldsAndValues(formattedStudent)
       .map(({ field, type, value }) => [
         field,
         type && type.fromFormat ? type.fromFormat(value) : value
@@ -26,7 +26,7 @@ const formattedStudentToStudent = formattedStudent =>
       .concat([['owners', formattedStudent.owners]])
   );
 
-const studentToOrderedFieldsAndValues2 = student =>
+const studentToOrderedFieldsAndValues = student =>
   studentFieldsOrder.map(field => ({
     field,
     label: studentFields[field].label,
@@ -83,7 +83,7 @@ const getUniqueKey = withCategories => elem => {
 };
 
 export {
-  studentToOrderedFieldsAndValues2,
+  studentToOrderedFieldsAndValues,
   getStudentName,
   normalizeData,
   filterBy,
