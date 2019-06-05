@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Container, Content, Textarea, Form, Icon, Button, Body, Footer } from 'native-base';
 import { right } from '../utils/style-utils';
-import { getStudentName } from '../utils/student-utils';
+import { getStudentName } from '../utils/student/student-utils';
 
 const showStudent = student => (
   <Text style={styles.studentName}>
@@ -29,7 +29,7 @@ class EditDiscussionDetailsScene extends Component {
     return (
       <Container>
         <Content padder>
-          <Text style={styles.titleName}>{this.props.navigation.state.params.title}</Text>
+          <Text style={styles.titleName}>{this.props.navigation.state.params.subtype}</Text>
           <Body
             style={{
               textAlign: right,
@@ -61,11 +61,13 @@ class EditDiscussionDetailsScene extends Component {
               if (this.props.navigation.state.params.student) {
                 this.props.navigation.navigate('MainScene', {
                   newActivity: {
-                    discussion: {
-                      type: this.props.navigation.state.params.title,
-                      student: this.props.navigation.state.params.student,
-                      comments: this.state.comments
-                    }
+                    type: 'שיחה אישית',
+                    subtype: this.props.navigation.state.params.subtype,
+                    student: {
+                      uid: this.props.navigation.state.params.student.studentUID,
+                      fullName: getStudentName(this.props.navigation.state.params.student)
+                    },
+                    comments: this.state.comments
                   }
                 });
               } else {
