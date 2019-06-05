@@ -33,6 +33,9 @@ const MainStack = createStackNavigator(
     StudentDetailsScene: {
       screen: StudentDetailsScene
     },
+    EditStudentDetailsScene: {
+      screen: EditStudentDetailsScene
+    },
     ManageGroupsScene: {
       screen: ManageGroupsScene
     },
@@ -48,7 +51,9 @@ const MainStack = createStackNavigator(
         title: 'שיחה אישית'
       }
     },
-    ChooseStudentScene,
+    ChooseStudentScene: {
+      screen: ChooseStudentScene
+    },
     GroupActivityDetailsScene: {
       screen: GroupActivityDetailsScene,
       navigationOptions: {
@@ -61,7 +66,9 @@ const MainStack = createStackNavigator(
         title: 'נוכחות קודמת'
       }
     },
-    EditStudentDetailsScene
+    GroupParticipantsAttendanceScene: {
+      screen: GroupParticipantsAttendanceScene
+    }
   },
   {
     initialRouteName: 'MainScene',
