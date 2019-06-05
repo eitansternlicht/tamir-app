@@ -2,14 +2,21 @@ import React from 'react';
 import { StyleSheet, FlatList, View, TouchableOpacity } from 'react-native';
 import { Icon, Item, Input, Text, Button, Footer } from 'native-base';
 import update from 'immutability-helper';
-import { normalizeData, filterBy, getUniqueKey, getStudentName } from '../utils/student-utils';
+import {
+  normalizeData,
+  filterBy,
+  getUniqueKey,
+  getStudentName
+} from '../utils/student/student-utils';
+import { groupsWithStudentDetails } from '../utils/firebase/local-db';
 import { right } from '../utils/style-utils';
 
 class FilterableList extends React.Component {
   constructor(props) {
     super(props);
-    const { withCategories, data, multiselect } = props;
-    const normalizedData = normalizeData(withCategories, multiselect, data);
+    const { withCategories, data, multiselect } = this.props;
+    const withStudentDetails = withCategories ? groupsWithStudentDetails(data) : data;
+    const normalizedData = normalizeData(withCategories, multiselect, withStudentDetails);
     this.state = {
       searchText: '',
       normalizedData,
@@ -18,16 +25,27 @@ class FilterableList extends React.Component {
     this.onSearch = this.onSearch.bind(this);
   }
 
+  componentWillReceiveProps({ data, withCategories, multiselect }) {
+    if (data !== this.props.data) {
+      const withStudentDetails = withCategories ? groupsWithStudentDetails(data) : data;
+      const normalizedData = normalizeData(withCategories, multiselect, withStudentDetails);
+      this.setState({
+        normalizedData,
+        filteredData: normalizedData
+      });
+    }
+  }
+
   onSearch(searchText) {
     const { normalizedData } = this.state;
     this.setState({
       searchText,
-      filteredData: filterBy(searchText, ['שם פרטי', 'שם משפחה'], normalizedData)
+      filteredData: filterBy(searchText, ['firstName', 'lastName'], normalizedData)
     });
   }
 
   render() {
-    const { multiselect, withCategories, onPress } = this.props;
+    const { withCategories, multiselect, onPress } = this.props;
     return (
       <View style={{ flex: 1 }}>
         <Item>
@@ -40,7 +58,6 @@ class FilterableList extends React.Component {
           <Icon active name="search" />
         </Item>
         <FlatList
-          extraData={this.state.filteredData}
           data={this.state.filteredData}
           ListFooterComponent={<View style={styles.spaceAtTheEnd} />}
           keyExtractor={getUniqueKey(withCategories)}
@@ -59,7 +76,7 @@ class FilterableList extends React.Component {
                         normalizedData: newNormalizedData,
                         filteredData: filterBy(
                           searchText,
-                          ['שם פרטי', 'שם משפחה'],
+                          ['firstName', 'lastName'],
                           newNormalizedData
                         )
                       });
