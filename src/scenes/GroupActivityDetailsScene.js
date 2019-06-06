@@ -1,25 +1,25 @@
 import React, { Component } from 'react';
-import {
-  Container,
-  Content,
-  Textarea,
-  Form,
-  CheckBox,
-  Icon,
-  Button,
-  Footer,
-  Title
-} from 'native-base';
-import { View, StyleSheet, Text } from 'react-native';
+import { Container, Content, Textarea, Form, CheckBox, Icon, Title } from 'native-base';
+import { View, StyleSheet, Text, Button } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const INITIAL_STATE = { comments: '' };
 
 class GroupActivityDetailsScene extends Component {
+  static navigationOptions = ({ navigation }) => {
+    return {
+      headerRight: <Button onPress={navigation.state.params.onSave} title="שמור" />
+    };
+  };
+
   constructor(props) {
     super(props);
     this.state = INITIAL_STATE;
     this.onSave = this.onSave.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.navigation.setParams({ onSave: this.onSave });
   }
 
   onSave() {
@@ -92,7 +92,7 @@ class GroupActivityDetailsScene extends Component {
             ))}
           </View>
         </Content>
-        <Footer>
+        {/* <Footer>
           <Button style={[button, { justifyContent: 'center' }]} onPress={this.onSave}>
             <Text
               onPress={this.onSave}
@@ -105,7 +105,7 @@ class GroupActivityDetailsScene extends Component {
               שמור
             </Text>
           </Button>
-        </Footer>
+        </Footer> */}
       </Container>
     );
   }

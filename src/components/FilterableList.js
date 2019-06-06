@@ -1,7 +1,7 @@
 /* eslint-disable no-nested-ternary */
 import React from 'react';
 import { StyleSheet, FlatList, View, TouchableOpacity } from 'react-native';
-import { Icon, Item, Input, Text, Button, Footer } from 'native-base';
+import { Icon, Item, Input, Text, Button } from 'native-base';
 import update from 'immutability-helper';
 import {
   normalizeData,
@@ -121,18 +121,6 @@ class FilterableList extends React.Component {
             </View>
           )}
         />
-        {multiselect ? (
-          <Footer>
-            <Button
-              onPress={() =>
-                this.props.onAction(this.state.normalizedData.filter(({ selected }) => selected))
-              }>
-              <Text>{this.props.actionTitle}</Text>
-            </Button>
-          </Footer>
-        ) : (
-          <View />
-        )}
       </View>
     );
   }

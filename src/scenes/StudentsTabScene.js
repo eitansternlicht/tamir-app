@@ -5,6 +5,7 @@ import Dialog from 'react-native-dialog';
 import { FilterableList } from '../components';
 import { right } from '../utils/style-utils';
 import { firebase } from '../utils/firebase/firebase-db';
+import { entriesToObj } from '../utils/general-utils';
 
 class StudentsTabScene extends React.PureComponent {
   constructor(props) {
@@ -16,7 +17,6 @@ class StudentsTabScene extends React.PureComponent {
     this.onCancel = this.onCancel.bind(this);
     this.onCreateNewGroup = this.onCreateNewGroup.bind(this);
     this.onPressAddToGroup = this.onPressAddToGroup.bind(this);
-    console.log('eitan db', props.db);
   }
 
   onCancel() {
@@ -33,7 +33,7 @@ class StudentsTabScene extends React.PureComponent {
       .add({
         owners: { tutors: [firebase.auth().currentUser.uid] },
         name: this.state.newGroupName,
-        participants: []
+        participants: {}
       })
       .then(docRef => console.log('New Group with ID: ', docRef.id));
 
@@ -44,7 +44,18 @@ class StudentsTabScene extends React.PureComponent {
   }
 
   onPressAddToGroup(groupUID) {
-    console.log('eitan onPressAddToGroup', groupUID);
+    const allGroupsButSelected = entriesToObj(
+      Object.keys(this.props.db.Groups)
+        .filter(gUID => gUID !== groupUID)
+        .map(gUID => [gUID, this.props.db.Groups[gUID]])
+    );
+    const dbWithoutGroup = { ...this.props.db, Groups: allGroupsButSelected };
+    this.props.navigation.navigate('SelectMultipleStudentsScene', {
+      db: dbWithoutGroup,
+      groupName: this.props.db.Groups[groupUID].name,
+      groupUID,
+      groupData: this.props.db.Groups[groupUID]
+    });
   }
 
   render() {

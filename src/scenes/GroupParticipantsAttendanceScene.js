@@ -1,13 +1,14 @@
 import React from 'react';
-import { View, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
-import { Container, Left, Button, Text, Footer, CheckBox } from 'native-base';
+import { View, FlatList, StyleSheet, TouchableOpacity, Button } from 'react-native';
+import { Container, Left, Text, Footer, CheckBox } from 'native-base';
 import { right } from '../utils/style-utils';
 
 class GroupParticipantsAttendanceScene extends React.Component {
   static navigationOptions = ({ navigation }) => {
     const { groups, index } = navigation.state.params;
     return {
-      title: `נוכחות ${groups[index].groupName}`
+      title: `נוכחות ${groups[index].groupName}`,
+      headerRight: <Button onPress={navigation.state.params.onSave} title="שמור" />
     };
   };
 
@@ -15,10 +16,21 @@ class GroupParticipantsAttendanceScene extends React.Component {
     super(props);
     this.selectAll = this.selectAll.bind(this);
     this.onPressCheckboxOnListItem = this.onPressCheckboxOnListItem.bind(this);
+    this.onSave = this.onSave.bind(this);
     this.state = {
       groups: JSON.parse(JSON.stringify(this.props.navigation.state.params.groups)),
       allSelected: false
     };
+  }
+
+  componentDidMount() {
+    this.props.navigation.setParams({ onSave: this.onSave });
+  }
+
+  onSave() {
+    const newGroups = [...this.state.groups];
+    newGroups[this.props.navigation.state.params.index].attended = true;
+    this.props.navigation.navigate('GroupActivityDetailsScene', { groups: newGroups });
   }
 
   onPressCheckboxOnListItem(participant, itemIndex) {
@@ -117,7 +129,7 @@ class GroupParticipantsAttendanceScene extends React.Component {
             )}
           />
         </View>
-        <Footer>
+        {/* <Footer>
           <Left>
             <Button
               style={{ alignSelf: 'flex-start', marginLeft: 10 }}
@@ -129,7 +141,7 @@ class GroupParticipantsAttendanceScene extends React.Component {
               <Text>שמור</Text>
             </Button>
           </Left>
-        </Footer>
+        </Footer> */}
       </Container>
     );
   }

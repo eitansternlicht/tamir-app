@@ -13,7 +13,7 @@ import {
   EditStudentDetailsScene,
   PotentialStudentsScene,
   SelectMultipleStudentsScene,
-  ManageGroupParticipantsScene,
+  // ManageGroupParticipantsScene,
   ManageGroupsScene,
   ChooseStudentScene,
   ChooseActivityTypeScene,
@@ -74,6 +74,9 @@ const MainStack = createStackNavigator(
     },
     GroupParticipantsAttendanceScene: {
       screen: GroupParticipantsAttendanceScene
+    },
+    SelectMultipleStudentsScene: {
+      screen: SelectMultipleStudentsScene
     }
   },
   {

@@ -1,20 +1,56 @@
 import React from 'react';
-import { Container } from 'native-base';
+import { Button } from 'react-native';
+import { Container, Spinner } from 'native-base';
 import { FilterableList } from '../components';
+import { firebase } from '../utils/firebase/firebase-db';
+import { entriesToObj } from '../utils/general-utils';
 
-const students = {
-  studentA_UID: { 'שם פרטי': 'חניך א׳' },
-  studentB_UID: { 'שם פרטי': 'חניך ב׳' },
-  studentC_UID: { 'שם פרטי': 'חניך ג׳' },
-  studentD_UID: { 'שם פרטי': 'חניך ד׳' },
-  studentE_UID: { 'שם פרטי': 'חניך ה׳' }
-};
+class SelectMultipleStudentsScene extends React.PureComponent {
+  static navigationOptions = ({ navigation }) => {
+    const { groupName, filterableListRef, groupUID, groupData } = navigation.state.params;
+    return {
+      title: `בחרו חניכים ל${groupName}`,
+      headerRight: (
+        <Button
+          onPress={() => {
+            navigation.setParams({ isLoading: true });
+            const participantsToAdd = entriesToObj(
+              filterableListRef.current.state.normalizedData
+                .filter(({ selected }) => selected)
+                .map(({ studentUID }) => [studentUID, true])
+            );
+            firebase
+              .firestore()
+              .collection('Groups')
+              .doc(groupUID)
+              .update({ participants: { ...groupData.participants, ...participantsToAdd } })
+              .then(() => navigation.navigate('MainScene'));
+          }}
+          title="הוסף"
+        />
+      )
+    };
+  };
 
-const SelectMultipleStudentsScene = ({ title, actionTitle, onAction }) => (
-  <Container>
-    {/* <Header title={title} back /> */}
-    <FilterableList data={students} multiselect actionTitle={actionTitle} onAction={onAction} />
-  </Container>
-);
+  constructor(props) {
+    super(props);
+    this.filterableListRef = React.createRef();
+  }
+
+  componentDidMount() {
+    this.props.navigation.setParams({ filterableListRef: this.filterableListRef });
+  }
+
+  render() {
+    const { db, isLoading } = this.props.navigation.state.params;
+    return isLoading ? (
+      <Spinner />
+    ) : (
+      <Container>
+        <FilterableList data={db} withCategories multiselect ref={this.filterableListRef} />
+      </Container>
+    );
+  }
+}
 
 export { SelectMultipleStudentsScene };
