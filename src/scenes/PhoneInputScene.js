@@ -3,6 +3,10 @@ import { Container, Text, Card, Content, Form, Button } from 'native-base';
 import PhoneInput from 'react-native-phone-input';
 
 class PhoneInputScene extends React.Component {
+  componentDidMount() {
+    this.phone.focus();
+  }
+
   render() {
     return (
       <Container>
@@ -10,6 +14,7 @@ class PhoneInputScene extends React.Component {
           <Card>
             <Form>
               <PhoneInput
+                autoFormat
                 initialCountry="il"
                 style={{
                   padding: 15

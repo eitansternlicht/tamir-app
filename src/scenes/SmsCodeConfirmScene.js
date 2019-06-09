@@ -29,29 +29,31 @@ class SmsCodeConfirmScene extends React.Component {
           <Form>
             <Item floatingLabel>
               <Label>Confirmation code</Label>
-              <Input onChangeText={text => this.setState({ code: text })} value={this.state.code} />
+              <Input
+                autoFocus
+                onChangeText={text => this.setState({ code: text })}
+                value={this.state.code}
+              />
             </Item>
+            <Button
+              style={[styles.buttonOneStyle, { alignSelf: 'center', marginTop: 40 }]}
+              onPress={() => {
+                const { phone } = this.props.navigation.state.params;
+                this.setState({ loading: true });
+                ignoreFirebaseLoadingWarnings();
+                // TODO change to real phone auth
+                firebase
+                  .auth()
+                  .signInWithEmailAndPassword('pass123456@test.com', '123456')
+                  .then(() => {
+                    console.log('signed in with uid', firebase.auth().currentUser.uid);
+                    this.props.navigation.navigate('MainScene');
+                  });
+              }}>
+              {this.state.loading ? <Spinner /> : <Text style={styles.textStyle}>Confirm</Text>}
+            </Button>
           </Form>
         </Content>
-        <Footer>
-          <Button
-            style={styles.buttonOneStyle}
-            onPress={() => {
-              const { phone } = this.props.navigation.state.params;
-              this.setState({ loading: true });
-              ignoreFirebaseLoadingWarnings();
-              // TODO change to real phone auth
-              firebase
-                .auth()
-                .signInWithEmailAndPassword('pass123456@test.com', '123456')
-                .then(() => {
-                  console.log('signed in with uid', firebase.auth().currentUser.uid);
-                  this.props.navigation.navigate('MainScene');
-                });
-            }}>
-            {this.state.loading ? <Spinner /> : <Text style={styles.textStyle}>Confirm</Text>}
-          </Button>
-        </Footer>
       </Container>
     );
   }
