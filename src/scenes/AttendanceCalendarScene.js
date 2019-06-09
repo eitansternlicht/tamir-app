@@ -1,9 +1,17 @@
 import React, { Component } from 'react';
 import { Container, Content, Icon, Text, List, ListItem, Button } from 'native-base';
 import { Agenda } from 'react-native-calendars';
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions, View } from 'react-native';
 import { Divider } from 'react-native-elements';
-import { formatDate, toClockRange, getDaysInMonth } from '../utils/date-utils';
+import {
+  formatDate,
+  formatYearAndMonth,
+  toClockRange,
+  getDaysCountInMonth,
+  getDaysInMonth
+} from '../utils/date-utils';
+import { firebase } from '../utils/firebase/firebase-db';
+import { entriesToObj } from '../utils/general-utils';
 
 const rowHasChanged = (r1, r2) =>
   r1.startTime.timestamp !== r2.startTime.timestamp ||
@@ -11,43 +19,52 @@ const rowHasChanged = (r1, r2) =>
 
 const AGENDA_HEADER_HEIGHT = 104;
 
-const ADD_ITEM = { startTime: true, endTime: true };
+const ADD_ITEM = { addNewItem: true };
 const INITIAL_STATE = {
-  items: {
-    '2019-04-09': [
-      {
-        startTime: new Date(2019, 3, 9, 8),
-        endTime: new Date(2019, 3, 9, 10),
-        activities: [
-          { kind: 'מפגש עם דמות להזדהות' },
-          { kind: 'תהליך תוכן' },
-          { kind: 'שיחה אישית' }
-        ],
-        height: 200
-      },
-      {
-        startTime: new Date(2019, 3, 9, 14),
-        endTime: new Date(2019, 3, 9, 16),
-        activities: [
-          { kind: 'מפגש עם דמות להזדהות' },
-          { kind: 'תהליך תוכן' },
-          { kind: 'שיחה אישית' }
-        ],
-        height: 200
-      },
-      ADD_ITEM
-    ],
-    '2019-04-10': [
-      {
-        startTime: new Date(2019, 3, 10, 8),
-        endTime: new Date(2019, 3, 10, 19),
-        activities: [{ kind: 'שיחה אישית' }],
-        height: 100
-      },
-      ADD_ITEM
-    ],
-    '2019-04-11': [ADD_ITEM]
-  }
+  monthsLoaded: {
+    // '2019-04': true
+  },
+  // {
+  // '2019-04': {
+  //    ad
+  // }
+  // }
+  attendanceDays: {}
+  // items: {
+  //   '2019-04-09': [
+  //     {
+  //       startTime: new Date(2019, 3, 9, 8),
+  //       endTime: new Date(2019, 3, 9, 10),
+  //       activities: [
+  //         { kind: 'מפגש עם דמות להזדהות' },
+  //         { kind: 'תהליך תוכן' },
+  //         { kind: 'שיחה אישית' }
+  //       ],
+  //       height: 200
+  //     },
+  //     {
+  //       startTime: new Date(2019, 3, 9, 14),
+  //       endTime: new Date(2019, 3, 9, 16),
+  //       activities: [
+  //         { kind: 'מפגש עם דמות להזדהות' },
+  //         { kind: 'תהליך תוכן' },
+  //         { kind: 'שיחה אישית' }
+  //       ],
+  //       height: 200
+  //     },
+  //     ADD_ITEM
+  //   ],
+  //   '2019-04-10': [
+  //     {
+  //       startTime: new Date(2019, 3, 10, 8),
+  //       endTime: new Date(2019, 3, 10, 19),
+  //       activities: [{ kind: 'שיחה אישית' }],
+  //       height: 100
+  //     },
+  //     ADD_ITEM
+  //   ],
+  //   '2019-04-11': [ADD_ITEM]
+  // }
 };
 class AttendanceCalendarScene extends Component {
   constructor(props) {
@@ -57,20 +74,64 @@ class AttendanceCalendarScene extends Component {
   }
 
   loadItems(month) {
-    console.log('eitan loading for month', month);
-    // TODO refactor, make better
-    if (new Date().getTime() >= month.timestamp) {
-      // in the past!
-      if (!this.state.items[formatDate(new Date(month.timestamp))]) {
-        const days = getDaysInMonth(month);
-        days.forEach(day => {
-          if (!this.state.items[day]) {
-            this.state.items[day] = [];
-          }
+    const date = new Date(month.timestamp);
+    console.log('eitan state', this.state);
+    if (
+      !this.state.monthsLoaded[formatYearAndMonth(date)] &&
+      new Date().getTime() >= month.timestamp
+    ) {
+      const firstOfMonth = new Date(date.getFullYear(), date.getMonth());
+      const lastOfMonth = new Date(date.getFullYear(), date.getMonth(), getDaysCountInMonth(date));
+
+      firebase
+        .firestore()
+        .collection('AttendanceDays')
+        .where('owners.tutors', 'array-contains', firebase.auth().currentUser.uid)
+        .where('day', '>=', firstOfMonth)
+        .where('day', '<=', lastOfMonth)
+        .onSnapshot(snapshot => {
+          this.setState(prevState => {
+            const firebaseAttendanceDays = entriesToObj(
+              snapshot.docs.map(doc => {
+                const data = doc.data();
+                const day = data.day.toDate();
+                return [
+                  formatDate(day),
+                  data.shifts
+                    ? data.shifts
+                        .sort((a, b) => {
+                          if (a.startTime > b.startTime) return 1;
+                          if (b.startTime > a.startTime) return -1;
+                          return 0;
+                        })
+                        .map((s, i) => ({
+                          ...s,
+                          uid: doc.id,
+                          day,
+                          last: data.shifts.length - 1 === i
+                        }))
+                    : []
+                ];
+              })
+            );
+            const daysInMonth = getDaysInMonth({
+              year: date.getFullYear(),
+              month: date.getMonth() + 1
+            });
+            const emptyAttendanceDaysInMonth = entriesToObj(daysInMonth.map(day => [day, []]));
+            const attendanceDays = {
+              ...emptyAttendanceDaysInMonth,
+              ...prevState.attendanceDays,
+              ...firebaseAttendanceDays
+            };
+            console.log('eitan attendanceDays', attendanceDays);
+
+            return {
+              monthsLoaded: { ...prevState.monthsLoaded, [formatYearAndMonth(date)]: true },
+              attendanceDays
+            };
+          });
         });
-        // eslint-disable-next-line react/no-access-state-in-setstate
-        this.setState({ ...this.state });
-      }
     }
   }
 
@@ -86,24 +147,31 @@ class AttendanceCalendarScene extends Component {
     );
   };
 
-  renderListOfActivities = ({ activities }) => (
+  renderListOfActivities = activities => (
     <List>
       {activities.map(activity => (
-        <ListItem key={activity.kind}>
-          <Text>{activity.kind}</Text>
+        <ListItem key={JSON.stringify(activity)}>
+          <Text>{`${activity.type} ${activity.subtype}`}</Text>
         </ListItem>
       ))}
     </List>
   );
 
-  renderItem = item => {
-    return item.startTime !== true ? (
-      <Container style={[styles.item, { height: item.height }]}>
-        <Text>{toClockRange(item)}</Text>
-        {this.renderListOfActivities(item)}
+  renderShift = ({ uid, day, activities, startTime, endTime, last }) => {
+    // console.log('eitan startTime', startTime);
+    return !last ? (
+      <Container style={[styles.item, { height: null }]}>
+        <Text>{toClockRange({ startTime: startTime.toDate(), endTime: endTime.toDate() })}</Text>
+        {this.renderListOfActivities(activities)}
       </Container>
     ) : (
-      this.renderAddNewItem()
+      <View>
+        <Container style={[styles.item, { height: null }]}>
+          <Text>{toClockRange({ startTime: startTime.toDate(), endTime: endTime.toDate() })}</Text>
+          {this.renderListOfActivities(activities)}
+        </Container>
+        {this.renderAddNewItem()}
+      </View>
     );
   };
 
@@ -113,11 +181,11 @@ class AttendanceCalendarScene extends Component {
         <Content>
           <Agenda
             style={styles.agenda}
-            items={this.state.items}
+            items={this.state.attendanceDays}
             loadItemsForMonth={this.loadItems}
-            selected="2019-04-09"
-            maxDate="2019-04-22"
-            renderItem={this.renderItem}
+            selected={formatDate(new Date())}
+            maxDate={formatDate(new Date())}
+            renderItem={this.renderShift}
             renderEmptyDate={this.renderAddNewItem}
             rowHasChanged={rowHasChanged}
           />

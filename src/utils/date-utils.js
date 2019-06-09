@@ -9,6 +9,8 @@ const padWithZero = num => (num <= 9 ? `0${num}` : num);
 const formatDate = date =>
   `${date.getFullYear()}-${padWithZero(date.getMonth() + 1)}-${padWithZero(date.getDate())}`;
 
+const formatYearAndMonth = date => `${date.getFullYear()}-${padWithZero(date.getMonth() + 1)}`;
+
 const getDaysInMonth = ({ year, month }) => {
   const date = new Date(year, month - 1, 1);
   const days = [];
@@ -25,4 +27,12 @@ const removeTime = date => {
   return new Date(date.setHours(0, 0, 0, 0));
 };
 
-export { removeTime, formatDate, toClockTime, toClockRange, getDaysInMonth, getDaysCountInMonth };
+export {
+  removeTime,
+  formatDate,
+  formatYearAndMonth,
+  toClockTime,
+  toClockRange,
+  getDaysInMonth,
+  getDaysCountInMonth
+};
