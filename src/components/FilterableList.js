@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import React from 'react';
-import { StyleSheet, FlatList, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, FlatList, View, TouchableOpacity, Alert } from 'react-native';
 import { Icon, Item, Input, Text, Button } from 'native-base';
 import update from 'immutability-helper';
 import {
@@ -12,6 +12,47 @@ import {
 import { groupsWithStudentDetails } from '../utils/firebase/local-db';
 import { right } from '../utils/style-utils';
 
+const showGroupEditDialog = (
+  categoryName,
+  groupUID,
+  addToCategory,
+  onEditCategoryName,
+  deleteCategory,
+  onCancel
+) =>
+  Alert.alert(
+    `עריכת ${categoryName}`,
+    '',
+    [
+      { text: 'הוספת חניכים לקבוצה', onPress: () => addToCategory(groupUID) },
+      {
+        text: 'עריכת שם הקבוצה',
+        onPress: () => onEditCategoryName(groupUID)
+      },
+      {
+        text: 'מחיקת הקבוצה',
+        onPress: () => deleteCategory(groupUID)
+      },
+      { text: 'ביטול', style: 'cancel', onPress: () => onCancel() }
+    ],
+    { cancelable: true }
+  );
+
+// Alert.alert(
+//   'dsljaf',
+//   [
+//     `עריכת ${categoryName}`,
+//     'e',
+//     { text: 'הוספת חניכים לקבוצה', onPress: () => console.log('eitan add pressed') },
+//     {
+//       text: 'עריכת שם הקבוצה',
+//       onPress: () => console.log('eitan edit name Pressed')
+//       // style: 'cancel'
+//     }
+//     // { text: 'OK', onPress: () => console.log('OK Pressed') }
+//   ],
+//   { cancelable: true }
+// );
 class FilterableList extends React.Component {
   constructor(props) {
     super(props);
@@ -64,7 +105,7 @@ class FilterableList extends React.Component {
           keyExtractor={getUniqueKey(withCategories)}
           renderItem={({ item }) => (
             <View style={styles.listItem}>
-              {!withCategories || !item.categoryName ? (
+              {!withCategories || (!item.categoryName && item.categoryName !== '') ? (
                 <TouchableOpacity
                   onPress={() => {
                     if (!multiselect) onPress(item);
@@ -111,8 +152,18 @@ class FilterableList extends React.Component {
                   <Button
                     transparent
                     icon
-                    onPress={() => this.props.onAddToCategory(item.groupUID)}>
-                    <Icon type="Entypo" name="plus" />
+                    onPress={() =>
+                      // this.props.onAddToCategory(item.groupUID)
+                      showGroupEditDialog(
+                        item.categoryName,
+                        item.groupUID,
+                        this.props.onAddToCategory,
+                        this.props.onEditCategoryName,
+                        this.props.deleteCategory,
+                        this.props.onCancel
+                      )
+                    }>
+                    <Icon type="MaterialIcons" name="edit" />
                   </Button>
                 </View>
               ) : (

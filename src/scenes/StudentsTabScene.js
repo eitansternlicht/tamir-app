@@ -7,6 +7,31 @@ import { right } from '../utils/style-utils';
 import { firebase } from '../utils/firebase/firebase-db';
 import { entriesToObj } from '../utils/general-utils';
 
+const createNewGroup = newGroupName =>
+  firebase
+    .firestore()
+    .collection('Groups')
+    .add({
+      owners: { tutors: [firebase.auth().currentUser.uid] },
+      name: newGroupName,
+      participants: {}
+    })
+    .then(docRef => console.log('New Group with ID: ', docRef.id));
+
+const deleteGroup = groupUID =>
+  firebase
+    .firestore()
+    .collection('Groups')
+    .doc(groupUID)
+    .delete();
+
+const editGroupName = (groupUID, newName) =>
+  firebase
+    .firestore()
+    .collection('Groups')
+    .doc(groupUID)
+    .update({ name: newName });
+
 class StudentsTabScene extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -15,31 +40,25 @@ class StudentsTabScene extends React.PureComponent {
       newGroupName: ''
     };
     this.onCancel = this.onCancel.bind(this);
-    this.onCreateNewGroup = this.onCreateNewGroup.bind(this);
     this.onPressAddToGroup = this.onPressAddToGroup.bind(this);
+    this.onPressEditGroupName = this.onPressEditGroupName.bind(this);
   }
 
   onCancel() {
     this.setState({
       newGroupDialogOpen: false,
-      newGroupName: ''
+      newGroupName: '',
+      editGroupDialogOpen: false,
+      editGroupName: '',
+      editGroupUID: null
     });
   }
 
-  onCreateNewGroup() {
-    firebase
-      .firestore()
-      .collection('Groups')
-      .add({
-        owners: { tutors: [firebase.auth().currentUser.uid] },
-        name: this.state.newGroupName,
-        participants: {}
-      })
-      .then(docRef => console.log('New Group with ID: ', docRef.id));
-
+  onPressEditGroupName(groupUID) {
     this.setState({
-      newGroupDialogOpen: false,
-      newGroupName: ''
+      editGroupDialogOpen: true,
+      editGroupName: this.props.db.Groups[groupUID].name,
+      editGroupUID: groupUID
     });
   }
 
@@ -71,6 +90,9 @@ class StudentsTabScene extends React.PureComponent {
           data={db}
           onPress={student => navigation.navigate('StudentDetailsScene', { student })}
           onAddToCategory={this.onPressAddToGroup}
+          onEditCategoryName={this.onPressEditGroupName}
+          deleteCategory={deleteGroup}
+          onCancel={this.onCancel}
         />
         <Fab position="bottomLeft" onPress={() => this.setState({ newGroupDialogOpen: true })}>
           <Icon type="AntDesign" name="plus" />
@@ -84,7 +106,30 @@ class StudentsTabScene extends React.PureComponent {
             onChangeText={newGroupName => this.setState({ newGroupName })}
           />
           <Dialog.Button label="ביטול" onPress={this.onCancel} />
-          <Dialog.Button label="אישור" onPress={this.onCreateNewGroup} />
+          <Dialog.Button
+            label="אישור"
+            onPress={() => {
+              createNewGroup(this.state.newGroupName);
+              this.onCancel();
+            }}
+          />
+        </Dialog.Container>
+        <Dialog.Container visible={this.state.editGroupDialogOpen} {...reactNativeModalProps}>
+          <Dialog.Title>עריכת שם הקבוצה</Dialog.Title>
+          <Dialog.Input
+            style={{ textAlign: right }}
+            placeholder="שם הקבוצה"
+            value={this.state.editGroupName}
+            onChangeText={text => this.setState({ editGroupName: text })}
+          />
+          <Dialog.Button label="ביטול" onPress={this.onCancel} />
+          <Dialog.Button
+            label="אישור"
+            onPress={() => {
+              editGroupName(this.state.editGroupUID, this.state.editGroupName);
+              this.onCancel();
+            }}
+          />
         </Dialog.Container>
       </View>
     );
