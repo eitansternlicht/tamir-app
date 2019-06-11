@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from 'react-native';
-import { Container, Content, Fab, Icon } from 'native-base';
+import { Content } from 'native-base';
 import { StudentDetails } from '../components';
 import { getStudentName } from '../utils/student/student-utils';
 
