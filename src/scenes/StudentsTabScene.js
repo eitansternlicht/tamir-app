@@ -4,44 +4,49 @@ import { Fab, Icon } from 'native-base';
 import Dialog from 'react-native-dialog';
 import { FilterableList } from '../components';
 import { right } from '../utils/style-utils';
-import { firebase } from '../utils/firebase/firebase-db';
-import { entriesToObj } from '../utils/general-utils';
+import {
+  firebase,
+  createNewGroup,
+  deleteGroup,
+  editGroupName
+} from '../utils/firebase/firebase-db';
+import { studentUIDsInGroups, selectedStudentsEntries  } from '../utils/firebase/local-db';
+import { entriesToObj, removeKeys, difference } from '../utils/general-utils';
 
-const createNewGroup = newGroupName =>
-  firebase
-    .firestore()
-    .collection('Groups')
-    .add({
-      owners: { tutors: [firebase.auth().currentUser.uid] },
-      name: newGroupName,
-      participants: {}
-    })
-    .then(docRef => console.log('New Group with ID: ', docRef.id));
-
-const deleteGroup = groupUID =>
-  firebase
-    .firestore()
-    .collection('Groups')
-    .doc(groupUID)
-    .delete();
-
-const editGroupName = (groupUID, newName) =>
-  firebase
-    .firestore()
-    .collection('Groups')
-    .doc(groupUID)
-    .update({ name: newName });
+const deleteStudentsFromGroups = (db, students) => {
+  selectedStudentsEntries(students).forEach(([groupUID, studentUIDsToDelete]) => {
+    // TODO make transaction
+    firebase
+      .firestore()
+      .collection('Groups')
+      .doc(groupUID)
+      .update({
+        participants: removeKeys(studentUIDsToDelete, db.Groups[groupUID].participants)
+      });
+  });
+};
 
 class StudentsTabScene extends React.PureComponent {
   constructor(props) {
     super(props);
+    this.filterableListRef = React.createRef();
     this.state = {
       newGroupDialogOpen: false,
-      newGroupName: ''
+      newGroupName: '',
+      editGroupDialogOpen: false,
+      editGroupName: '',
+      editGroupUID: null
     };
     this.onCancel = this.onCancel.bind(this);
     this.onPressAddToGroup = this.onPressAddToGroup.bind(this);
     this.onPressEditGroupName = this.onPressEditGroupName.bind(this);
+    this.onPressDeleteStudents = this.onPressDeleteStudents.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.navigation.setParams({
+      onPressDeleteStudents: this.onPressDeleteStudents
+    });
   }
 
   onCancel() {
@@ -68,7 +73,15 @@ class StudentsTabScene extends React.PureComponent {
         .filter(gUID => gUID !== groupUID)
         .map(gUID => [gUID, this.props.db.Groups[gUID]])
     );
-    const dbWithoutGroup = { ...this.props.db, Groups: allGroupsButSelected };
+    const participatingStudents = studentUIDsInGroups(this.props.db.Groups);
+    const nonParticipatingStudents = difference(this.props.db.Students, participatingStudents);
+    const dbWithoutGroup = {
+      ...this.props.db,
+      Groups: {
+        ...allGroupsButSelected,
+        noGroup: { name: 'לא בקבוצה', participants: nonParticipatingStudents }
+      }
+    };
     this.props.navigation.navigate('SelectMultipleStudentsScene', {
       db: dbWithoutGroup,
       groupName: this.props.db.Groups[groupUID].name,
@@ -77,18 +90,33 @@ class StudentsTabScene extends React.PureComponent {
     });
   }
 
+  onPressDeleteStudents() {
+    deleteStudentsFromGroups(this.props.db, this.filterableListRef.current.state.normalizedData);
+    this.props.navigation.setParams({ longPressedState: false });
+  }
+
   render() {
     const { navigation, db } = this.props;
+    const longPressedState = navigation.getParam('longPressedState');
     const reactNativeModalProps = {
       onBackdropPress: this.onCancel
     };
     return (
       <View style={{ flex: 1 }}>
         <FilterableList
+          ref={this.filterableListRef}
+          multiselect={!!longPressedState}
+          noCategoryNotSelectable
           editableCategories
           withCategories
           data={db}
           onPress={student => navigation.navigate('StudentDetailsScene', { student })}
+          onLongPress={student => {
+            navigation.navigate('MainScene', {
+              longPressedState: true,
+              selected: [student]
+            });
+          }}
           onAddToCategory={this.onPressAddToGroup}
           onEditCategoryName={this.onPressEditGroupName}
           deleteCategory={deleteGroup}

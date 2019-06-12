@@ -96,4 +96,36 @@ const updateDoc = (collection, uid, obj) =>
     .doc(uid)
     .set(obj);
 
-export { firebase, readDB, updateDoc, initNativeFirebase };
+const createNewGroup = newGroupName =>
+  firebase
+    .firestore()
+    .collection('Groups')
+    .add({
+      owners: { tutors: [firebase.auth().currentUser.uid] },
+      name: newGroupName,
+      participants: {}
+    });
+
+const deleteGroup = groupUID =>
+  firebase
+    .firestore()
+    .collection('Groups')
+    .doc(groupUID)
+    .delete();
+
+const editGroupName = (groupUID, newName) =>
+  firebase
+    .firestore()
+    .collection('Groups')
+    .doc(groupUID)
+    .update({ name: newName });
+export {
+  firebase,
+  readDB,
+  updateDoc,
+  initNativeFirebase,
+  rnfirebase,
+  createNewGroup,
+  deleteGroup,
+  editGroupName
+};

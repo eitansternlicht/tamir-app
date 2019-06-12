@@ -13,7 +13,6 @@ class SelectMultipleStudentsScene extends React.PureComponent {
       headerRight: (
         <Button
           onPress={() => {
-            navigation.setParams({ isLoading: true });
             const participantsToAdd = entriesToObj(
               filterableListRef.current.state.normalizedData
                 .filter(({ selected }) => selected)
@@ -23,8 +22,8 @@ class SelectMultipleStudentsScene extends React.PureComponent {
               .firestore()
               .collection('Groups')
               .doc(groupUID)
-              .update({ participants: { ...groupData.participants, ...participantsToAdd } })
-              .then(() => navigation.navigate('MainScene'));
+              .update({ participants: { ...groupData.participants, ...participantsToAdd } });
+            navigation.navigate('MainScene');
           }}
           title="הוסף"
         />
@@ -41,16 +40,16 @@ class SelectMultipleStudentsScene extends React.PureComponent {
     this.props.navigation.setParams({ filterableListRef: this.filterableListRef });
   }
 
-  render() {
-    const { db, isLoading } = this.props.navigation.state.params;
-    return isLoading ? (
-      <Spinner />
-    ) : (
-      <Container>
-        <FilterableList data={db} withCategories multiselect ref={this.filterableListRef} />
-      </Container>
-    );
-  }
+  render = () => (
+    <Container>
+      <FilterableList
+        data={this.props.navigation.state.params.db}
+        withCategories
+        multiselect
+        ref={this.filterableListRef}
+      />
+    </Container>
+  );
 }
 
 export { SelectMultipleStudentsScene };

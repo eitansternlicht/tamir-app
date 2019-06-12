@@ -1,4 +1,5 @@
 import React from 'react';
+import { View } from 'react-native';
 import { Container, Tabs, Tab, Button, Icon, Spinner } from 'native-base';
 import { appName } from '../../app.json';
 import { AttendanceTabScene, StudentsTabScene } from '.';
@@ -6,6 +7,27 @@ import { firebase, readDB } from '../utils/firebase/firebase-db';
 
 class MainScene extends React.PureComponent {
   static navigationOptions = ({ navigation }) => {
+    if (navigation.getParam('longPressedState')) {
+      return {
+        headerLeft: (
+          <View style={{ flexDirection: 'row' }}>
+            <Button
+              transparent
+              onPress={() => navigation.navigate('MainScene', { longPressedState: false })}>
+              <Icon name="arrow-back" />
+            </Button>
+            <Button transparent onPress={() => navigation.state.params.onPressDeleteStudents()}>
+              <Icon name="trash" style={{ color: 'red' }} />
+            </Button>
+          </View>
+        ),
+        headerRight: (
+          <Button transparent onPress={() => navigation.openDrawer()}>
+            <Icon name="menu" />
+          </Button>
+        )
+      };
+    }
     return {
       title: appName,
       headerLeft: null,
@@ -23,7 +45,7 @@ class MainScene extends React.PureComponent {
     const tutorUID = firebase.auth().currentUser.uid;
     readDB(tutorUID, this);
   }
-  
+
   render() {
     return (
       <Container style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>

@@ -1,5 +1,5 @@
 import update from 'immutability-helper';
-import { entriesToObj } from '../general-utils';
+import { entriesToObj, groupBy } from '../general-utils';
 
 const groupsWithStudentDetails = db =>
   update(db.Groups, {
@@ -22,4 +22,19 @@ const groupsWithStudentDetails = db =>
     )
   });
 
-export { groupsWithStudentDetails };
+const studentUIDsInGroups = groups =>
+  Object.values(groups)
+    .map(({ participants }) => participants)
+    .reduce((acc, curr) => ({ ...acc, ...curr }), {});
+
+const selectedStudentsEntries = students =>
+  Object.entries(
+    groupBy(
+      students
+        .filter(({ selected }) => selected)
+        .map(({ groupUID, studentUID }) => ({ groupUID, studentUID })),
+      'groupUID'
+    )
+  ).map(([key, values]) => [key, values.map(({ studentUID }) => studentUID)]);
+
+export { groupsWithStudentDetails, studentUIDsInGroups, selectedStudentsEntries };
