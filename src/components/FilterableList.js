@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import React from 'react';
-import { StyleSheet, FlatList, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, FlatList, View, TouchableOpacity, Alert } from 'react-native';
 import { Icon, Item, Input, Text, Button } from 'native-base';
 import update from 'immutability-helper';
 import {
@@ -9,8 +9,36 @@ import {
   getUniqueKey,
   getStudentName
 } from '../utils/student/student-utils';
-import { groupsWithStudentDetails } from '../utils/firebase/local-db';
+import { groupsWithStudentDetails, studentUIDsInGroups } from '../utils/firebase/local-db';
 import { right } from '../utils/style-utils';
+import { difference } from '../utils/general-utils';
+
+const showGroupEditDialog = (
+  categoryName,
+  groupUID,
+  addToCategory,
+  onEditCategoryName,
+  deleteCategory,
+  onCancel
+) =>
+  Alert.alert(
+    `עריכת ${categoryName}`,
+    '',
+    [
+      { text: 'הוספת חניכים לקבוצה', onPress: () => addToCategory(groupUID) },
+      {
+        text: 'עריכת שם הקבוצה',
+        onPress: () => onEditCategoryName(groupUID)
+      },
+      {
+        text: 'מחיקת הקבוצה',
+        style: 'destructive',
+        onPress: () => deleteCategory(groupUID)
+      },
+      { text: 'ביטול', style: 'cancel', onPress: () => onCancel() }
+    ],
+    { cancelable: true }
+  );
 
 class FilterableList extends React.Component {
   constructor(props) {
@@ -26,14 +54,37 @@ class FilterableList extends React.Component {
     this.onSearch = this.onSearch.bind(this);
   }
 
-  componentWillReceiveProps({ data, withCategories, multiselect }) {
+  componentWillReceiveProps({ data, withCategories, multiselect, firstSelected }) {
     if (data !== this.props.data) {
       const withStudentDetails = withCategories ? groupsWithStudentDetails(data) : data;
-      const normalizedData = normalizeData(withCategories, multiselect, withStudentDetails);
-      this.setState({
-        normalizedData,
-        filteredData: normalizedData
-      });
+
+      const participatingStudents = studentUIDsInGroups(data.Groups);
+      const nonParticipatingStudents = difference(data.Students, participatingStudents);
+      const withStudentDetailsWithNoGroup = {
+        ...withStudentDetails,
+        noGroup: { name: 'לא בקבוצה', participants: nonParticipatingStudents }
+      };
+
+      const normalizedData = normalizeData(
+        withCategories,
+        multiselect,
+        withStudentDetailsWithNoGroup
+      );
+      if (firstSelected)
+        this.setState(prevState => {
+          if (prevState.firstSelected)
+            return {
+              firstSelected: false,
+              normalizedData,
+              filteredData: normalizedData
+            };
+          normalizedData[firstSelected].selected = true;
+          return {
+            firstSelected: true,
+            normalizedData,
+            filteredData: normalizedData
+          };
+        });
     }
   }
 
@@ -62,39 +113,61 @@ class FilterableList extends React.Component {
           data={this.state.filteredData}
           ListFooterComponent={<View style={styles.spaceAtTheEnd} />}
           keyExtractor={getUniqueKey(withCategories)}
-          renderItem={({ item }) => (
+          renderItem={({ item, index }) => (
             <View style={styles.listItem}>
-              {!withCategories || !item.categoryName ? (
-                <TouchableOpacity
-                  onPress={() => {
-                    if (!multiselect) onPress(item);
-                    else {
-                      const { normalizedData, searchText } = this.state;
-                      const newNormalizedData = update(normalizedData, {
-                        [normalizedData.indexOf(item)]: { selected: { $set: !item.selected } }
-                      });
-                      this.setState({
-                        normalizedData: newNormalizedData,
-                        filteredData: filterBy(
-                          searchText,
-                          ['firstName', 'lastName'],
-                          newNormalizedData
-                        )
-                      });
-                    }
-                  }}
-                  style={{
-                    flexDirection: 'row-reverse',
-                    justifyContent: 'space-between',
-                    paddingHorizontal: 20,
-                    paddingVertical: 5
-                  }}>
-                  <Text style={styles.studentName}>{getStudentName(item)}</Text>
-                  <Icon
-                    name="checkmark"
-                    style={[{ fontSize: 40 }, !item.selected && { display: 'none' }]}
-                  />
-                </TouchableOpacity>
+              {!withCategories || (!item.categoryName && item.categoryName !== '') ? (
+                this.props.multiselect &&
+                this.props.noCategoryNotSelectable &&
+                item.groupUID === 'noGroup' ? (
+                  <View
+                    style={{
+                      flexDirection: 'row-reverse',
+                      justifyContent: 'space-between',
+                      paddingHorizontal: 20,
+                      paddingVertical: 5
+                    }}>
+                    <Text style={styles.studentName}>{getStudentName(item)}</Text>
+                  </View>
+                ) : (
+                  <TouchableOpacity
+                    onLongPress={() => {
+                      if (
+                        this.props.onLongPress &&
+                        !multiselect &&
+                        (!this.props.noCategoryNotSelectable || item.groupUID !== 'noGroup')
+                      )
+                        this.props.onLongPress(index);
+                    }}
+                    onPress={() => {
+                      if (!multiselect) onPress(item);
+                      else {
+                        const { normalizedData, searchText } = this.state;
+                        const newNormalizedData = update(normalizedData, {
+                          [normalizedData.indexOf(item)]: { selected: { $set: !item.selected } }
+                        });
+                        this.setState({
+                          normalizedData: newNormalizedData,
+                          filteredData: filterBy(
+                            searchText,
+                            ['firstName', 'lastName'],
+                            newNormalizedData
+                          )
+                        });
+                      }
+                    }}
+                    style={{
+                      flexDirection: 'row-reverse',
+                      justifyContent: 'space-between',
+                      paddingHorizontal: 20,
+                      paddingVertical: 5
+                    }}>
+                    <Text style={styles.studentName}>{getStudentName(item)}</Text>
+                    <Icon
+                      name="checkmark"
+                      style={[{ fontSize: 40 }, !item.selected && { display: 'none' }]}
+                    />
+                  </TouchableOpacity>
+                )
               ) : editableCategories ? (
                 <View
                   style={{
@@ -108,12 +181,26 @@ class FilterableList extends React.Component {
                   <Text style={{ textAlign: right, fontSize: 25, color: '#666666' }}>
                     {item.categoryName}
                   </Text>
-                  <Button
-                    transparent
-                    icon
-                    onPress={() => this.props.onAddToCategory(item.groupUID)}>
-                    <Icon type="Entypo" name="plus" />
-                  </Button>
+                  {item.categoryName !== 'לא בקבוצה' ? (
+                    <Button
+                      transparent
+                      icon
+                      onPress={() =>
+                        // this.props.onAddToCategory(item.groupUID)
+                        showGroupEditDialog(
+                          item.categoryName,
+                          item.groupUID,
+                          this.props.onAddToCategory,
+                          this.props.onEditCategoryName,
+                          this.props.deleteCategory,
+                          this.props.onCancel
+                        )
+                      }>
+                      <Icon type="MaterialIcons" name="edit" />
+                    </Button>
+                  ) : (
+                    <View />
+                  )}
                 </View>
               ) : (
                 <Text style={styles.groupName}>{item.categoryName}</Text>

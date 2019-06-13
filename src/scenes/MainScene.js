@@ -1,11 +1,29 @@
 import React from 'react';
-import { Container, Tabs, Tab, Button, Icon, Spinner } from 'native-base';
+import { View } from 'react-native';
+import { Container, Tabs, Tab, Button, Icon, Spinner, Text } from 'native-base';
 import { appName } from '../../app.json';
 import { AttendanceTabScene, StudentsTabScene } from '.';
 import { firebase, readDB } from '../utils/firebase/firebase-db';
 
 class MainScene extends React.PureComponent {
   static navigationOptions = ({ navigation }) => {
+    if (navigation.getParam('longPressedState')) {
+      return {
+        headerLeft: (
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Button
+              transparent
+              onPress={() => navigation.navigate('MainScene', { longPressedState: false })}>
+              <Icon name="arrow-back" />
+            </Button>
+            <Button transparent onPress={() => navigation.state.params.onPressDeleteStudents()}>
+              <Icon name="trash" style={{ color: 'red' }} />
+            </Button>
+            <Text style={{ fontSize: 20 }}>הסרת חניכים מקבוצות</Text>
+          </View>
+        )
+      };
+    }
     return {
       title: appName,
       headerLeft: null,

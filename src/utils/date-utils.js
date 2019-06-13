@@ -26,6 +26,15 @@ const getDaysCountInMonth = date => new Date(date.getFullYear(), date.getMonth()
 const removeTime = date => {
   return new Date(date.setHours(0, 0, 0, 0));
 };
+const timeWithDay = (day, time) =>
+  new Date(
+    day.getFullYear(),
+    day.getMonth(),
+    day.getDate(),
+    time.getHours(),
+    time.getMinutes(),
+    time.getMilliseconds()
+  );
 
 export {
   removeTime,
@@ -34,5 +43,6 @@ export {
   toClockTime,
   toClockRange,
   getDaysInMonth,
-  getDaysCountInMonth
+  getDaysCountInMonth,
+  timeWithDay
 };

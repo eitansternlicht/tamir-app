@@ -4,45 +4,74 @@ import { Fab, Icon } from 'native-base';
 import Dialog from 'react-native-dialog';
 import { FilterableList } from '../components';
 import { right } from '../utils/style-utils';
-import { firebase } from '../utils/firebase/firebase-db';
-import { entriesToObj } from '../utils/general-utils';
+import {
+  firebase,
+  createNewGroup,
+  deleteGroup,
+  editGroupName
+} from '../utils/firebase/firebase-db';
+import { studentUIDsInGroups, selectedStudentsEntries } from '../utils/firebase/local-db';
+import { entriesToObj, removeKeys, difference } from '../utils/general-utils';
+
+const deleteStudentsFromGroups = (db, students) => {
+  selectedStudentsEntries(students).forEach(([groupUID, studentUIDsToDelete]) => {
+    // TODO make transaction
+    firebase
+      .firestore()
+      .collection('Groups')
+      .doc(groupUID)
+      .update({
+        participants: removeKeys(studentUIDsToDelete, db.Groups[groupUID].participants)
+      });
+  });
+};
 
 class StudentsTabScene extends React.PureComponent {
   constructor(props) {
     super(props);
+    this.filterableListRef = React.createRef();
     this.state = {
       newGroupDialogOpen: false,
       newGroupName: '',
       error: false,
       errorMsg: 'please entrer a group name'
+
+      editGroupDialogOpen: false,
+      editGroupName: '',
+      editGroupUID: null
+
     };
     this.onCancel = this.onCancel.bind(this);
-    this.onCreateNewGroup = this.onCreateNewGroup.bind(this);
     this.onPressAddToGroup = this.onPressAddToGroup.bind(this);
+    this.onPressEditGroupName = this.onPressEditGroupName.bind(this);
+    this.onPressDeleteStudents = this.onPressDeleteStudents.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.navigation.setParams({
+      onPressDeleteStudents: this.onPressDeleteStudents
+    });
   }
 
   onCancel() {
     this.setState({
       newGroupDialogOpen: false,
       newGroupName: '',
+
       errorMsg: ''
+
+      editGroupDialogOpen: false,
+      editGroupName: '',
+      editGroupUID: null
+
     });
   }
 
-  onCreateNewGroup() {
-    firebase
-      .firestore()
-      .collection('Groups')
-      .add({
-        owners: { tutors: [firebase.auth().currentUser.uid] },
-        name: this.state.newGroupName,
-        participants: {}
-      })
-      .then(docRef => console.log('New Group with ID: ', docRef.id));
-
+  onPressEditGroupName(groupUID) {
     this.setState({
-      newGroupDialogOpen: false,
-      newGroupName: ''
+      editGroupDialogOpen: true,
+      editGroupName: this.props.db.Groups[groupUID].name,
+      editGroupUID: groupUID
     });
   }
 
@@ -52,7 +81,15 @@ class StudentsTabScene extends React.PureComponent {
         .filter(gUID => gUID !== groupUID)
         .map(gUID => [gUID, this.props.db.Groups[gUID]])
     );
-    const dbWithoutGroup = { ...this.props.db, Groups: allGroupsButSelected };
+    const participatingStudents = studentUIDsInGroups(this.props.db.Groups);
+    const nonParticipatingStudents = difference(this.props.db.Students, participatingStudents);
+    const dbWithoutGroup = {
+      ...this.props.db,
+      Groups: {
+        ...allGroupsButSelected,
+        noGroup: { name: 'לא בקבוצה', participants: nonParticipatingStudents }
+      }
+    };
     this.props.navigation.navigate('SelectMultipleStudentsScene', {
       db: dbWithoutGroup,
       groupName: this.props.db.Groups[groupUID].name,
@@ -61,19 +98,39 @@ class StudentsTabScene extends React.PureComponent {
     });
   }
 
+  onPressDeleteStudents() {
+    deleteStudentsFromGroups(this.props.db, this.filterableListRef.current.state.normalizedData);
+    this.props.navigation.setParams({ longPressedState: false });
+  }
+
   render() {
     const { navigation, db } = this.props;
+    const longPressedState = navigation.getParam('longPressedState');
+    const firstSelected = navigation.getParam('firstSelected');
     const reactNativeModalProps = {
       onBackdropPress: this.onCancel
     };
     return (
       <View style={{ flex: 1 }}>
         <FilterableList
+          ref={this.filterableListRef}
+          multiselect={!!longPressedState}
+          noCategoryNotSelectable
           editableCategories
           withCategories
           data={db}
           onPress={student => navigation.navigate('StudentDetailsScene', { student })}
+          onLongPress={index => {
+            navigation.navigate('MainScene', {
+              longPressedState: true,
+              firstSelected: index
+            });
+          }}
+          firstSelected={firstSelected}
           onAddToCategory={this.onPressAddToGroup}
+          onEditCategoryName={this.onPressEditGroupName}
+          deleteCategory={deleteGroup}
+          onCancel={this.onCancel}
         />
         <Fab position="bottomLeft" onPress={() => this.setState({ newGroupDialogOpen: true })}>
           <Icon type="AntDesign" name="plus" />
@@ -99,6 +156,27 @@ class StudentsTabScene extends React.PureComponent {
                 ? this.onCreateNewGroup()
                 : this.setState({ error: true })
             }
+            onPress={() => {
+              createNewGroup(this.state.newGroupName);
+              this.onCancel();
+            }}
+          />
+        </Dialog.Container>
+        <Dialog.Container visible={this.state.editGroupDialogOpen} {...reactNativeModalProps}>
+          <Dialog.Title>עריכת שם הקבוצה</Dialog.Title>
+          <Dialog.Input
+            style={{ textAlign: right }}
+            placeholder="שם הקבוצה"
+            value={this.state.editGroupName}
+            onChangeText={text => this.setState({ editGroupName: text })}
+          />
+          <Dialog.Button label="ביטול" onPress={this.onCancel} />
+          <Dialog.Button
+            label="אישור"
+            onPress={() => {
+              editGroupName(this.state.editGroupUID, this.state.editGroupName);
+              this.onCancel();
+            }}
           />
         </Dialog.Container>
       </View>
