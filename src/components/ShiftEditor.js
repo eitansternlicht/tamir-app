@@ -85,13 +85,16 @@ class ShiftEditor extends React.Component {
       <View>
         <View style={[styles.section, { marginBottom: 30 }]}>
           {this.renderTime({ startTime: this.props.startTime })}
-          <Button onPress={() => this.handleStartTimePicked(new Date())}>
+          <Button
+            disabled={!!this.props.startTime}
+            onPress={() => this.handleStartTimePicked(new Date())}>
             <Text>כניסה</Text>
           </Button>
         </View>
         <View style={[styles.section, { marginBottom: 30 }]}>
           {this.renderTime({ endTime: this.props.endTime })}
           <Button
+            disabled={!this.props.startTime || !!this.props.endTime}
             onPress={() => {
               this.handleEndTimePicked(new Date());
               if (!this.props.activities || this.props.activities.length === 0)
