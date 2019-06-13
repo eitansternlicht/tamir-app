@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, Alert } from 'react-native';
 import { Fab, Icon } from 'native-base';
 import Dialog from 'react-native-dialog';
 import { FilterableList } from '../components';
@@ -33,9 +33,13 @@ class StudentsTabScene extends React.PureComponent {
     this.state = {
       newGroupDialogOpen: false,
       newGroupName: '',
+      error: false,
+      errorMsg: 'please entrer a group name'
+
       editGroupDialogOpen: false,
       editGroupName: '',
       editGroupUID: null
+
     };
     this.onCancel = this.onCancel.bind(this);
     this.onPressAddToGroup = this.onPressAddToGroup.bind(this);
@@ -53,9 +57,13 @@ class StudentsTabScene extends React.PureComponent {
     this.setState({
       newGroupDialogOpen: false,
       newGroupName: '',
+
+      errorMsg: ''
+
       editGroupDialogOpen: false,
       editGroupName: '',
       editGroupUID: null
+
     });
   }
 
@@ -130,14 +138,24 @@ class StudentsTabScene extends React.PureComponent {
         <Dialog.Container visible={this.state.newGroupDialogOpen} {...reactNativeModalProps}>
           <Dialog.Title>הוספת קבוצה חדשה</Dialog.Title>
           <Dialog.Input
-            style={{ textAlign: right }}
+            style={{
+              textAlign: right
+            }}
             placeholder="שם הקבוצה"
             value={this.state.newGroupName}
             onChangeText={newGroupName => this.setState({ newGroupName })}
           />
+          <Dialog.Description style={{ color: 'red' }}>
+            {this.state.error ? this.state.errorMsg : ''}
+          </Dialog.Description>
           <Dialog.Button label="ביטול" onPress={this.onCancel} />
           <Dialog.Button
             label="אישור"
+            onPress={() =>
+              this.state.newGroupName !== ''
+                ? this.onCreateNewGroup()
+                : this.setState({ error: true })
+            }
             onPress={() => {
               createNewGroup(this.state.newGroupName);
               this.onCancel();
