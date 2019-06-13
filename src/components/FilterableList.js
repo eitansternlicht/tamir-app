@@ -85,6 +85,10 @@ class FilterableList extends React.Component {
             filteredData: normalizedData
           };
         });
+      this.setState({
+        normalizedData,
+        filteredData: normalizedData
+      });
     }
   }
 
