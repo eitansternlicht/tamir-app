@@ -10,7 +10,7 @@ import {
   deleteGroup,
   editGroupName
 } from '../utils/firebase/firebase-db';
-import { studentUIDsInGroups, selectedStudentsEntries  } from '../utils/firebase/local-db';
+import { studentUIDsInGroups, selectedStudentsEntries } from '../utils/firebase/local-db';
 import { entriesToObj, removeKeys, difference } from '../utils/general-utils';
 
 const deleteStudentsFromGroups = (db, students) => {
@@ -98,6 +98,7 @@ class StudentsTabScene extends React.PureComponent {
   render() {
     const { navigation, db } = this.props;
     const longPressedState = navigation.getParam('longPressedState');
+    const firstSelected = navigation.getParam('firstSelected');
     const reactNativeModalProps = {
       onBackdropPress: this.onCancel
     };
@@ -111,12 +112,13 @@ class StudentsTabScene extends React.PureComponent {
           withCategories
           data={db}
           onPress={student => navigation.navigate('StudentDetailsScene', { student })}
-          onLongPress={student => {
+          onLongPress={index => {
             navigation.navigate('MainScene', {
               longPressedState: true,
-              selected: [student]
+              firstSelected: index
             });
           }}
+          firstSelected={firstSelected}
           onAddToCategory={this.onPressAddToGroup}
           onEditCategoryName={this.onPressEditGroupName}
           deleteCategory={deleteGroup}

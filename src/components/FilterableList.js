@@ -54,7 +54,7 @@ class FilterableList extends React.Component {
     this.onSearch = this.onSearch.bind(this);
   }
 
-  componentWillReceiveProps({ data, withCategories, multiselect }) {
+  componentWillReceiveProps({ data, withCategories, multiselect, firstSelected }) {
     if (data !== this.props.data) {
       const withStudentDetails = withCategories ? groupsWithStudentDetails(data) : data;
 
@@ -70,11 +70,21 @@ class FilterableList extends React.Component {
         multiselect,
         withStudentDetailsWithNoGroup
       );
-
-      this.setState({
-        normalizedData,
-        filteredData: normalizedData
-      });
+      if (firstSelected)
+        this.setState(prevState => {
+          if (prevState.firstSelected)
+            return {
+              firstSelected: false,
+              normalizedData,
+              filteredData: normalizedData
+            };
+          normalizedData[firstSelected].selected = true;
+          return {
+            firstSelected: true,
+            normalizedData,
+            filteredData: normalizedData
+          };
+        });
     }
   }
 
@@ -103,7 +113,7 @@ class FilterableList extends React.Component {
           data={this.state.filteredData}
           ListFooterComponent={<View style={styles.spaceAtTheEnd} />}
           keyExtractor={getUniqueKey(withCategories)}
-          renderItem={({ item }) => (
+          renderItem={({ item, index }) => (
             <View style={styles.listItem}>
               {!withCategories || (!item.categoryName && item.categoryName !== '') ? (
                 this.props.multiselect &&
@@ -123,9 +133,10 @@ class FilterableList extends React.Component {
                     onLongPress={() => {
                       if (
                         this.props.onLongPress &&
+                        !multiselect &&
                         (!this.props.noCategoryNotSelectable || item.groupUID !== 'noGroup')
                       )
-                        this.props.onLongPress(item);
+                        this.props.onLongPress(index);
                     }}
                     onPress={() => {
                       if (!multiselect) onPress(item);
