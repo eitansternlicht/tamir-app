@@ -23,8 +23,8 @@ class GroupActivityDetailsScene extends Component {
   }
 
   onSave() {
-    const { subtype, groups } = this.props.navigation.state.params;
-    this.props.navigation.navigate('MainScene', {
+    const { subtype, groups, returnTo } = this.props.navigation.state.params;
+    this.props.navigation.navigate(returnTo || 'MainScene', {
       newActivity: {
         type: 'פעילות קבוצתית',
         subtype,
@@ -35,7 +35,7 @@ class GroupActivityDetailsScene extends Component {
   }
 
   render() {
-    const { groupsContainer, button, groupRow, rowItem } = styles;
+    const { groupsContainer, groupRow, rowItem } = styles;
     const { subtype, groups } = this.props.navigation.state.params;
     return (
       <Container>
