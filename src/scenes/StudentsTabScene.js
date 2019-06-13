@@ -34,12 +34,10 @@ class StudentsTabScene extends React.PureComponent {
       newGroupDialogOpen: false,
       newGroupName: '',
       error: false,
-      errorMsg: 'please entrer a group name'
-
+      errorMsg: 'please entrer a group name',
       editGroupDialogOpen: false,
       editGroupName: '',
       editGroupUID: null
-
     };
     this.onCancel = this.onCancel.bind(this);
     this.onPressAddToGroup = this.onPressAddToGroup.bind(this);
@@ -57,13 +55,10 @@ class StudentsTabScene extends React.PureComponent {
     this.setState({
       newGroupDialogOpen: false,
       newGroupName: '',
-
-      errorMsg: ''
-
+      errorMsg: '',
       editGroupDialogOpen: false,
       editGroupName: '',
       editGroupUID: null
-
     });
   }
 
@@ -156,10 +151,6 @@ class StudentsTabScene extends React.PureComponent {
                 ? this.onCreateNewGroup()
                 : this.setState({ error: true })
             }
-            onPress={() => {
-              createNewGroup(this.state.newGroupName);
-              this.onCancel();
-            }}
           />
         </Dialog.Container>
         <Dialog.Container visible={this.state.editGroupDialogOpen} {...reactNativeModalProps}>
