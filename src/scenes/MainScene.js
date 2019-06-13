@@ -23,7 +23,7 @@ class MainScene extends React.PureComponent {
     const tutorUID = firebase.auth().currentUser.uid;
     readDB(tutorUID, this);
   }
-  
+
   render() {
     return (
       <Container style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
