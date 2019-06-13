@@ -146,11 +146,12 @@ class StudentsTabScene extends React.PureComponent {
           <Dialog.Button label="ביטול" onPress={this.onCancel} />
           <Dialog.Button
             label="אישור"
-            onPress={() =>
-              this.state.newGroupName !== ''
-                ? this.onCreateNewGroup()
-                : this.setState({ error: true })
-            }
+            onPress={() => {
+              if (this.state.newGroupName !== '') {
+                createNewGroup(this.state.newGroupName);
+                this.onCancel();
+              } else this.setState({ error: true });
+            }}
           />
         </Dialog.Container>
         <Dialog.Container visible={this.state.editGroupDialogOpen} {...reactNativeModalProps}>
