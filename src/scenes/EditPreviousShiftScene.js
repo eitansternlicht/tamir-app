@@ -14,7 +14,11 @@ class EditPreviousShiftScene extends React.Component {
       title: moment(navigation.state.params.day).format('DD/MM/YYYY'),
       headerRight: (
         <Button
-          disabled={!navigation.getParam('startTime') || !navigation.getParam('endTime')}
+          disabled={
+            !navigation.getParam('startTime') ||
+            !navigation.getParam('endTime') ||
+            navigation.getParam('startTime') > navigation.getParam('endTime')
+          }
           onPress={navigation.state.params.onSave}
           title="שמור"
         />

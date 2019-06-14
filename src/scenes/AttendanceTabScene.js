@@ -121,7 +121,13 @@ class AttendanceTabScene extends React.Component {
         </Content>
 
         <Footer>
-          <Button onPress={this.onSave} disabled={!this.state.startTime || !this.state.endTime}>
+          <Button
+            onPress={this.onSave}
+            disabled={
+              !this.state.startTime ||
+              !this.state.endTime ||
+              this.state.startTime > this.state.endTime
+            }>
             {this.state.saveLoading ? <Spinner /> : <Text>שמור</Text>}
           </Button>
         </Footer>

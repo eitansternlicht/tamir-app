@@ -29,7 +29,8 @@ class ShiftEditor extends React.Component {
     this.showEndTimePicker = this.showEndTimePicker.bind(this);
     this.hideEndTimePicker = this.hideEndTimePicker.bind(this);
     this.hideStartTimePicker = this.hideStartTimePicker.bind(this);
-
+    this.handleStartTimePicked = this.handleStartTimePicked.bind(this);
+    this.handleEndTimePicked = this.handleEndTimePicked.bind(this);
     this.state = {
       startTimePickerOpen: false,
       endTimePickerOpen: false
@@ -68,7 +69,9 @@ class ShiftEditor extends React.Component {
       return (
         <TouchableOpacity
           style={{ flexDirection: 'row' }}
-          onPress={startTime ? this.showStartTimePicker : this.showEndTimePicker}>
+          onPress={() =>
+            startTime ? this.showStartTimePicker(time) : this.showEndTimePicker(time)
+          }>
           <Icon
             name="create"
             style={{ fontSize: 20, color: 'blue', paddingTop: 5, paddingRight: 5 }}
@@ -127,14 +130,16 @@ class ShiftEditor extends React.Component {
         </TouchableOpacity>
         <DateTimePicker
           mode="time"
-          isVisible={this.state.startTimePickerOpen}
-          onConfirm={this.props.handleStartTimePicked}
+          date={this.props.startTime}
+          isVisible={!!this.state.startTimePickerOpen}
+          onConfirm={this.handleStartTimePicked}
           onCancel={this.hideStartTimePicker}
         />
         <DateTimePicker
           mode="time"
-          isVisible={this.state.endTimePickerOpen}
-          onConfirm={this.props.handleEndTimePicked}
+          date={this.props.endTime}
+          isVisible={!!this.state.endTimePickerOpen}
+          onConfirm={this.handleEndTimePicked}
           onCancel={this.hideEndTimePicker}
         />
       </View>
