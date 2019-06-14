@@ -7,6 +7,7 @@ import {
 } from 'react-navigation';
 import {
   AttendanceCalendarScene,
+  EditPreviousShiftScene,
   StudentDetailsScene,
   GroupParticipantsAttendanceScene,
   GroupActivityDetailsScene,
@@ -71,6 +72,9 @@ const MainStack = createStackNavigator(
       navigationOptions: {
         title: 'נוכחות קודמת'
       }
+    },
+    EditPreviousShiftScene: {
+      screen: EditPreviousShiftScene
     },
     GroupParticipantsAttendanceScene: {
       screen: GroupParticipantsAttendanceScene

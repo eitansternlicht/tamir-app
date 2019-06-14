@@ -14,12 +14,12 @@ import { firebase } from '../utils/firebase/firebase-db';
 import { entriesToObj } from '../utils/general-utils';
 
 const rowHasChanged = (r1, r2) =>
+  r1.day !== r2.day ||
   r1.startTime.timestamp !== r2.startTime.timestamp ||
   r1.endTime.timestamp !== r2.endTime.timestamp;
 
 const AGENDA_HEADER_HEIGHT = 104;
 
-const ADD_ITEM = { addNewItem: true };
 const INITIAL_STATE = {
   monthsLoaded: {
     // '2019-04': true
@@ -75,7 +75,6 @@ class AttendanceCalendarScene extends Component {
 
   loadItems(month) {
     const date = new Date(month.timestamp);
-    console.log('eitan state', this.state);
     if (
       !this.state.monthsLoaded[formatYearAndMonth(date)] &&
       new Date().getTime() >= month.timestamp
@@ -124,8 +123,7 @@ class AttendanceCalendarScene extends Component {
               ...prevState.attendanceDays,
               ...firebaseAttendanceDays
             };
-            console.log('eitan attendanceDays', attendanceDays);
-
+            // console.log('eitan attendanceDays', attendanceDays);
             return {
               monthsLoaded: { ...prevState.monthsLoaded, [formatYearAndMonth(date)]: true },
               attendanceDays
@@ -135,13 +133,37 @@ class AttendanceCalendarScene extends Component {
     }
   }
 
-  renderAddNewItem = () => {
+  renderAddNewItem = (dayOrXDate, uid) => {
+    // console.log('eitan uid', uid);
+    // console.log('eitan dayOrXDate', dayOrXDate);
+    // if (!dayOrXDate) console.log('eitan NOW');
+    const day = uid ? dayOrXDate : dayOrXDate.toDate();
+    // console.log('eitan day', day);
+
     return (
       <Container style={styles.containerAddNewItem}>
-        <Button transparent iconRight style={{ alignSelf: 'flex-end', paddingTop: 10 }}>
-          <Text>הוספת משמרת</Text>
-          <Icon type="MaterialIcons" name="add-circle" />
-        </Button>
+        {new Date() >= day ? (
+          <Button
+            onPress={() =>
+              this.props.navigation.navigate('EditPreviousShiftScene', {
+                newShift: true,
+                uid,
+                day,
+                db: this.props.navigation.state.params.db,
+                activities: [],
+                startTime: null,
+                endTime: null
+              })
+            }
+            transparent
+            iconRight
+            style={{ alignSelf: 'flex-end', paddingTop: 10 }}>
+            <Text>הוספת משמרת</Text>
+            <Icon type="MaterialIcons" name="add-circle" />
+          </Button>
+        ) : (
+          <View />
+        )}
         <Divider style={styles.dividerAddNewItem} />
       </Container>
     );
@@ -158,6 +180,7 @@ class AttendanceCalendarScene extends Component {
   );
 
   renderShift = ({ uid, day, activities, startTime, endTime, last }) => {
+    // if (!startTime || !endTime) console.log('EITAN NOW', uid);
     // console.log('eitan startTime', startTime);
     return !last ? (
       <Container style={[styles.item, { height: null }]}>
@@ -170,7 +193,7 @@ class AttendanceCalendarScene extends Component {
           <Text>{toClockRange({ startTime: startTime.toDate(), endTime: endTime.toDate() })}</Text>
           {this.renderListOfActivities(activities)}
         </Container>
-        {this.renderAddNewItem()}
+        {this.renderAddNewItem(day, uid)}
       </View>
     );
   };

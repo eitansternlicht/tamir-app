@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Alert } from 'react-native';
+import { View } from 'react-native';
 import { Fab, Icon } from 'native-base';
 import Dialog from 'react-native-dialog';
 import { FilterableList } from '../components';
@@ -100,6 +100,7 @@ class StudentsTabScene extends React.PureComponent {
 
   render() {
     const { navigation, db } = this.props;
+    console.log('eitan db', db);
     const longPressedState = navigation.getParam('longPressedState');
     const firstSelected = navigation.getParam('firstSelected');
     const reactNativeModalProps = {

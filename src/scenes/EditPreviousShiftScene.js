@@ -1,10 +1,10 @@
 import React from 'react';
-import { StyleSheet, View, Button } from 'react-native';
-import { Text, Icon, Content, Container, Footer, Spinner } from 'native-base';
+import { StyleSheet, Button } from 'react-native';
+import { Content, Container } from 'native-base';
 import { NavigationEvents } from 'react-navigation';
 import moment from 'moment';
 import { addToEndIfDoesntExistAtEnd } from '../utils/general-utils';
-import { removeTime, timeWithDay } from '../utils/date-utils';
+import { timeWithDay } from '../utils/date-utils';
 import { firebase, rnfirebase } from '../utils/firebase/firebase-db';
 import { ShiftEditor } from '../components';
 
@@ -12,7 +12,13 @@ class EditPreviousShiftScene extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
       title: moment(navigation.state.params.day).format('DD/MM/YYYY'),
-      headerRight: <Button onPress={navigation.state.params.onSave} title="שמור" />
+      headerRight: (
+        <Button
+          disabled={!navigation.getParam('startTime') || !navigation.getParam('endTime')}
+          onPress={navigation.state.params.onSave}
+          title="שמור"
+        />
+      )
     };
   };
 
@@ -79,37 +85,16 @@ class EditPreviousShiftScene extends React.Component {
           // this.resetState();
         });
     }
-    // else {
-    //   // create new
-    //   const attendanceDay = {
-    //     owners: { tutors: [firebase.auth().currentUser.uid] },
-    //     day: removeTime(new Date()), // TODO
-    //     shifts: [
-    //       {
-    //         startTime,
-    //         endTime,
-    //         activities
-    //       }
-    //     ]
-    //   };
-    //   this.setState({ saveLoading: true });
-    //   firebase
-    //     .firestore()
-    //     .collection('AttendanceDays')
-    //     .add(attendanceDay)
-    //     .then(ref => {
-    //       console.log('Document successfully created!', ref.id);
-    //       this.resetState();
-    //     });
-    // }
   }
 
   handleStartTimePicked(time) {
     this.setState({ startTime: time });
+    this.props.navigation.setParams({ startTime: time });
   }
 
   handleEndTimePicked(time) {
     this.setState({ endTime: time });
+    this.props.navigation.setParams({ endTime: time });
   }
 
   render() {

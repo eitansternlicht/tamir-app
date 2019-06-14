@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { Container, Content, Textarea, Form, Icon, Button, Body, Footer } from 'native-base';
+import { StyleSheet, Text, TouchableOpacity, Button } from 'react-native';
+import { Container, Content, Textarea, Form, Icon, Body } from 'native-base';
 import { right } from '../utils/style-utils';
 import { getStudentName } from '../utils/student/student-utils';
 
@@ -14,7 +14,8 @@ const showStudent = student => (
 class EditDiscussionDetailsScene extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
-      title: navigation.state.params.groupName
+      title: navigation.state.params.groupName,
+      headerRight: <Button onPress={navigation.state.params.onSave} title="שמור" />
     };
   };
 
@@ -23,6 +24,31 @@ class EditDiscussionDetailsScene extends Component {
     this.state = {
       comments: ''
     };
+    this.onSave = this.onSave.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.navigation.setParams({ onSave: this.onSave });
+  }
+
+  onSave() {
+    const { student, subtype, returnTo } = this.props.navigation.state.params;
+    if (student) {
+      this.props.navigation.navigate(returnTo || 'MainScene', {
+        newActivity: {
+          type: 'שיחה אישית',
+          subtype,
+          student: {
+            uid: student.studentUID,
+            fullName: getStudentName(student)
+          },
+          comments: this.state.comments
+        }
+      });
+    } else {
+      // TODO
+      console.log('No Student was Picked! This WILL BE a dialog');
+    }
   }
 
   render() {
@@ -51,30 +77,6 @@ class EditDiscussionDetailsScene extends Component {
             />
           </Form>
         </Content>
-        <Footer>
-          <Button
-            onPress={() => {
-              if (this.props.navigation.state.params.student) {
-                this.props.navigation.navigate('MainScene', {
-                  newActivity: {
-                    type: 'שיחה אישית',
-                    subtype: this.props.navigation.state.params.subtype,
-                    student: {
-                      uid: this.props.navigation.state.params.student.studentUID,
-                      fullName: getStudentName(this.props.navigation.state.params.student)
-                    },
-                    comments: this.state.comments
-                  }
-                });
-              } else {
-                // TODO
-                console.log('No Student was Picked! This WILL BE a dialog');
-              }
-            }}
-            style={styles.afterSubmit}>
-            <Text style={styles.messageTextDysplay}>שמור</Text>
-          </Button>
-        </Footer>
       </Container>
     );
   }

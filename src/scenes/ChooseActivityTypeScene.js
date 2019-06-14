@@ -45,15 +45,17 @@ class ChooseActivityTypeScene extends React.Component {
             {!categoryName ? (
               <TouchableOpacity
                 onPress={() => {
-                  const { db } = this.props.navigation.state.params;
+                  const { db, returnTo } = this.props.navigation.state.params;
                   if (groupName === 'שיחה אישית') {
                     this.props.navigation.navigate('EditDiscussionDetailsScene', {
+                      returnTo,
                       groupName,
                       subtype: title,
                       db
                     });
                   } else if (groupName === 'פעילות קבוצתית') {
                     this.props.navigation.navigate('GroupActivityDetailsScene', {
+                      returnTo,
                       subtype: title,
                       groups: Object.keys(db.Groups).map(groupUID => ({
                         uid: groupUID,

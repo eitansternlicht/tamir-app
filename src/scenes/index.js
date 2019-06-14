@@ -17,3 +17,4 @@ export * from './ManageGroupsScene';
 export * from './AttendanceTabScene';
 export * from './StudentsTabScene';
 export * from './SmsCodeConfirmScene';
+export * from './EditPreviousShiftScene';
