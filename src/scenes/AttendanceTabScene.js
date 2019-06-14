@@ -5,6 +5,7 @@ import { NavigationEvents } from 'react-navigation';
 import { addToEndIfDoesntExistAtEnd } from '../utils/general-utils';
 import { removeTime } from '../utils/date-utils';
 import { firebase } from '../utils/firebase/firebase-db';
+import { dbWithNoGroup } from '../utils/firebase/local-db';
 
 import { ShiftEditor } from '../components';
 
@@ -83,11 +84,15 @@ class AttendanceTabScene extends React.Component {
 
   render() {
     const { navigation, db } = this.props;
+    const dbWithNoGroupAdded = dbWithNoGroup(db);
     return (
       <Container style={{ padding: 10 }}>
         <Content>
           <View style={[styles.section, { marginBottom: 30 }]}>
-            <Button onPress={() => navigation.navigate('AttendanceCalendarScene')}>
+            <Button
+              onPress={() =>
+                navigation.navigate('AttendanceCalendarScene', { db: dbWithNoGroupAdded })
+              }>
               <Icon name="calendar" />
               <Text>נוכחות קודמת</Text>
             </Button>
@@ -96,7 +101,9 @@ class AttendanceTabScene extends React.Component {
             startTime={this.state.startTime}
             endTime={this.state.endTime}
             activities={this.state.activities}
-            onPressAddActivity={() => navigation.navigate('ChooseActivityTypeScene', { db })}
+            onPressAddActivity={() =>
+              navigation.navigate('ChooseActivityTypeScene', { db: dbWithNoGroupAdded })
+            }
             handleStartTimePicked={this.handleStartTimePicked}
             handleEndTimePicked={this.handleEndTimePicked}
           />
