@@ -55,7 +55,7 @@ class StudentsTabScene extends React.PureComponent {
     this.setState({
       newGroupDialogOpen: false,
       newGroupName: '',
-      errorMsg: '',
+      error: false,
       editGroupDialogOpen: false,
       editGroupName: '',
       editGroupUID: null
@@ -138,7 +138,7 @@ class StudentsTabScene extends React.PureComponent {
             }}
             placeholder="שם הקבוצה"
             value={this.state.newGroupName}
-            onChangeText={newGroupName => this.setState({ newGroupName })}
+            onChangeText={newGroupName => this.setState({ newGroupName, errorMsg: '' })}
           />
           <Dialog.Description style={{ color: 'red' }}>
             {this.state.error ? this.state.errorMsg : ''}
@@ -150,7 +150,7 @@ class StudentsTabScene extends React.PureComponent {
               if (this.state.newGroupName !== '') {
                 createNewGroup(this.state.newGroupName);
                 this.onCancel();
-              } else this.setState({ error: true });
+              } else this.setState({ error: true, errorMsg: 'please entrer a group name' });
             }}
           />
         </Dialog.Container>
