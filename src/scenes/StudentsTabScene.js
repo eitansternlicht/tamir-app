@@ -160,14 +160,19 @@ class StudentsTabScene extends React.PureComponent {
             style={{ textAlign: right }}
             placeholder="שם הקבוצה"
             value={this.state.editGroupName}
-            onChangeText={text => this.setState({ editGroupName: text })}
+            onChangeText={text => this.setState({ editGroupName: text, errorMsg: '' })}
           />
+          <Dialog.Description style={{ color: 'red' }}>
+            {this.state.error ? this.state.errorMsg : ''}
+          </Dialog.Description>
           <Dialog.Button label="ביטול" onPress={this.onCancel} />
           <Dialog.Button
             label="אישור"
             onPress={() => {
-              editGroupName(this.state.editGroupUID, this.state.editGroupName);
-              this.onCancel();
+              if (this.state.editGroupName !== '') {
+                editGroupName(this.state.editGroupUID, this.state.editGroupName);
+                this.onCancel();
+              } else this.setState({ error: true, errorMsg: 'please entrer a group name' });
             }}
           />
         </Dialog.Container>
