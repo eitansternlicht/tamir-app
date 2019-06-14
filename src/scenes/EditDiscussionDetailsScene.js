@@ -15,7 +15,13 @@ class EditDiscussionDetailsScene extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
       title: navigation.state.params.groupName,
-      headerRight: <Button onPress={navigation.state.params.onSave} title="שמור" />
+      headerRight: (
+        <Button
+          disabled={!navigation.getParam('student')}
+          onPress={navigation.state.params.onSave}
+          title="שמור"
+        />
+      )
     };
   };
 
