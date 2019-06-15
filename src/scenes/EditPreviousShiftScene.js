@@ -44,12 +44,15 @@ class EditPreviousShiftScene extends React.Component {
 
   onSave() {
     const { uid, day, newShift, db } = this.props.navigation.state.params;
+    console.log('eitan day', day);
     const { startTime, endTime, activities } = this.state;
+    console.log('eitan startTime ', startTime);
+    console.log('eitan endTime ', endTime);
+    // debugger;
     const startTimeWithDay = timeWithDay(day, startTime);
     const endTimeWithDay = timeWithDay(day, endTime);
     const attendanceDays = db.AttendanceDays;
     if (newShift) {
-      console.log('eitan new shift', this.state);
       if (uid) {
         firebase
           .firestore()
@@ -62,13 +65,23 @@ class EditPreviousShiftScene extends React.Component {
               activities
             })
           });
-        this.props.navigation.navigate('AttendanceCalendarScene', { db });
       } else {
-        // firebase
-        //   .firestore()
-        //   .collection('AttendanceDays')
-        //   .add({});
+        firebase
+          .firestore()
+          .collection('AttendanceDays')
+          .add({
+            owners: { tutors: [firebase.auth().currentUser.uid] },
+            day,
+            shifts: [
+              {
+                startTime: startTimeWithDay,
+                endTime: endTimeWithDay,
+                activities
+              }
+            ]
+          });
       }
+      this.props.navigation.navigate('AttendanceCalendarScene', { db });
     }
     // if (Object.keys(attendanceDays).length !== 0)
     else {
@@ -82,7 +95,7 @@ class EditPreviousShiftScene extends React.Component {
       firebase
         .firestore()
         .collection('AttendanceDays')
-        .doc(this.props.uid)
+        .doc(uid)
         .set(attendanceDay, { merge: true })
         .then(() => {
           console.log('Document successfully updated!', attendanceDayUID);

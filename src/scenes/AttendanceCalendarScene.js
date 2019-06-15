@@ -13,64 +13,34 @@ import {
 import { firebase } from '../utils/firebase/firebase-db';
 import { entriesToObj } from '../utils/general-utils';
 
+const AGENDA_HEADER_HEIGHT = 104;
+
 const rowHasChanged = (r1, r2) =>
   r1.day !== r2.day ||
   r1.startTime.timestamp !== r2.startTime.timestamp ||
   r1.endTime.timestamp !== r2.endTime.timestamp;
 
-const AGENDA_HEADER_HEIGHT = 104;
+const renderListOfActivities = activities =>
+  !activities || activities.length === 0 ? (
+    <View />
+  ) : (
+    <List>
+      {activities.map(activity => (
+        <ListItem key={JSON.stringify(activity)}>
+          <Text>{`${activity.type} ${activity.subtype}`}</Text>
+        </ListItem>
+      ))}
+    </List>
+  );
 
-const INITIAL_STATE = {
-  monthsLoaded: {
-    // '2019-04': true
-  },
-  // {
-  // '2019-04': {
-  //    ad
-  // }
-  // }
-  attendanceDays: {}
-  // items: {
-  //   '2019-04-09': [
-  //     {
-  //       startTime: new Date(2019, 3, 9, 8),
-  //       endTime: new Date(2019, 3, 9, 10),
-  //       activities: [
-  //         { kind: 'מפגש עם דמות להזדהות' },
-  //         { kind: 'תהליך תוכן' },
-  //         { kind: 'שיחה אישית' }
-  //       ],
-  //       height: 200
-  //     },
-  //     {
-  //       startTime: new Date(2019, 3, 9, 14),
-  //       endTime: new Date(2019, 3, 9, 16),
-  //       activities: [
-  //         { kind: 'מפגש עם דמות להזדהות' },
-  //         { kind: 'תהליך תוכן' },
-  //         { kind: 'שיחה אישית' }
-  //       ],
-  //       height: 200
-  //     },
-  //     ADD_ITEM
-  //   ],
-  //   '2019-04-10': [
-  //     {
-  //       startTime: new Date(2019, 3, 10, 8),
-  //       endTime: new Date(2019, 3, 10, 19),
-  //       activities: [{ kind: 'שיחה אישית' }],
-  //       height: 100
-  //     },
-  //     ADD_ITEM
-  //   ],
-  //   '2019-04-11': [ADD_ITEM]
-  // }
-};
 class AttendanceCalendarScene extends Component {
   constructor(props) {
     super(props);
     this.loadItems = this.loadItems.bind(this);
-    this.state = INITIAL_STATE;
+    this.state = {
+      monthsLoaded: {},
+      attendanceDays: {}
+    };
   }
 
   loadItems(month) {
@@ -123,7 +93,6 @@ class AttendanceCalendarScene extends Component {
               ...prevState.attendanceDays,
               ...firebaseAttendanceDays
             };
-            // console.log('eitan attendanceDays', attendanceDays);
             return {
               monthsLoaded: { ...prevState.monthsLoaded, [formatYearAndMonth(date)]: true },
               attendanceDays
@@ -134,17 +103,12 @@ class AttendanceCalendarScene extends Component {
   }
 
   renderAddNewItem = (dayOrXDate, uid) => {
-    // console.log('eitan uid', uid);
-    // console.log('eitan dayOrXDate', dayOrXDate);
-    // if (!dayOrXDate) console.log('eitan NOW');
     const day = uid ? dayOrXDate : dayOrXDate.toDate();
-    // console.log('eitan day', day);
-
     return (
       <Container style={styles.containerAddNewItem}>
         {new Date() >= day ? (
           <Button
-            onPress={() =>
+            onPress={() => {
               this.props.navigation.navigate('EditPreviousShiftScene', {
                 newShift: true,
                 uid,
@@ -153,8 +117,8 @@ class AttendanceCalendarScene extends Component {
                 activities: [],
                 startTime: null,
                 endTime: null
-              })
-            }
+              });
+            }}
             transparent
             iconRight
             style={{ alignSelf: 'flex-end', paddingTop: 10 }}>
@@ -169,29 +133,17 @@ class AttendanceCalendarScene extends Component {
     );
   };
 
-  renderListOfActivities = activities => (
-    <List>
-      {activities.map(activity => (
-        <ListItem key={JSON.stringify(activity)}>
-          <Text>{`${activity.type} ${activity.subtype}`}</Text>
-        </ListItem>
-      ))}
-    </List>
-  );
-
   renderShift = ({ uid, day, activities, startTime, endTime, last }) => {
-    // if (!startTime || !endTime) console.log('EITAN NOW', uid);
-    // console.log('eitan startTime', startTime);
     return !last ? (
       <Container style={[styles.item, { height: null }]}>
         <Text>{toClockRange({ startTime: startTime.toDate(), endTime: endTime.toDate() })}</Text>
-        {this.renderListOfActivities(activities)}
+        {renderListOfActivities(activities)}
       </Container>
     ) : (
       <View>
         <Container style={[styles.item, { height: null }]}>
           <Text>{toClockRange({ startTime: startTime.toDate(), endTime: endTime.toDate() })}</Text>
-          {this.renderListOfActivities(activities)}
+          {renderListOfActivities(activities)}
         </Container>
         {this.renderAddNewItem(day, uid)}
       </View>
