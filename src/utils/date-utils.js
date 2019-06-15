@@ -33,7 +33,7 @@ const timeWithDay = (day, time) =>
     day.getDate(),
     time.getHours(),
     time.getMinutes(),
-    time.getMilliseconds()
+    time.getSeconds()
   );
 
 export {
