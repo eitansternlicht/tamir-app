@@ -1,5 +1,6 @@
 import React from 'react';
 import { Container, Text, Card, Content, Form, Button } from 'native-base';
+import { Alert } from 'react-native';
 import PhoneInput from 'react-native-phone-input';
 
 class PhoneInputScene extends React.Component {
@@ -15,6 +16,7 @@ class PhoneInputScene extends React.Component {
             <Form>
               <PhoneInput
                 autoFormat
+                allowZeroAfterCountryCode
                 initialCountry="il"
                 style={{
                   padding: 15
@@ -28,10 +30,14 @@ class PhoneInputScene extends React.Component {
           <Button
             style={styles.buttonTwoStyle}
             onPress={() => {
-              // TODO: send request with phone (this.phone.getValue())
-              this.props.navigation.navigate('SmsCodeConfirmScene', {
-                phone: this.phone.getValue()
-              });
+              if (this.phone.isValidNumber()) {
+                // TODO: send request with phone (this.phone.getValue())
+                this.props.navigation.navigate('SmsCodeConfirmScene', {
+                  phone: this.phone.getValue()
+                });
+              } else {
+                Alert.alert('Please enter a valid phone number ');
+              }
             }}>
             <Text style={styles.textStyle}>Get Password By Sms</Text>
           </Button>
