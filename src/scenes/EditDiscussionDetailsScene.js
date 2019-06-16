@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity, Button } from 'react-native';
 import { Container, Content, Textarea, Form, Icon, Body } from 'native-base';
 import { right } from '../utils/style-utils';
-import { getStudentName } from '../utils/student/student-utils';
 
 const showStudent = student => (
   <Text style={styles.studentName}>
-    {student ? getStudentName(student) : 'בחירת חניך'}
+    {student ? student.fullName : 'בחירת חניך'}
     {student ? <Icon type="Entypo" size={20} name="edit" /> : <Icon name="person-add" />}
   </Text>
 );
@@ -27,8 +26,9 @@ class EditDiscussionDetailsScene extends Component {
 
   constructor(props) {
     super(props);
+    const { comments } = this.props.navigation.state.params;
     this.state = {
-      comments: ''
+      comments: comments || ''
     };
     this.onSave = this.onSave.bind(this);
   }
@@ -38,19 +38,35 @@ class EditDiscussionDetailsScene extends Component {
   }
 
   onSave() {
-    const { student, subtype, returnTo } = this.props.navigation.state.params;
+    const {
+      student,
+      subtype,
+      returnTo,
+      actionType,
+      editedActivityIndex
+    } = this.props.navigation.state.params;
     if (student) {
-      this.props.navigation.navigate(returnTo || 'MainScene', {
-        newActivity: {
-          type: 'שיחה אישית',
-          subtype,
-          student: {
-            uid: student.studentUID,
-            fullName: getStudentName(student)
+      if (actionType === 'editActivity')
+        this.props.navigation.navigate(returnTo || 'MainScene', {
+          editedActivity: {
+            type: 'שיחה אישית',
+            subtype,
+            student,
+            comments: this.state.comments
           },
-          comments: this.state.comments
-        }
-      });
+          editedActivityIndex,
+          actionType
+        });
+      else if (actionType === 'newActivity')
+        this.props.navigation.navigate(returnTo || 'MainScene', {
+          newActivity: {
+            type: 'שיחה אישית',
+            subtype,
+            student,
+            comments: this.state.comments
+          },
+          actionType
+        });
     } else {
       // TODO
       console.log('No Student was Picked! This WILL BE a dialog');

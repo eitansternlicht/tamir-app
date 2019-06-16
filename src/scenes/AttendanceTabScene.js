@@ -2,11 +2,11 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Text, Icon, Content, Container, Footer, Spinner } from 'native-base';
 import { NavigationEvents } from 'react-navigation';
+import update from 'immutability-helper';
 import { addToEndIfDoesntExistAtEnd } from '../utils/general-utils';
 import { removeTime } from '../utils/date-utils';
 import { firebase } from '../utils/firebase/firebase-db';
 import { dbWithNoGroup } from '../utils/firebase/local-db';
-
 import { ShiftEditor } from '../components';
 
 const INITIAL_STATE = {
@@ -102,20 +102,60 @@ class AttendanceTabScene extends React.Component {
             endTime={this.state.endTime}
             activities={this.state.activities}
             onPressAddActivity={() =>
-              navigation.navigate('ChooseActivityTypeScene', { db: dbWithNoGroupAdded })
+              navigation.navigate('ChooseActivityTypeScene', {
+                db: dbWithNoGroupAdded,
+                actionType: 'newActivity'
+              })
             }
+            onPressEditActivity={(
+              { type, subtype, groups, student, comments },
+              editedActivityIndex
+            ) => {
+              const actionType = 'editActivity';
+              if (type === 'שיחה אישית')
+                this.props.navigation.navigate('EditDiscussionDetailsScene', {
+                  actionType,
+                  editedActivityIndex,
+                  student,
+                  type,
+                  subtype,
+                  comments,
+                  db: dbWithNoGroupAdded
+                });
+              else if (type === 'פעילות קבוצתית')
+                this.props.navigation.navigate('GroupActivityDetailsScene', {
+                  actionType,
+                  editedActivityIndex,
+                  type,
+                  subtype,
+                  comments,
+                  groups
+                });
+            }}
             handleStartTimePicked={this.handleStartTimePicked}
             handleEndTimePicked={this.handleEndTimePicked}
           />
           <NavigationEvents
             onDidFocus={payload => {
-              if (payload.state.params && payload.state.params.newActivity)
-                this.setState(prevState => ({
-                  activities: addToEndIfDoesntExistAtEnd(
-                    payload.state.params.newActivity,
-                    prevState.activities
-                  )
-                }));
+              if (payload.state.params) {
+                if (payload.state.params.actionType === 'newActivity') {
+                  this.setState(prevState => ({
+                    activities: addToEndIfDoesntExistAtEnd(
+                      payload.state.params.newActivity,
+                      prevState.activities
+                    )
+                  }));
+                } else if (payload.state.params.actionType === 'editActivity')
+                  this.setState(prevState =>
+                    update(prevState, {
+                      activities: {
+                        [payload.state.params.editedActivityIndex]: {
+                          $set: payload.state.params.editedActivity
+                        }
+                      }
+                    })
+                  );
+              }
             }}
           />
         </Content>

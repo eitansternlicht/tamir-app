@@ -3,6 +3,7 @@ import { StyleSheet, Button } from 'react-native';
 import { Content, Container } from 'native-base';
 import { NavigationEvents } from 'react-navigation';
 import moment from 'moment';
+import update from 'immutability-helper';
 import { addToEndIfDoesntExistAtEnd } from '../utils/general-utils';
 import { timeWithDay } from '../utils/date-utils';
 import { firebase, rnfirebase } from '../utils/firebase/firebase-db';
@@ -110,32 +111,73 @@ class EditPreviousShiftScene extends React.Component {
   }
 
   render() {
-    const { db, activities, startTime, endTime } = this.props.navigation.state.params;
+    const { db } = this.props.navigation.state.params;
     return (
       <Container style={{ padding: 10 }}>
         <Content>
           <ShiftEditor
-            startTime={startTime || this.state.startTime}
-            endTime={endTime || this.state.endTime}
-            activities={activities || this.state.activities}
+            startTime={this.state.startTime}
+            endTime={this.state.endTime}
+            activities={this.state.activities}
             onPressAddActivity={() =>
               this.props.navigation.navigate('ChooseActivityTypeScene', {
                 db,
+                actionType: 'newActivity',
                 returnTo: 'EditPreviousShiftScene'
               })
             }
+            onPressEditActivity={(
+              { type, subtype, groups, student, comments },
+              editedActivityIndex
+            ) => {
+              const actionType = 'editActivity';
+              if (type === 'שיחה אישית')
+                this.props.navigation.navigate('EditDiscussionDetailsScene', {
+                  returnTo: 'EditPreviousShiftScene',
+                  actionType,
+                  editedActivityIndex,
+                  student,
+                  type,
+                  subtype,
+                  comments,
+                  db
+                });
+              else if (type === 'פעילות קבוצתית')
+                this.props.navigation.navigate('GroupActivityDetailsScene', {
+                  returnTo: 'EditPreviousShiftScene',
+                  actionType,
+                  editedActivityIndex,
+                  type,
+                  subtype,
+                  comments,
+                  groups
+                });
+            }}
             handleStartTimePicked={this.handleStartTimePicked}
             handleEndTimePicked={this.handleEndTimePicked}
           />
           <NavigationEvents
             onDidFocus={payload => {
-              if (payload.state.params && payload.state.params.newActivity)
-                this.setState(prevState => ({
-                  activities: addToEndIfDoesntExistAtEnd(
-                    payload.state.params.newActivity,
-                    prevState.activities
-                  )
-                }));
+              console.log('eitan params', payload.state.params);
+              if (payload.state.params) {
+                if (payload.state.params.actionType === 'newActivity') {
+                  this.setState(prevState => ({
+                    activities: addToEndIfDoesntExistAtEnd(
+                      payload.state.params.newActivity,
+                      prevState.activities
+                    )
+                  }));
+                } else if (payload.state.params.actionType === 'editActivity')
+                  this.setState(prevState =>
+                    update(prevState, {
+                      activities: {
+                        [payload.state.params.editedActivityIndex]: {
+                          $set: payload.state.params.editedActivity
+                        }
+                      }
+                    })
+                  );
+              }
             }}
           />
         </Content>

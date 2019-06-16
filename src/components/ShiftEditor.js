@@ -115,8 +115,10 @@ class ShiftEditor extends React.Component {
           style={{ paddingRight: 40 }}
           data={this.props.activities}
           keyExtractor={item => JSON.stringify(item)}
-          renderItem={({ item }) => (
-            <TouchableOpacity style={{ flexDirection: 'row-reverse', alignItems: 'center' }}>
+          renderItem={({ item, index }) => (
+            <TouchableOpacity
+              onPress={() => this.props.onPressEditActivity(item, index)}
+              tyle={{ flexDirection: 'row-reverse', alignItems: 'center' }}>
               <Icon name="create" style={{ fontSize: 24, color: 'blue', paddingLeft: 10 }} />
               <Text style={styles.activityListItem}>{renderActivity(item)}</Text>
             </TouchableOpacity>

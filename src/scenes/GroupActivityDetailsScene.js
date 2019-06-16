@@ -3,8 +3,6 @@ import { Container, Content, Textarea, Form, CheckBox, Icon, Title } from 'nativ
 import { View, StyleSheet, Text, Button } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const INITIAL_STATE = { comments: '' };
-
 class GroupActivityDetailsScene extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
@@ -14,7 +12,10 @@ class GroupActivityDetailsScene extends Component {
 
   constructor(props) {
     super(props);
-    this.state = INITIAL_STATE;
+    const { comments } = props.navigation.state.params;
+    this.state = {
+      comments: comments || ''
+    };
     this.onSave = this.onSave.bind(this);
   }
 
@@ -23,15 +24,36 @@ class GroupActivityDetailsScene extends Component {
   }
 
   onSave() {
-    const { subtype, groups, returnTo } = this.props.navigation.state.params;
-    this.props.navigation.navigate(returnTo || 'MainScene', {
-      newActivity: {
-        type: 'פעילות קבוצתית',
-        subtype,
-        comments: this.state.comments,
-        groups
-      }
-    });
+    const {
+      subtype,
+      groups,
+      returnTo,
+      actionType,
+      editedActivityIndex
+    } = this.props.navigation.state.params;
+    console.log('eitannnn', subtype, groups, returnTo, actionType, this.state.comments);
+    if (actionType === 'newActivity')
+      this.props.navigation.navigate(returnTo || 'MainScene', {
+        newActivity: {
+          type: 'פעילות קבוצתית',
+          subtype,
+          comments: this.state.comments,
+          groups
+        },
+        actionType
+      });
+    else if (actionType === 'editActivity') {
+      this.props.navigation.navigate(returnTo || 'MainScene', {
+        editedActivity: {
+          type: 'פעילות קבוצתית',
+          subtype,
+          comments: this.state.comments,
+          groups
+        },
+        actionType,
+        editedActivityIndex
+      });
+    }
   }
 
   render() {
@@ -74,7 +96,14 @@ class GroupActivityDetailsScene extends Component {
                   <Text style={rowItem}>{groupName}</Text>
                 </TouchableOpacity>
                 {attended ? (
-                  <TouchableOpacity style={{ flexDirection: 'row-reverse' }}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      this.props.navigation.navigate('GroupParticipantsAttendanceScene', {
+                        groups,
+                        index
+                      });
+                    }}
+                    style={{ flexDirection: 'row-reverse' }}>
                     <Text>{groupName}: </Text>
                     <Text>
                       חניכים {participants.filter(({ attended }) => attended).length}/
