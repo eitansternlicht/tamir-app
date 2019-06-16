@@ -69,24 +69,33 @@ const toState = (collection, snapshot, prevState) => {
 };
 
 const readDB = (uid, that) => {
-  COLLECTIONS.forEach(collection =>
-    collection === 'AttendanceDays'
-      ? firebase
-          .firestore()
-          .collection(collection)
-          .where('owners.tutors', 'array-contains', uid)
-          .where('day', '==', removeTime(new Date()))
-          .onSnapshot(snapshot =>
-            that.setState(prevState => toState(collection, snapshot, prevState))
-          )
-      : firebase
-          .firestore()
-          .collection(collection)
-          .where('owners.tutors', 'array-contains', uid)
-          .onSnapshot(snapshot =>
-            that.setState(prevState => toState(collection, snapshot, prevState))
-          )
-  );
+  COLLECTIONS.forEach(collection => {
+    if (collection === 'AttendanceDays')
+      firebase
+        .firestore()
+        .collection(collection)
+        .where('owners.tutors', 'array-contains', uid)
+        .where('day', '==', removeTime(new Date()))
+        .onSnapshot(snapshot =>
+          that.setState(prevState => toState(collection, snapshot, prevState))
+        );
+    else if (collection === 'Students')
+      firebase
+        .firestore()
+        .collection(collection)
+        .where('owners.tutors', 'array-contains', { uid, studentStatus: 'normal' })
+        .onSnapshot(snapshot =>
+          that.setState(prevState => toState(collection, snapshot, prevState))
+        );
+    else
+      firebase
+        .firestore()
+        .collection(collection)
+        .where('owners.tutors', 'array-contains', uid)
+        .onSnapshot(snapshot =>
+          that.setState(prevState => toState(collection, snapshot, prevState))
+        );
+  });
 };
 
 const updateDoc = (collection, uid, obj) =>

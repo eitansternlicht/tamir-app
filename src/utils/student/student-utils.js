@@ -49,7 +49,7 @@ const toFlatGroups = groups =>
         }))
       )
     )
-    .reduce((acc, curr) => acc.concat(curr));
+    .reduce((acc, curr) => acc.concat(curr), []);
 
 const toFlatStudents = students =>
   Object.keys(students).map(studentUID => ({ ...students[studentUID], studentUID }));
