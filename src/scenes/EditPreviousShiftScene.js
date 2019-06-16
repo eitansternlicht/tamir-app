@@ -28,10 +28,11 @@ class EditPreviousShiftScene extends React.Component {
 
   constructor(props) {
     super(props);
+    const { activities, startTime, endTime } = props.navigation.state.params;
     this.state = {
-      activities: props.activities,
-      startTime: props.startTime,
-      endTime: props.endTime
+      activities: activities || [],
+      startTime: startTime || null,
+      endTime: endTime || null
     };
     this.handleStartTimePicked = this.handleStartTimePicked.bind(this);
     this.handleEndTimePicked = this.handleEndTimePicked.bind(this);
@@ -43,15 +44,10 @@ class EditPreviousShiftScene extends React.Component {
   }
 
   onSave() {
-    const { uid, day, newShift, db } = this.props.navigation.state.params;
-    console.log('eitan day', day);
+    const { uid, day, newShift, db, allShifts, shiftIndex } = this.props.navigation.state.params;
     const { startTime, endTime, activities } = this.state;
-    console.log('eitan startTime ', startTime);
-    console.log('eitan endTime ', endTime);
-    // debugger;
     const startTimeWithDay = timeWithDay(day, startTime);
     const endTimeWithDay = timeWithDay(day, endTime);
-    const attendanceDays = db.AttendanceDays;
     if (newShift) {
       if (uid) {
         firebase
@@ -81,27 +77,26 @@ class EditPreviousShiftScene extends React.Component {
             ]
           });
       }
-      this.props.navigation.navigate('AttendanceCalendarScene', { db });
-    }
-    // if (Object.keys(attendanceDays).length !== 0)
-    else {
-      // exists, therefore update
-      const [attendanceDayUID, attendanceDay] = Object.keys(attendanceDays).map(key => [
-        key,
-        attendanceDays[key]
-      ])[0];
-      attendanceDay.shifts.push({ startTimeWithDay, endTimeWithDay, activities });
-      this.setState({ saveLoading: true });
+    } else {
+      const allShiftsStripped = allShifts.map(
+        ({ activities: _activities, endTime: _endTime, startTime: _startTime }) => ({
+          activities: _activities,
+          endTime: _endTime,
+          startTime: _startTime
+        })
+      );
+      allShiftsStripped[shiftIndex] = {
+        startTime: startTimeWithDay,
+        endTime: endTimeWithDay,
+        activities
+      };
       firebase
         .firestore()
         .collection('AttendanceDays')
         .doc(uid)
-        .set(attendanceDay, { merge: true })
-        .then(() => {
-          console.log('Document successfully updated!', attendanceDayUID);
-          // this.resetState();
-        });
+        .set({ shifts: allShiftsStripped }, { merge: true });
     }
+    this.props.navigation.navigate('AttendanceCalendarScene', { db });
   }
 
   handleStartTimePicked(time) {
@@ -115,14 +110,14 @@ class EditPreviousShiftScene extends React.Component {
   }
 
   render() {
-    const { db } = this.props.navigation.state.params;
+    const { db, activities, startTime, endTime } = this.props.navigation.state.params;
     return (
       <Container style={{ padding: 10 }}>
         <Content>
           <ShiftEditor
-            startTime={this.state.startTime}
-            endTime={this.state.endTime}
-            activities={this.state.activities}
+            startTime={startTime || this.state.startTime}
+            endTime={endTime || this.state.endTime}
+            activities={activities || this.state.activities}
             onPressAddActivity={() =>
               this.props.navigation.navigate('ChooseActivityTypeScene', {
                 db,

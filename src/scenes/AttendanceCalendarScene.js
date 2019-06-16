@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Container, Content, Icon, Text, List, ListItem, Button } from 'native-base';
 import { Agenda } from 'react-native-calendars';
-import { StyleSheet, Dimensions, View } from 'react-native';
+import { StyleSheet, Dimensions, View, TouchableOpacity } from 'react-native';
 import { Divider } from 'react-native-elements';
+import moment from 'moment';
 import {
   formatDate,
   formatYearAndMonth,
@@ -37,10 +38,36 @@ class AttendanceCalendarScene extends Component {
   constructor(props) {
     super(props);
     this.loadItems = this.loadItems.bind(this);
+    this.onPressEditShift = this.onPressEditShift.bind(this);
     this.state = {
       monthsLoaded: {},
       attendanceDays: {}
     };
+  }
+
+  onPressEditShift({ startTime, endTime, activities, day, uid }) {
+    const allShifts = this.state.attendanceDays[moment(day).format('YYYY-MM-DD')];
+
+    const shiftIndex = allShifts
+      .map(({ startTime: startTimeS, endTime: endTimeS, activities: activitiesS }, index) => {
+        return startTime.isEqual(startTimeS) &&
+          endTime.isEqual(endTimeS) &&
+          activities === activitiesS
+          ? index
+          : -1;
+      })
+      .filter(index => index !== -1)[0];
+    this.props.navigation.navigate('EditPreviousShiftScene', {
+      newShift: false,
+      uid,
+      day,
+      db: this.props.navigation.state.params.db,
+      allShifts,
+      shiftIndex,
+      activities,
+      startTime: startTime.toDate(),
+      endTime: endTime.toDate()
+    });
   }
 
   loadItems(month) {
@@ -133,22 +160,25 @@ class AttendanceCalendarScene extends Component {
     );
   };
 
-  renderShift = ({ uid, day, activities, startTime, endTime, last }) => {
-    return !last ? (
-      <Container style={[styles.item, { height: null }]}>
+  renderShift = ({ uid, day, activities, startTime, endTime, last }) =>
+    !last ? (
+      <TouchableOpacity
+        onPress={() => this.onPressEditShift({ startTime, endTime, activities, day, uid })}
+        style={[styles.item, { height: null }]}>
         <Text>{toClockRange({ startTime: startTime.toDate(), endTime: endTime.toDate() })}</Text>
         {renderListOfActivities(activities)}
-      </Container>
+      </TouchableOpacity>
     ) : (
       <View>
-        <Container style={[styles.item, { height: null }]}>
+        <TouchableOpacity
+          onPress={() => this.onPressEditShift({ startTime, endTime, activities, day, uid })}
+          style={[styles.item, { height: null }]}>
           <Text>{toClockRange({ startTime: startTime.toDate(), endTime: endTime.toDate() })}</Text>
           {renderListOfActivities(activities)}
-        </Container>
+        </TouchableOpacity>
         {this.renderAddNewItem(day, uid)}
       </View>
     );
-  };
 
   render() {
     return (
