@@ -72,6 +72,7 @@ class AttendanceTabScene extends React.Component {
 
   resetState() {
     this.setState(INITIAL_STATE);
+    this.props.navigation.setParams({ actionType: undefined });
   }
 
   handleStartTimePicked(time) {
