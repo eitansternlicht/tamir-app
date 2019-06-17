@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, Alert } from 'react-native';
 import { Fab, Icon } from 'native-base';
 import Dialog from 'react-native-dialog';
 import { FilterableList } from '../components';
@@ -128,7 +128,23 @@ class StudentsTabScene extends React.PureComponent {
           deleteCategory={deleteGroup}
           onCancel={this.onCancel}
         />
-        <Fab position="bottomLeft" onPress={() => this.setState({ newGroupDialogOpen: true })}>
+        <Fab
+          position="bottomLeft"
+          onPress={() =>
+            Alert.alert(
+              undefined,
+              undefined,
+              [
+                { text: 'הוספת חניך חדש', onPress: undefined },
+                {
+                  text: 'הוספת קבוצה חדשה',
+                  onPress: () => this.setState({ newGroupDialogOpen: true })
+                },
+                { text: 'ביטול', style: 'cancel' }
+              ],
+              { cancelable: true }
+            )
+          }>
           <Icon type="AntDesign" name="plus" />
         </Fab>
         <Dialog.Container visible={this.state.newGroupDialogOpen} {...reactNativeModalProps}>
