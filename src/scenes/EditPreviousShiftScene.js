@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Button } from 'react-native';
-import { Content, Container } from 'native-base';
+import { Content, Container, Button as NBButton, Text, View } from 'native-base';
 import { NavigationEvents } from 'react-navigation';
 import moment from 'moment';
 import update from 'immutability-helper';
@@ -111,10 +111,35 @@ class EditPreviousShiftScene extends React.Component {
   }
 
   render() {
-    const { db } = this.props.navigation.state.params;
+    const { db, newShift, uid, allShifts, shiftIndex } = this.props.navigation.state.params;
     return (
       <Container style={{ padding: 10 }}>
         <Content>
+          {!newShift ? (
+            <NBButton
+              onPress={() => {
+                const allShiftsStripped = allShifts.map(
+                  ({ activities: _activities, endTime: _endTime, startTime: _startTime }) => ({
+                    activities: _activities,
+                    endTime: _endTime,
+                    startTime: _startTime
+                  })
+                );
+                delete allShiftsStripped[shiftIndex];
+                firebase
+                  .firestore()
+                  .collection('AttendanceDays')
+                  .doc(uid)
+                  .set({ shifts: allShiftsStripped }, { merge: true });
+                this.props.navigation.navigate('AttendanceCalendarScene', { db });
+              }}
+              danger
+              style={{ alignSelf: 'flex-end', marginBottom: 30 }}>
+              <Text>מחיקת נוכחות</Text>
+            </NBButton>
+          ) : (
+            <View />
+          )}
           <ShiftEditor
             startTime={this.state.startTime}
             endTime={this.state.endTime}
