@@ -1,6 +1,15 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, TouchableOpacity, Button } from 'react-native';
-import { Container, Content, Textarea, Form, Icon, Body } from 'native-base';
+import { StyleSheet, TouchableOpacity, Button, View } from 'react-native';
+import {
+  Container,
+  Content,
+  Textarea,
+  Form,
+  Icon,
+  Body,
+  Button as NBButton,
+  Text
+} from 'native-base';
 import { right } from '../utils/style-utils';
 
 const showStudent = student => (
@@ -55,7 +64,7 @@ class EditDiscussionDetailsScene extends Component {
             comments: this.state.comments
           },
           editedActivityIndex,
-          actionType
+          actionType: 'deleteActivity'
         });
       else if (actionType === 'newActivity')
         this.props.navigation.navigate(returnTo || 'MainScene', {
@@ -74,9 +83,25 @@ class EditDiscussionDetailsScene extends Component {
   }
 
   render() {
+    const { returnTo, actionType, editedActivityIndex, db } = this.props.navigation.state.params;
     return (
       <Container>
         <Content padder>
+          {actionType === 'editActivity' ? (
+            <NBButton
+              onPress={() => {
+                this.props.navigation.navigate(returnTo || 'MainScene', {
+                  editedActivityIndex,
+                  actionType: 'deleteActivity'
+                });
+              }}
+              danger
+              style={{ alignSelf: 'flex-end', marginBottom: 30 }}>
+              <Text>מחיקת פעילות</Text>
+            </NBButton>
+          ) : (
+            <View />
+          )}
           <Text style={styles.titleName}>{this.props.navigation.state.params.subtype}</Text>
           <Body style={styles.messageBox}>
             <TouchableOpacity

@@ -139,20 +139,28 @@ class AttendanceTabScene extends React.Component {
           <NavigationEvents
             onDidFocus={payload => {
               if (payload.state.params) {
-                if (payload.state.params.actionType === 'newActivity') {
+                if (payload.state.params.actionType === 'newActivity')
                   this.setState(prevState => ({
                     activities: addToEndIfDoesntExistAtEnd(
                       payload.state.params.newActivity,
                       prevState.activities
                     )
                   }));
-                } else if (payload.state.params.actionType === 'editActivity')
+                else if (payload.state.params.actionType === 'editActivity')
                   this.setState(prevState =>
                     update(prevState, {
                       activities: {
                         [payload.state.params.editedActivityIndex]: {
                           $set: payload.state.params.editedActivity
                         }
+                      }
+                    })
+                  );
+                else if (payload.state.params.actionType === 'deleteActivity')
+                  this.setState(prevState =>
+                    update(prevState, {
+                      activities: {
+                        $splice: [[payload.state.params.editedActivityIndex, 1]]
                       }
                     })
                   );

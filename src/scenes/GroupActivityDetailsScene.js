@@ -1,6 +1,16 @@
 import React, { Component } from 'react';
-import { Container, Content, Textarea, Form, CheckBox, Icon, Title } from 'native-base';
-import { View, StyleSheet, Text, Button } from 'react-native';
+import {
+  Container,
+  Content,
+  Textarea,
+  Form,
+  CheckBox,
+  Icon,
+  Title,
+  Button as NBButton,
+  Text
+} from 'native-base';
+import { View, StyleSheet, Button } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 class GroupActivityDetailsScene extends Component {
@@ -58,10 +68,31 @@ class GroupActivityDetailsScene extends Component {
 
   render() {
     const { groupsContainer, groupRow, rowItem } = styles;
-    const { subtype, groups } = this.props.navigation.state.params;
+    const {
+      subtype,
+      groups,
+      actionType,
+      returnTo,
+      editedActivityIndex
+    } = this.props.navigation.state.params;
     return (
       <Container>
         <Content padder>
+          {actionType === 'editActivity' ? (
+            <NBButton
+              onPress={() => {
+                this.props.navigation.navigate(returnTo || 'MainScene', {
+                  editedActivityIndex,
+                  actionType: 'deleteActivity'
+                });
+              }}
+              danger
+              style={{ alignSelf: 'flex-end', marginBottom: 30 }}>
+              <Text>מחיקת פעילות</Text>
+            </NBButton>
+          ) : (
+            <View />
+          )}
           <Title style={{ color: 'black' }}>{subtype}</Title>
           <Form style={{ padding: 10 }}>
             <Textarea
