@@ -50,6 +50,10 @@ class SmsCodeConfirmScene extends React.Component {
                     .then(() => {
                       console.log('signed in with uid', firebase.auth().currentUser.uid);
                       this.props.navigation.navigate('MainScene');
+                    })
+                    .catch(error => {
+                      Alert.alert('please check your connection');
+                      this.setState({ loading: false, code: '' });
                     });
                 } else {
                   Alert.alert('Please enter the given code');
