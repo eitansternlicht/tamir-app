@@ -35,4 +35,21 @@ const difference = (objA, objB) => {
   return result;
 };
 
-export { entriesToObj, zip, addToEndIfDoesntExistAtEnd, groupBy, removeKeys, difference };
+const removeNulls = obj => removeKeys(Object.keys(obj).filter(key => obj[key] === null), obj);
+
+const removeKeysIf = (pred, obj) => entriesToObj(Object.entries(obj).filter(([key]) => pred(key)));
+
+// eslint-disable-next-line no-prototype-builtins
+const exists = obj => field => obj.hasOwnProperty(field);
+
+export {
+  entriesToObj,
+  zip,
+  addToEndIfDoesntExistAtEnd,
+  groupBy,
+  removeKeys,
+  difference,
+  removeNulls,
+  removeKeysIf,
+  exists
+};

@@ -4,6 +4,7 @@ import { Container, Tabs, Tab, Button, Icon, Spinner, Text } from 'native-base';
 import { appName } from '../../app.json';
 import { AttendanceTabScene, StudentsTabScene } from '.';
 import { firebase, readDB } from '../utils/firebase/firebase-db';
+import { removeParticipantsThatDontExist } from '../utils/firebase/local-db';
 
 class MainScene extends React.PureComponent {
   static navigationOptions = ({ navigation }) => {
@@ -43,9 +44,10 @@ class MainScene extends React.PureComponent {
   }
 
   render() {
+    const { loadedAll, AttendanceDays, Groups, Students } = this.state;
     return (
       <Container style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        {!this.state.loadedAll ? (
+        {!loadedAll ? (
           <Spinner />
         ) : (
           <Tabs>
@@ -53,9 +55,9 @@ class MainScene extends React.PureComponent {
               <StudentsTabScene
                 navigation={this.props.navigation}
                 db={{
-                  AttendanceDays: this.state.AttendanceDays,
-                  Groups: this.state.Groups,
-                  Students: this.state.Students
+                  AttendanceDays,
+                  Groups: removeParticipantsThatDontExist(Groups, Students),
+                  Students
                 }}
               />
             </Tab>
@@ -63,9 +65,9 @@ class MainScene extends React.PureComponent {
               <AttendanceTabScene
                 navigation={this.props.navigation}
                 db={{
-                  AttendanceDays: this.state.AttendanceDays,
-                  Groups: this.state.Groups,
-                  Students: this.state.Students
+                  AttendanceDays,
+                  Groups: removeParticipantsThatDontExist(Groups, Students),
+                  Students
                 }}
               />
             </Tab>

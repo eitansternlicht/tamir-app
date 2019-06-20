@@ -1,5 +1,5 @@
 import update from 'immutability-helper';
-import { entriesToObj, groupBy, difference } from '../general-utils';
+import { entriesToObj, groupBy, difference, removeKeysIf } from '../general-utils';
 
 const groupsWithStudentDetails = db =>
   update(db.Groups, {
@@ -13,7 +13,7 @@ const groupsWithStudentDetails = db =>
                 studentUID,
                 update(db.Groups[groupUID].participants[studentUID], {
                   $set: db.Students[studentUID]
-                })
+                }).filter(student => student !== undefined)
               ])
             )
           }
@@ -21,6 +21,17 @@ const groupsWithStudentDetails = db =>
       ])
     )
   });
+
+const removeParticipantsThatDontExist = (groups, students) =>
+  entriesToObj(
+    Object.entries(groups).map(([guid, groupData]) => [
+      guid,
+      {
+        ...groupData,
+        participants: removeKeysIf(studentUID => students[studentUID], groupData.participants)
+      }
+    ])
+  );
 
 const studentUIDsInGroups = groups =>
   Object.values(groups)
@@ -49,4 +60,10 @@ const dbWithNoGroup = db => {
   };
 };
 
-export { groupsWithStudentDetails, studentUIDsInGroups, selectedStudentsEntries, dbWithNoGroup };
+export {
+  groupsWithStudentDetails,
+  studentUIDsInGroups,
+  selectedStudentsEntries,
+  dbWithNoGroup,
+  removeParticipantsThatDontExist
+};
