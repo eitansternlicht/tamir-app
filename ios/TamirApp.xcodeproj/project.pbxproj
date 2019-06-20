@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -65,6 +64,12 @@
 		F2776385085646FC81896A18 /* rubicon-icon-font.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CC79A52AE86840BCB04283BF /* rubicon-icon-font.ttf */; };
 		F4CAA2E7935E47ADA0943502 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3A81B980BA474C9F9247E6F6 /* Foundation.ttf */; };
 		F889F48758664E4AB8DED07F /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 002BFDEAD7B4499682B755CE /* libRNVectorIcons.a */; };
+		1FD8938458624D21A4510F86 /* Assistant-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1E9F7F0B318747D5A6E95A97 /* Assistant-Bold.otf */; };
+		3AF61FADBE234F35B8AB123F /* Assistant-ExtraBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 76D21C1E42E64D76BA19F775 /* Assistant-ExtraBold.otf */; };
+		704C2ACAF80841C1B763467E /* Assistant-ExtraLight.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5298064F8484440EA1668855 /* Assistant-ExtraLight.otf */; };
+		AEB28C1CF7624964A0A37190 /* Assistant-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = D22B5F0F60F44A8AAC1543B6 /* Assistant-Light.otf */; };
+		96B5AC2504A94EFF88741C6C /* Assistant-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 36190BB75C7D43D7A8635031 /* Assistant-Regular.otf */; };
+		9FD0CD08B1D742A1A902E57D /* Assistant-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5CBB2F5A38B84237A5C4F383 /* Assistant-SemiBold.otf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -453,6 +458,12 @@
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		FD39EFCF2FEF47CEA73D9FC4 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
+		1E9F7F0B318747D5A6E95A97 /* Assistant-Bold.otf */ = {isa = PBXFileReference; name = "Assistant-Bold.otf"; path = "../assets/fonts/Assistant-Bold.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		76D21C1E42E64D76BA19F775 /* Assistant-ExtraBold.otf */ = {isa = PBXFileReference; name = "Assistant-ExtraBold.otf"; path = "../assets/fonts/Assistant-ExtraBold.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		5298064F8484440EA1668855 /* Assistant-ExtraLight.otf */ = {isa = PBXFileReference; name = "Assistant-ExtraLight.otf"; path = "../assets/fonts/Assistant-ExtraLight.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		D22B5F0F60F44A8AAC1543B6 /* Assistant-Light.otf */ = {isa = PBXFileReference; name = "Assistant-Light.otf"; path = "../assets/fonts/Assistant-Light.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		36190BB75C7D43D7A8635031 /* Assistant-Regular.otf */ = {isa = PBXFileReference; name = "Assistant-Regular.otf"; path = "../assets/fonts/Assistant-Regular.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		5CBB2F5A38B84237A5C4F383 /* Assistant-SemiBold.otf */ = {isa = PBXFileReference; name = "Assistant-SemiBold.otf"; path = "../assets/fonts/Assistant-SemiBold.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -680,6 +691,12 @@
 				431EDF74547E4419A3162A21 /* Octicons.ttf */,
 				88C2BDECF67740D4B2467692 /* SimpleLineIcons.ttf */,
 				DC90EC1B000E4D2AA477C98B /* Zocial.ttf */,
+				1E9F7F0B318747D5A6E95A97 /* Assistant-Bold.otf */,
+				76D21C1E42E64D76BA19F775 /* Assistant-ExtraBold.otf */,
+				5298064F8484440EA1668855 /* Assistant-ExtraLight.otf */,
+				D22B5F0F60F44A8AAC1543B6 /* Assistant-Light.otf */,
+				36190BB75C7D43D7A8635031 /* Assistant-Regular.otf */,
+				5CBB2F5A38B84237A5C4F383 /* Assistant-SemiBold.otf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1342,6 +1359,12 @@
 				CC3B8F22B898483E89033631 /* SimpleLineIcons.ttf in Resources */,
 				3DDA7B085E684D45AA4F6C7D /* Zocial.ttf in Resources */,
 				59093E94228863BE00D0AB84 /* GoogleService-Info.plist in Resources */,
+				1FD8938458624D21A4510F86 /* Assistant-Bold.otf in Resources */,
+				3AF61FADBE234F35B8AB123F /* Assistant-ExtraBold.otf in Resources */,
+				704C2ACAF80841C1B763467E /* Assistant-ExtraLight.otf in Resources */,
+				AEB28C1CF7624964A0A37190 /* Assistant-Light.otf in Resources */,
+				96B5AC2504A94EFF88741C6C /* Assistant-Regular.otf in Resources */,
+				9FD0CD08B1D742A1A902E57D /* Assistant-SemiBold.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
