@@ -183,7 +183,6 @@ class EditPreviousShiftScene extends React.Component {
           />
           <NavigationEvents
             onDidFocus={payload => {
-              console.log('eitan params', payload.state.params);
               if (payload.state.params) {
                 if (payload.state.params.actionType === 'newActivity')
                   this.setState(prevState => ({

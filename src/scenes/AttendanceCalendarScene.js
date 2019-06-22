@@ -65,8 +65,8 @@ class AttendanceCalendarScene extends Component {
       allShifts,
       shiftIndex,
       activities,
-      startTime: startTime.toDate(),
-      endTime: endTime.toDate()
+      startTime,
+      endTime
     });
   }
 

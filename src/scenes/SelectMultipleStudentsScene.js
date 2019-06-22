@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from 'react-native';
-import { Container, Spinner } from 'native-base';
+import { Container } from 'native-base';
 import { FilterableList } from '../components';
 import { firebase } from '../utils/firebase/firebase-db';
 import { entriesToObj } from '../utils/general-utils';

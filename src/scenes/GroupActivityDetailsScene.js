@@ -41,7 +41,6 @@ class GroupActivityDetailsScene extends Component {
       actionType,
       editedActivityIndex
     } = this.props.navigation.state.params;
-    console.log('eitannnn', subtype, groups, returnTo, actionType, this.state.comments);
     if (actionType === 'newActivity')
       this.props.navigation.navigate(returnTo || 'MainScene', {
         newActivity: {
