@@ -11,7 +11,7 @@ import {
   StudentDetailsScene,
   GroupParticipantsAttendanceScene,
   GroupActivityDetailsScene,
-  EditStudentDetailsScene,
+  StudentFormScene,
   PotentialStudentsScene,
   SelectMultipleStudentsScene,
   // ManageGroupParticipantsScene,
@@ -34,10 +34,10 @@ const MainStack = createStackNavigator(
     StudentDetailsScene: {
       screen: StudentDetailsScene
     },
-    EditStudentDetailsScene: {
-      screen: EditStudentDetailsScene,
+    StudentFormScene: {
+      screen: StudentFormScene,
       navigationOptions: {
-        title: 'עריכת חניך'
+        title: 'פרטי חניך'
       }
     },
     ManageGroupsScene: {
@@ -93,6 +93,28 @@ const MainStack = createStackNavigator(
     headerMode: 'none'
   }
 );
+const PotentialStudentsStack = createStackNavigator({
+  PotentialStudentsScene: {
+    screen: PotentialStudentsScene,
+    navigationOptions: {
+      title: 'חניכים פוטנציאלים'
+    }
+  },
+  StudentDetailsScene: {
+    screen: StudentDetailsScene,
+    navigationOptions: {
+      title: 'פרטי החניך'
+    }
+  }
+});
+const SettingsStack = createStackNavigator({
+  SettingsScene: {
+    screen: SettingsScene,
+    navigationOptions: {
+      title: 'הגדרות'
+    }
+  }
+});
 
 const AppWithDrawer = createDrawerNavigator(
   {
@@ -102,13 +124,22 @@ const AppWithDrawer = createDrawerNavigator(
         title: 'חזרה לבית'
       }
     },
-    SettingsScene: {
-      screen: SettingsScene
+    SettingsStack: {
+      screen: SettingsStack,
+      navigationOptions: {
+        title: 'הגדרות'
+      }
+    },
+    PotentialStudentsStack: {
+      screen: PotentialStudentsStack,
+      navigationOptions: {
+        title: 'חניכים פוטנציאלים'
+      }
     }
   },
   {
     initialRouteName: 'MainStack',
-    order: ['MainStack', 'SettingsScene'],
+    order: ['MainStack', 'PotentialStudentsStack', 'SettingsStack'],
     drawerPosition: 'right'
   }
 );

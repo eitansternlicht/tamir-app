@@ -100,7 +100,6 @@ class StudentsTabScene extends React.PureComponent {
 
   render() {
     const { navigation, db } = this.props;
-    console.log('eitan db', db);
     const longPressedState = navigation.getParam('longPressedState');
     const firstSelected = navigation.getParam('firstSelected');
     const reactNativeModalProps = {
@@ -135,7 +134,13 @@ class StudentsTabScene extends React.PureComponent {
               undefined,
               undefined,
               [
-                { text: 'הוספת חניך חדש', onPress: undefined },
+                {
+                  text: 'הוספת חניך חדש',
+                  onPress: () =>
+                    this.props.navigation.navigate('StudentFormScene', {
+                      actionType: 'newStudent'
+                    })
+                },
                 {
                   text: 'הוספת קבוצה חדשה',
                   onPress: () => this.setState({ newGroupDialogOpen: true })

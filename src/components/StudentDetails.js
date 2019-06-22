@@ -1,15 +1,16 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { Content } from 'native-base';
-import { studentToOrderedFieldsAndValues } from '../utils/student/student-utils';
 import { right } from '../utils/style-utils';
+import { options, studentFieldsOrder, formatValue } from '../utils/student/constants';
+import { exists } from '../utils/general-utils';
 
 const StudentDetails = ({ student }) => (
   <Content style={{ flexDirection: 'column' }}>
-    {studentToOrderedFieldsAndValues(student).map(({ field, value, label }) => (
+    {studentFieldsOrder.filter(exists(student)).map(field => (
       <View key={field} style={{ flexDirection: 'row-reverse' }}>
-        <Text style={styles.fieldName}>{label}</Text>
-        <Text style={styles.fieldValues}>{value}</Text>
+        <Text style={styles.fieldName}>{options.fields[field].label}</Text>
+        <Text style={styles.fieldValues}>{formatValue(field, student[field])}</Text>
       </View>
     ))}
   </Content>

@@ -9,12 +9,9 @@ const groupsWithStudentDetails = db =>
         update(db.Groups[groupUID], {
           participants: {
             $set: entriesToObj(
-              Object.keys(db.Groups[groupUID].participants).map(studentUID => [
-                studentUID,
-                update(db.Groups[groupUID].participants[studentUID], {
-                  $set: db.Students[studentUID]
-                }).filter(student => student !== undefined)
-              ])
+              Object.entries(db.Groups[groupUID].participants)
+                .map(([studentUID]) => [studentUID, db.Students[studentUID]])
+                .filter(([, student]) => student)
             )
           }
         })
@@ -60,10 +57,18 @@ const dbWithNoGroup = db => {
   };
 };
 
+const setOwnersToStudentStatus = (tutorUID, owners, newStudentStatus) => ({
+  ...owners,
+  tutors: owners.tutors.map(({ uid, studentStatus }) =>
+    uid === tutorUID ? { uid, studentStatus: newStudentStatus } : { uid, studentStatus }
+  )
+});
+
 export {
   groupsWithStudentDetails,
   studentUIDsInGroups,
   selectedStudentsEntries,
   dbWithNoGroup,
-  removeParticipantsThatDontExist
+  removeParticipantsThatDontExist,
+  setOwnersToStudentStatus
 };

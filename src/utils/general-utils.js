@@ -35,7 +35,7 @@ const difference = (objA, objB) => {
   return result;
 };
 
-const removeNulls = obj => removeKeys(Object.keys(obj).filter(key => obj[key] === null), obj);
+const removeEmptyFields = obj => entriesToObj(Object.entries(obj).filter(([, v]) => v));
 
 const removeKeysIf = (pred, obj) => entriesToObj(Object.entries(obj).filter(([key]) => pred(key)));
 
@@ -49,7 +49,7 @@ export {
   groupBy,
   removeKeys,
   difference,
-  removeNulls,
+  removeEmptyFields,
   removeKeysIf,
   exists
 };
