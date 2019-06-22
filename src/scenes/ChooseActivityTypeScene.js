@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { Icon } from 'native-base';
+import GlobalFont from 'react-native-global-font';
 import { right } from '../utils/style-utils';
 import { getStudentName } from '../utils/student/student-utils';
 
@@ -31,6 +32,11 @@ class ChooseActivityTypeScene extends React.Component {
   constructor(props) {
     super(props);
     this.state = INITIAL_STATE;
+  }
+
+  componentDidMount() {
+    const fontName = 'Assistant-Bold';
+    GlobalFont.applyGlobal(fontName);
   }
 
   render() {
@@ -95,15 +101,18 @@ class ChooseActivityTypeScene extends React.Component {
 
 const styles = StyleSheet.create({
   searchBox: {
-    textAlign: right
+    textAlign: right,
+    fontFamily: 'Assistant-Bold'
   },
   listItem: {
     borderBottomWidth: 1,
     borderBottomColor: '#CCCCCC',
+    fontFamily: 'Assistant-Bold',
     textAlign: right
   },
   groupName: {
     fontSize: 25,
+    fontFamily: 'Assistant-Bold',
     color: '#666666',
     paddingVertical: 10,
     paddingRight: 10,
@@ -112,6 +121,7 @@ const styles = StyleSheet.create({
   },
   studentName: {
     fontSize: 18,
+    fontFamily: 'Assistant-Bold',
     paddingVertical: 10,
     paddingRight: 20,
     textAlign: right,

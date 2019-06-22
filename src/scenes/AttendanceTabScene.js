@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { Button, Text, Icon, Content, Container, Footer, Spinner } from 'native-base';
 import { NavigationEvents } from 'react-navigation';
 import update from 'immutability-helper';
+import GlobalFont from 'react-native-global-font';
 import { addToEndIfDoesntExistAtEnd } from '../utils/general-utils';
 import { removeTime } from '../utils/date-utils';
 import { firebase } from '../utils/firebase/firebase-db';

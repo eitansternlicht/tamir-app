@@ -2,11 +2,14 @@ import React from 'react';
 import { Container, Text, Card, Content, Form, Button } from 'native-base';
 import { Alert } from 'react-native';
 import PhoneInput from 'react-native-phone-input';
+import GlobalFont from 'react-native-global-font';
 import { firebase } from '../utils/firebase/firebase-db';
 
 class PhoneInputScene extends React.Component {
   componentDidMount() {
     this.phone.focus();
+    const fontName = 'Assistant-Bold';
+    GlobalFont.applyGlobal(fontName);
   }
 
   render() {

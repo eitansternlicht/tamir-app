@@ -3,6 +3,7 @@ import React from 'react';
 import { StyleSheet, FlatList, View, TouchableOpacity, Alert } from 'react-native';
 import { Icon, Item, Input, Text, Button } from 'native-base';
 import update from 'immutability-helper';
+import GlobalFont from 'react-native-global-font';
 import {
   normalizeData,
   filterBy,
@@ -52,6 +53,11 @@ class FilterableList extends React.Component {
       filteredData: normalizedData
     };
     this.onSearch = this.onSearch.bind(this);
+  }
+
+  componentDidMount() {
+    const fontName = 'Assistant-Bold';
+    GlobalFont.applyGlobal(fontName);
   }
 
   componentWillReceiveProps({ data, withCategories, multiselect, firstSelected }) {
@@ -196,7 +202,7 @@ class FilterableList extends React.Component {
                           this.props.onCancel
                         )
                       }>
-                      <Icon type="MaterialIcons" name="edit" />
+                      <Icon type="MaterialIcons" name="edit" style={{ color: '#5EC8F2' }} />
                     </Button>
                   ) : (
                     <View />

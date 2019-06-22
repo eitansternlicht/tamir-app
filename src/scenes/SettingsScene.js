@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button, Text, Container, Icon } from 'native-base';
+import { Button, Text, Container } from 'native-base';
+import GlobalFont from 'react-native-global-font';
 import { firebase } from '../utils/firebase/firebase-db';
 
 class SettingsScene extends React.Component {
@@ -13,11 +14,16 @@ class SettingsScene extends React.Component {
     };
   };
 
+  componentDidMount() {
+    const fontName = 'Assistant-Bold';
+    GlobalFont.applyGlobal(fontName);
+  }
+
   render() {
     return (
       <Container style={{ justifyContent: 'center' }}>
         <Button
-          style={{ alignSelf: 'center' }}
+          style={{ alignSelf: 'center', backgroundColor: '#5EC8F2' }}
           onPress={() =>
             firebase
               .auth()

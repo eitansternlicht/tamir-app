@@ -3,6 +3,7 @@ import { Container, Content, Icon, Text, List, ListItem, Button } from 'native-b
 import { Agenda } from 'react-native-calendars';
 import { StyleSheet, Dimensions, View, TouchableOpacity } from 'react-native';
 import { Divider } from 'react-native-elements';
+import GlobalFont from 'react-native-global-font';
 import moment from 'moment';
 import {
   formatDate,
@@ -43,6 +44,11 @@ class AttendanceCalendarScene extends Component {
       monthsLoaded: {},
       attendanceDays: {}
     };
+  }
+
+  componentDidMount() {
+    const fontName = 'Assistant-Bold';
+    GlobalFont.applyGlobal(fontName);
   }
 
   onPressEditShift({ startTime, endTime, activities, day, uid }) {
@@ -149,8 +155,8 @@ class AttendanceCalendarScene extends Component {
             transparent
             iconRight
             style={{ alignSelf: 'flex-end', paddingTop: 10 }}>
-            <Text>הוספת משמרת</Text>
-            <Icon type="MaterialIcons" name="add-circle" />
+            <Text style={{ color: '#5EC8F2' }}>הוספת משמרת</Text>
+            <Icon type="MaterialIcons" name="add-circle" style={{ color: '#38adff' }} />
           </Button>
         ) : (
           <View />

@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, View } from 'react-native';
 import { Container, Content, Button as NBButton, Text } from 'native-base';
 import { StudentDetails } from '../components';
+import GlobalFont from 'react-native-global-font';
 import { getStudentName } from '../utils/student/student-utils';
 import { removeEmptyFields } from '../utils/general-utils';
 import { setStudentStatus } from '../utils/firebase/firebase-db';
@@ -29,6 +30,11 @@ class StudentDetailsScene extends React.PureComponent {
       )
     };
   };
+
+  componentDidMount() {
+    const fontName = 'Assistant-Bold';
+    GlobalFont.applyGlobal(fontName);
+  }
 
   render() {
     const { student, previous } = this.props.navigation.state.params;

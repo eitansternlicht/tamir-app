@@ -1,6 +1,7 @@
 import React from 'react';
 import { Container, Footer, Button, Text } from 'native-base';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
+import GlobalFont from 'react-native-global-font';
 import { right } from '../utils/style-utils';
 
 class ManageGroupsScene extends React.Component {
@@ -10,6 +11,11 @@ class ManageGroupsScene extends React.Component {
       newGroupDialogOpen: false,
       groups: props.navigation.state.params.db.Groups
     };
+  }
+
+  componentDidMount() {
+    const fontName = 'Assistant-Bold';
+    GlobalFont.applyGlobal(fontName);
   }
 
   render() {

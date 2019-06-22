@@ -1,5 +1,6 @@
 import React from 'react';
 import { Icon, Fab, Button, Container } from 'native-base';
+import GlobalFont from 'react-native-global-font';
 import { FilterableList } from '../components';
 
 const selectedGroup = 'קבוצה ב׳';
@@ -18,6 +19,11 @@ class ManageGroupParticipantsScene extends React.Component {
   constructor(props) {
     super(props);
     this.state = INITIAL_STATE;
+  }
+
+  componentDidMount() {
+    const fontName = 'Assistant-Bold';
+    GlobalFont.applyGlobal(fontName);
   }
 
   renderFabIcon() {

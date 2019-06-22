@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, FlatList, TouchableOpacity, View } from 'react-native';
 import { Button, Text, Icon } from 'native-base';
 import DateTimePicker from 'react-native-modal-datetime-picker';
+import GlobalFont from 'react-native-global-font';
 import { toClockTime } from '../utils/date-utils';
 import { right } from '../utils/style-utils';
 
@@ -35,6 +36,11 @@ class ShiftEditor extends React.Component {
       startTimePickerOpen: false,
       endTimePickerOpen: false
     };
+  }
+
+  componentDidMount() {
+    const fontName = 'Assistant-Bold';
+    GlobalFont.applyGlobal(fontName);
   }
 
   showStartTimePicker() {
@@ -154,12 +160,12 @@ class ShiftEditor extends React.Component {
 const styles = StyleSheet.create({
   button: {
     backgroundColor: '#5EC8F2',
-    color: '#ffffff',
+
     fontFamily: 'Assistant-Bold'
   },
   disButton: {
     backgroundColor: '#d7d7d7',
-    color: '#787878',
+
     fontFamily: 'Assistant-Bold'
   },
   container: {

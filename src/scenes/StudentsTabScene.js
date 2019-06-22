@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Alert } from 'react-native';
 import { Fab, Icon } from 'native-base';
 import Dialog from 'react-native-dialog';
+import GlobalFont from 'react-native-global-font';
 import { FilterableList } from '../components';
 import { right } from '../utils/style-utils';
 import {
@@ -46,6 +47,8 @@ class StudentsTabScene extends React.PureComponent {
   }
 
   componentDidMount() {
+    const fontName = 'Assistant-Bold';
+    GlobalFont.applyGlobal(fontName);
     this.props.navigation.setParams({
       onPressDeleteStudents: this.onPressDeleteStudents
     });
@@ -106,8 +109,9 @@ class StudentsTabScene extends React.PureComponent {
       onBackdropPress: this.onCancel
     };
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, fontFamily: 'Assistant-Bold' }}>
         <FilterableList
+          style={{ fontFamily: 'Assistant-Bold' }}
           ref={this.filterableListRef}
           multiselect={!!longPressedState}
           noCategoryNotSelectable
@@ -128,6 +132,7 @@ class StudentsTabScene extends React.PureComponent {
           onCancel={this.onCancel}
         />
         <Fab
+         style={{ backgroundColor: '#5EC8F2' }}
           position="bottomLeft"
           onPress={() =>
             Alert.alert(
@@ -152,7 +157,10 @@ class StudentsTabScene extends React.PureComponent {
           }>
           <Icon type="AntDesign" name="plus" />
         </Fab>
-        <Dialog.Container visible={this.state.newGroupDialogOpen} {...reactNativeModalProps}>
+        <Dialog.Container
+          style={{ fontFamily: 'Assistant-Bold' }}
+          visible={this.state.newGroupDialogOpen}
+          {...reactNativeModalProps}>
           <Dialog.Title>הוספת קבוצה חדשה</Dialog.Title>
           <Dialog.Input
             style={{
@@ -176,15 +184,18 @@ class StudentsTabScene extends React.PureComponent {
             }}
           />
         </Dialog.Container>
-        <Dialog.Container visible={this.state.editGroupDialogOpen} {...reactNativeModalProps}>
-          <Dialog.Title>עריכת שם הקבוצה</Dialog.Title>
+        <Dialog.Container
+          visible={this.state.editGroupDialogOpen}
+          style={{ fontFamily: 'Assistant-Bold' }}
+          {...reactNativeModalProps}>
+          <Dialog.Title style={{ fontFamily: 'Assistant-Bold' }}>עריכת שם הקבוצה</Dialog.Title>
           <Dialog.Input
-            style={{ textAlign: right }}
+            style={{ textAlign: right, fontFamily: 'Assistant-Bold' }}
             placeholder="שם הקבוצה"
             value={this.state.editGroupName}
             onChangeText={text => this.setState({ editGroupName: text, errorMsg: '' })}
           />
-          <Dialog.Description style={{ color: 'red' }}>
+          <Dialog.Description style={{ color: 'red', fontFamily: 'Assistant-Bold' }}>
             {this.state.error ? this.state.errorMsg : ''}
           </Dialog.Description>
           <Dialog.Button label="ביטול" onPress={this.onCancel} />

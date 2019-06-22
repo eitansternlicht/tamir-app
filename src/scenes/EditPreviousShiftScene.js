@@ -4,6 +4,7 @@ import { Content, Container, Button as NBButton, Text, View } from 'native-base'
 import { NavigationEvents } from 'react-navigation';
 import moment from 'moment';
 import update from 'immutability-helper';
+import GlobalFont from 'react-native-global-font';
 import { addToEndIfDoesntExistAtEnd } from '../utils/general-utils';
 import { timeWithDay } from '../utils/date-utils';
 import { firebase, rnfirebase } from '../utils/firebase/firebase-db';
@@ -42,6 +43,8 @@ class EditPreviousShiftScene extends React.Component {
 
   componentDidMount() {
     this.props.navigation.setParams({ onSave: this.onSave });
+    const fontName = 'Assistant-Bold';
+    GlobalFont.applyGlobal(fontName);
   }
 
   onSave() {
