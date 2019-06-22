@@ -1,10 +1,16 @@
 import React from 'react';
-import { Button, Text, Container } from 'native-base';
+import { Button, Text, Container, Icon } from 'native-base';
 import { firebase } from '../utils/firebase/firebase-db';
 
 class SettingsScene extends React.Component {
-  static navigationOptions = {
-    title: 'הגדרות'
+  static navigationOptions = ({ navigation }) => {
+    return {
+      headerRight: (
+        <Button transparent onPress={() => navigation.openDrawer()}>
+          <Icon name="menu" />
+        </Button>
+      )
+    };
   };
 
   render() {
