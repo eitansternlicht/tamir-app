@@ -1,20 +1,62 @@
 import React from 'react';
-import { Container } from 'native-base';
+import { Container, Spinner, Button, Icon } from 'native-base';
 import { FilterableList } from '../components';
+import { firebase } from '../utils/firebase/firebase-db';
+import { entriesToObj } from '../utils/general-utils';
 
-const students = {
-  studentA_UID: { 'שם פרטי': 'חניך א׳' },
-  studentB_UID: { 'שם פרטי': 'חניך ב׳' },
-  studentC_UID: { 'שם פרטי': 'חניך ג׳' },
-  studentD_UID: { 'שם פרטי': 'חניך ד׳' },
-  studentE_UID: { 'שם פרטי': 'חניך ה׳' }
-};
+class PotentialStudentsScene extends React.PureComponent {
+  static navigationOptions = ({ navigation }) => {
+    return {
+      headerRight: (
+        <Button transparent onPress={() => navigation.openDrawer()}>
+          <Icon name="menu" />
+        </Button>
+      )
+    };
+  };
 
-const PotentialStudentsScene = () => (
-  <Container>
-    {/* <Header title="חניכים פוטנציאלים" back /> */}
-    <FilterableList data={students} />
-  </Container>
-);
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: true,
+      db: {}
+    };
+    const { uid } = firebase.auth().currentUser;
+
+    firebase
+      .firestore()
+      .collection('Students')
+      .where('owners.tutors', 'array-contains', { uid, studentStatus: 'potential' })
+      .onSnapshot(snapshot => {
+        const db = entriesToObj(snapshot.docs.map(doc => [doc.id, doc.data()]));
+        this.setState({
+          db,
+          loading: false
+        });
+      });
+  }
+
+  render() {
+    const { db, loading } = this.state;
+    const { navigation } = this.props;
+    return (
+      <Container>
+        {loading ? (
+          <Spinner />
+        ) : (
+          <FilterableList
+            data={db}
+            onPress={student =>
+              navigation.navigate('StudentDetailsScene', {
+                student,
+                previous: 'PotentialStudentsScene'
+              })
+            }
+          />
+        )}
+      </Container>
+    );
+  }
+}
 
 export { PotentialStudentsScene };
