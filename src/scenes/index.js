@@ -18,3 +18,4 @@ export * from './StudentsTabScene';
 export * from './SmsCodeConfirmScene';
 export * from './EditPreviousShiftScene';
 export * from './StudentFormScene';
+export * from './OfflineNotice';

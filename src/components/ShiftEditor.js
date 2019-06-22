@@ -74,7 +74,7 @@ class ShiftEditor extends React.Component {
           }>
           <Icon
             name="create"
-            style={{ fontSize: 20, color: 'blue', paddingTop: 5, paddingRight: 5 }}
+            style={{ fontSize: 20, color: '#5EC8F2', paddingTop: 5, paddingRight: 5 }}
           />
           <Text style={styles.time}>{toClockTime(time)}</Text>
         </TouchableOpacity>
@@ -89,21 +89,23 @@ class ShiftEditor extends React.Component {
         <View style={[styles.section, { marginBottom: 30 }]}>
           {this.renderTime({ startTime: this.props.startTime })}
           <Button
+            style={this.props.startTime ? styles.disButton : styles.button}
             disabled={!!this.props.startTime}
             onPress={() => this.handleStartTimePicked(new Date())}>
-            <Text>כניסה</Text>
+            <Text style={styles.textfont}>כניסה</Text>
           </Button>
         </View>
         <View style={[styles.section, { marginBottom: 30 }]}>
           {this.renderTime({ endTime: this.props.endTime })}
           <Button
+            style={!this.props.startTime || !!this.props.endTime ? styles.disButton : styles.button}
             disabled={!this.props.startTime || !!this.props.endTime}
             onPress={() => {
               this.handleEndTimePicked(new Date());
               if (!this.props.activities || this.props.activities.length === 0)
                 this.props.onPressAddActivity();
             }}>
-            <Text>יציאה</Text>
+            <Text style={styles.textfont}>יציאה</Text>
           </Button>
         </View>
 
@@ -150,28 +152,54 @@ class ShiftEditor extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  button: {
+    backgroundColor: '#5EC8F2',
+    color: '#ffffff',
+    fontFamily: 'Assistant-Bold'
+  },
+  disButton: {
+    backgroundColor: '#d7d7d7',
+    color: '#787878',
+    fontFamily: 'Assistant-Bold'
+  },
   container: {
     flexDirection: 'column',
-    padding: 10
+    padding: 10,
+    fontFamily: 'Assistant-Bold',
+    color: '#787878'
   },
   section: {
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    paddingBottom: 15
+    paddingBottom: 15,
+    color: '#787878',
+    fontFamily: 'Assistant-Bold'
   },
   time: {
     padding: 5,
     paddingRight: 50,
-    color: 'blue'
+    color: '#787878',
+    fontFamily: 'Assistant-Bold'
   },
   activities: {
     textAlign: right,
     paddingRight: 10,
-    fontSize: 18
+    fontSize: 18,
+    fontFamily: 'Assistant-Bold',
+    color: '#787878'
   },
   activityListItem: {
-    textAlign: right
+    textAlign: right,
+    fontFamily: 'Assistant-Bold',
+    color: '#787878'
+  },
+  text: {
+    fontFamily: 'Assistant-Bold',
+    color: '#787878'
+  },
+  textfont: {
+    fontFamily: 'Assistant-Bold'
   }
 });
 

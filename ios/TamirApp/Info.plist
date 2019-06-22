@@ -38,7 +38,7 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>
@@ -59,6 +59,12 @@
 		<string>rubicon-icon-font.ttf</string>
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
+		<string>Assistant-Bold.otf</string>
+		<string>Assistant-ExtraBold.otf</string>
+		<string>Assistant-ExtraLight.otf</string>
+		<string>Assistant-Light.otf</string>
+		<string>Assistant-Regular.otf</string>
+		<string>Assistant-SemiBold.otf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

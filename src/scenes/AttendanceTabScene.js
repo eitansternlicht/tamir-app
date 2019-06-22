@@ -23,6 +23,7 @@ class AttendanceTabScene extends React.Component {
     this.handleEndTimePicked = this.handleEndTimePicked.bind(this);
     this.onSave = this.onSave.bind(this);
     this.resetState = this.resetState.bind(this);
+    this.style = [{}];
   }
 
   onSave() {
@@ -91,11 +92,12 @@ class AttendanceTabScene extends React.Component {
         <Content>
           <View style={[styles.section, { marginBottom: 30 }]}>
             <Button
+              style={styles.button}
               onPress={() =>
                 navigation.navigate('AttendanceCalendarScene', { db: dbWithNoGroupAdded })
               }>
               <Icon name="calendar" />
-              <Text>נוכחות קודמת</Text>
+              <Text style={{ color: '#ffffff', fontFamily: 'Assistant-Bold' }}>נוכחות קודמת</Text>
             </Button>
           </View>
           <ShiftEditor
@@ -169,15 +171,28 @@ class AttendanceTabScene extends React.Component {
           />
         </Content>
 
-        <Footer>
+        <Footer
+          style={{
+            backgroundColor: '#ffffff',
+            shadowOffset: { height: 0, width: 0 },
+            shadowOpacity: 0,
+            elevation: 0
+          }}>
           <Button
+            style={
+              !this.state.startTime ||
+              !this.state.endTime ||
+              this.state.startTime > this.state.endTime
+                ? styles.disButton
+                : styles.savebutton
+            }
             onPress={this.onSave}
             disabled={
               !this.state.startTime ||
               !this.state.endTime ||
               this.state.startTime > this.state.endTime
             }>
-            {this.state.saveLoading ? <Spinner /> : <Text>שמור</Text>}
+            {this.state.saveLoading ? <Spinner /> : <Text style={styles.text}>שמור</Text>}
           </Button>
         </Footer>
       </Container>
@@ -186,6 +201,20 @@ class AttendanceTabScene extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  button: {
+    backgroundColor: '#5EC8F2'
+  },
+  disButton: {
+    backgroundColor: '#d7d7d7',
+    color: '#787878'
+  },
+  savebutton: {
+    backgroundColor: '#5EC8F2',
+    color: '#ffffff'
+  },
+  text: {
+    fontFamily: 'Assistant-Bold'
+  },
   section: {
     flexDirection: 'row',
     justifyContent: 'flex-end',

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Container, Tabs, Tab, Button, Icon, Spinner, Text } from 'native-base';
 import { appName } from '../../app.json';
 import { AttendanceTabScene, StudentsTabScene } from '.';
@@ -20,7 +20,7 @@ class MainScene extends React.PureComponent {
             <Button transparent onPress={() => navigation.state.params.onPressDeleteStudents()}>
               <Icon name="trash" style={{ color: 'red' }} />
             </Button>
-            <Text style={{ fontSize: 20 }}>הסרת חניכים מקבוצות</Text>
+            <Text style={{ fontFamily: 'Assistant-Bold', fontSize: 20 }}>הסרת חניכים מקבוצות</Text>
           </View>
         )
       };
@@ -50,8 +50,13 @@ class MainScene extends React.PureComponent {
         {!loadedAll ? (
           <Spinner />
         ) : (
-          <Tabs>
-            <Tab heading="חניכים">
+          <Tabs tabBarUnderlineStyle={{ borderBottomWidth: -3, backgroundColor: '#5EC8F2' }}>
+            <Tab
+              heading="חניכים"
+              tabStyle={{ backgroundColor: '#FFFFFF' }}
+              textStyle={{ fontFamily: 'Assistant-Bold', color: '#787878' }}
+              activeTabStyle={{ backgroundColor: '#FFFFFF' }}
+              activeTextStyle={{ fontFamily: 'Assistant-Bold', color: '#787878' }}>
               <StudentsTabScene
                 navigation={this.props.navigation}
                 db={{
@@ -61,7 +66,12 @@ class MainScene extends React.PureComponent {
                 }}
               />
             </Tab>
-            <Tab heading="נוכחות">
+            <Tab
+              heading="נוכחות"
+              tabStyle={{ backgroundColor: '#FFFFFF' }}
+              textStyle={{ fontFamily: 'Assistant-Bold', color: '#787878' }}
+              activeTabStyle={{ backgroundColor: '#FFFFFF' }}
+              activeTextStyle={{ fontFamily: 'Assistant-Bold', color: '#787878' }}>
               <AttendanceTabScene
                 navigation={this.props.navigation}
                 db={{
@@ -77,5 +87,16 @@ class MainScene extends React.PureComponent {
     );
   }
 }
+const styles = StyleSheet.create({
+  button: {
+    color: '#FFFFFF'
+  },
+  text: {
+    fontFamily: 'Assistant-Bold'
+  },
+  tab: {
+    color: '#FFFFFF'
+  }
+});
 
 export default MainScene;
