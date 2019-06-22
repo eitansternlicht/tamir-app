@@ -10,6 +10,7 @@ import {
   Button as NBButton,
   Text
 } from 'native-base';
+import GlobalFont from 'react-native-global-font';
 import { right } from '../utils/style-utils';
 
 const showStudent = student => (
@@ -44,6 +45,8 @@ class EditDiscussionDetailsScene extends Component {
 
   componentDidMount() {
     this.props.navigation.setParams({ onSave: this.onSave });
+    const fontName = 'Assistant-Bold';
+    GlobalFont.applyGlobal(fontName);
   }
 
   onSave() {

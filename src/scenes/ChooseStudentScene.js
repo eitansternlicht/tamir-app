@@ -1,5 +1,6 @@
 import React from 'react';
 import { Container } from 'native-base';
+import GlobalFont from 'react-native-global-font';
 import { FilterableList } from '../components';
 import { getStudentName } from '../utils/student/student-utils';
 

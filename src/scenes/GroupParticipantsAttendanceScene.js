@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, FlatList, StyleSheet, TouchableOpacity, Button } from 'react-native';
 import { Container, Left, Text, Footer, CheckBox } from 'native-base';
+import GlobalFont from 'react-native-global-font';
 import { right } from '../utils/style-utils';
 
 class GroupParticipantsAttendanceScene extends React.Component {
@@ -25,6 +26,8 @@ class GroupParticipantsAttendanceScene extends React.Component {
 
   componentDidMount() {
     this.props.navigation.setParams({ onSave: this.onSave });
+    const fontName = 'Assistant-Bold';
+    GlobalFont.applyGlobal(fontName);
   }
 
   onSave() {

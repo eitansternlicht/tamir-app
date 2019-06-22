@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Container, Tabs, Tab, Button, Icon, Spinner, Text } from 'native-base';
+import GlobalFont from 'react-native-global-font';
 import { appName } from '../../app.json';
 import { AttendanceTabScene, StudentsTabScene } from '.';
 import { firebase, readDB } from '../utils/firebase/firebase-db';
@@ -25,12 +26,13 @@ class MainScene extends React.PureComponent {
         )
       };
     }
+
     return {
       title: appName,
-      headerLeft: null,
+      headerLeft: '',
       headerRight: (
         <Button transparent onPress={() => navigation.openDrawer()}>
-          <Icon name="menu" />
+          <Icon name="menu" style={{ color: '#5EC8F2' }} />
         </Button>
       )
     };
@@ -41,6 +43,11 @@ class MainScene extends React.PureComponent {
     this.state = {};
     const tutorUID = firebase.auth().currentUser.uid;
     readDB(tutorUID, this);
+  }
+
+  componentDidMount() {
+    const fontName = 'Assistant-Bold';
+    GlobalFont.applyGlobal(fontName);
   }
 
   render() {
@@ -89,7 +96,7 @@ class MainScene extends React.PureComponent {
 }
 const styles = StyleSheet.create({
   button: {
-    color: '#FFFFFF'
+    color: '#5EC8F2'
   },
   text: {
     fontFamily: 'Assistant-Bold'

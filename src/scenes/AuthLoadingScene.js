@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Spinner } from 'native-base';
+import GlobalFont from 'react-native-global-font';
 import { initNativeFirebase, firebase } from '../utils/firebase/firebase-db';
 
 class AuthLoadingScene extends React.Component {

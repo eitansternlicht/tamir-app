@@ -1,11 +1,17 @@
 import React from 'react';
 import { Container, Content, Input, Label, Form, Item, Button, Spinner, Text } from 'native-base';
 import { Alert } from 'react-native';
+import GlobalFont from 'react-native-global-font';
 
 class SmsCodeConfirmScene extends React.Component {
   constructor(props) {
     super(props);
     this.state = { loading: false, code: '' };
+  }
+
+  componentDidMount() {
+    const fontName = 'Assistant-Bold';
+    GlobalFont.applyGlobal(fontName);
   }
 
   render() {

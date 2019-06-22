@@ -31,6 +31,8 @@ class GroupActivityDetailsScene extends Component {
 
   componentDidMount() {
     this.props.navigation.setParams({ onSave: this.onSave });
+    const fontName = 'Assistant-Bold';
+    GlobalFont.applyGlobal(fontName);
   }
 
   onSave() {

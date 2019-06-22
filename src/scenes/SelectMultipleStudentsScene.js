@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from 'react-native';
 import { Container } from 'native-base';
+import GlobalFont from 'react-native-global-font';
 import { FilterableList } from '../components';
 import { firebase } from '../utils/firebase/firebase-db';
 import { entriesToObj } from '../utils/general-utils';
@@ -38,6 +39,8 @@ class SelectMultipleStudentsScene extends React.PureComponent {
 
   componentDidMount() {
     this.props.navigation.setParams({ filterableListRef: this.filterableListRef });
+    const fontName = 'Assistant-Bold';
+    GlobalFont.applyGlobal(fontName);
   }
 
   render = () => (
