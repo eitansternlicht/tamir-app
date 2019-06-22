@@ -12,6 +12,7 @@ import {
 } from 'native-base';
 import { View, StyleSheet, Button } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import GlobalFont from 'react-native-global-font';
 
 class GroupActivityDetailsScene extends Component {
   static navigationOptions = ({ navigation }) => {
