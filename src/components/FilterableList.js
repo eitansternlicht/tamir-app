@@ -56,20 +56,20 @@ class FilterableList extends React.Component {
 
   componentWillReceiveProps({ data, withCategories, multiselect, firstSelected }) {
     if (data !== this.props.data) {
-      const withStudentDetails = withCategories ? groupsWithStudentDetails(data) : data;
+      let normalizedData;
+      if (withCategories) {
+        const withStudentDetails = groupsWithStudentDetails(data);
 
-      const participatingStudents = studentUIDsInGroups(data.Groups);
-      const nonParticipatingStudents = difference(data.Students, participatingStudents);
-      const withStudentDetailsWithNoGroup = {
-        ...withStudentDetails,
-        noGroup: { name: 'לא בקבוצה', participants: nonParticipatingStudents }
-      };
-
-      const normalizedData = normalizeData(
-        withCategories,
-        multiselect,
-        withStudentDetailsWithNoGroup
-      );
+        const participatingStudents = studentUIDsInGroups(data.Groups);
+        const nonParticipatingStudents = difference(data.Students, participatingStudents);
+        const withStudentDetailsWithNoGroup = {
+          ...withStudentDetails,
+          noGroup: { name: 'לא בקבוצה', participants: nonParticipatingStudents }
+        };
+        normalizedData = normalizeData(withCategories, multiselect, withStudentDetailsWithNoGroup);
+      } else {
+        normalizedData = normalizeData(withCategories, multiselect, data);
+      }
       if (firstSelected)
         this.setState(prevState => {
           if (prevState.firstSelected)
@@ -96,7 +96,7 @@ class FilterableList extends React.Component {
     const { normalizedData } = this.state;
     this.setState({
       searchText,
-      filteredData: filterBy(searchText, ['firstName', 'lastName'], normalizedData)
+      filteredData: filterBy(searchText, getStudentName, normalizedData)
     });
   }
 
@@ -151,11 +151,7 @@ class FilterableList extends React.Component {
                         });
                         this.setState({
                           normalizedData: newNormalizedData,
-                          filteredData: filterBy(
-                            searchText,
-                            ['firstName', 'lastName'],
-                            newNormalizedData
-                          )
+                          filteredData: filterBy(searchText, getStudentName, newNormalizedData)
                         });
                       }
                     }}
