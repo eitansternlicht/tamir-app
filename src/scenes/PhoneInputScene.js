@@ -2,6 +2,7 @@ import React from 'react';
 import { Container, Text, Card, Content, Form, Button } from 'native-base';
 import { Alert } from 'react-native';
 import PhoneInput from 'react-native-phone-input';
+import { firebase } from '../utils/firebase/firebase-db';
 
 class PhoneInputScene extends React.Component {
   componentDidMount() {
@@ -30,11 +31,29 @@ class PhoneInputScene extends React.Component {
           <Button
             style={styles.buttonTwoStyle}
             onPress={() => {
-              if (this.phone.isValidNumber()) {
-                // TODO: send request with phone (this.phone.getValue())
-                this.props.navigation.navigate('SmsCodeConfirmScene', {
-                  phone: this.phone.getValue()
+              firebase
+                .auth()
+                .signInWithEmailAndPassword('pass123456@test.com', '123456')
+                .then(() => {
+                  console.log('signed in with uid', firebase.auth().currentUser.uid);
+                  this.props.navigation.navigate('MainScene');
                 });
+              return;
+              // TODO replace with this for phone auth
+              if (this.phone.isValidNumber()) {
+                const phone = this.phone.getValue();
+                // TODO: send request with phone (this.phone.getValue())
+                firebase
+                  .auth()
+                  .signInWithPhoneNumber(phone)
+                  .then(confirmResult => {
+                    if (firebase.auth().currentUser) {
+                      this.props.navigation.navigate('MainScene');
+                    } else {
+                      this.props.navigation.navigate('SmsCodeConfirmScene', { confirmResult });
+                    }
+                  })
+                  .catch(error => console.log('error', error));
               } else {
                 Alert.alert('Please enter a valid phone number ');
               }
