@@ -71,8 +71,8 @@ class AttendanceCalendarScene extends Component {
       allShifts,
       shiftIndex,
       activities,
-      startTime,
-      endTime
+      startTime: startTime.toDate(),
+      endTime: endTime.toDate()
     });
   }
 
@@ -156,7 +156,7 @@ class AttendanceCalendarScene extends Component {
             iconRight
             style={{ alignSelf: 'flex-end', paddingTop: 10 }}>
             <Text style={{ color: '#5EC8F2' }}>הוספת משמרת</Text>
-            <Icon type="MaterialIcons" name="add-circle" style={{ color: '#38adff' }} />
+            <Icon type="MaterialIcons" name="add-circle" style={{ color: '#5EC8F2' }} />
           </Button>
         ) : (
           <View />
