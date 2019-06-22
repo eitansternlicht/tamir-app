@@ -8,7 +8,13 @@ import { exists } from '../utils/general-utils';
 const StudentDetails = ({ student }) => (
   <Content style={{ flexDirection: 'column' }}>
     {studentFieldsOrder.filter(exists(student)).map(field => (
-      <View key={field} style={{ flexDirection: 'row-reverse' }}>
+      <View
+        key={field}
+        style={{
+          flexDirection: 'row-reverse',
+          borderBottomColor: '#CCCCCC',
+          borderBottomWidth: 1
+        }}>
         <Text style={styles.fieldName}>{options.fields[field].label}</Text>
         <Text style={styles.fieldValues}>{formatValue(field, student[field])}</Text>
       </View>
@@ -29,7 +35,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     textAlign: right,
     fontSize: 19,
-    paddingVertical: 10
+    paddingVertical: 10,
+    fontFamily: 'Assistant-Regular'
   }
 });
 

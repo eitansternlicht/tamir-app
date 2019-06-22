@@ -95,9 +95,10 @@ class GroupActivityDetailsScene extends Component {
           ) : (
             <View />
           )}
-          <Title style={{ color: 'black' }}>{subtype}</Title>
+          <Title style={{ color: 'black', fontFamily: 'Assistant-Bold' }}>{subtype}</Title>
           <Form style={{ padding: 10 }}>
             <Textarea
+              style={{ fontFamily: 'Assistant-Regular' }}
               rowSpan={5}
               bordered
               placeholder="תוכן הפעילות"
@@ -175,28 +176,33 @@ class GroupActivityDetailsScene extends Component {
 
 const styles = StyleSheet.create({
   groupsContainer: {
-    flexDirection: 'column'
+    flexDirection: 'column',
+    fontFamily: 'Assistant-Bold'
   },
   groupRow: {
     flexDirection: 'row-reverse',
     justifyContent: 'flex-start',
-    padding: 5
+    padding: 5,
+    fontFamily: 'Assistant-Regular'
   },
   rowItem: {
     marginRight: 10,
-    flexDirection: 'row-reverse'
+    flexDirection: 'row-reverse',
+    fontFamily: 'Assistant-Regular'
   },
   button: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    paddingTop: 5
+    paddingTop: 5,
+    fontFamily: 'Assistant-Bold'
   },
 
   textStyle: {
     fontSize: 30,
     textAlign: 'center',
     paddingHorizontal: 20,
-    color: 'white'
+    color: 'white',
+    fontFamily: 'Assistant-Bold'
   }
 });
 

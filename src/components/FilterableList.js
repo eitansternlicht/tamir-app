@@ -184,7 +184,13 @@ class FilterableList extends React.Component {
                     backgroundColor: '#f6f6f6',
                     alignItems: 'center'
                   }}>
-                  <Text style={{ textAlign: right, fontSize: 25, color: '#666666' }}>
+                  <Text
+                    style={{
+                      textAlign: right,
+                      fontSize: 25,
+                      color: '#666666',
+                      fontFamily: 'Assistant-Bold'
+                    }}>
                     {item.categoryName}
                   </Text>
                   {item.categoryName !== 'לא בקבוצה' ? (
@@ -221,11 +227,13 @@ class FilterableList extends React.Component {
 
 const styles = StyleSheet.create({
   searchBox: {
-    textAlign: right
+    textAlign: right,
+    fontFamily: 'Assistant-Regular'
   },
   listItem: {
     borderBottomWidth: 1,
-    borderBottomColor: '#CCCCCC'
+    borderBottomColor: '#CCCCCC',
+    fontFamily: 'Assistant-Bold'
   },
   groupName: {
     textAlign: right,
@@ -233,12 +241,14 @@ const styles = StyleSheet.create({
     color: '#666666',
     padding: 10,
     paddingRight: 10,
-    backgroundColor: '#f6f6f6'
+    backgroundColor: '#f6f6f6',
+    fontFamily: 'Assistant-Bold'
   },
   studentName: {
     fontSize: 22,
     alignSelf: 'center',
-    textAlign: right
+    textAlign: right,
+    fontFamily: 'Assistant-Regular'
   },
   spaceAtTheEnd: {
     height: 100

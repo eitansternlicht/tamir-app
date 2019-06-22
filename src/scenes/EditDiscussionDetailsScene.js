@@ -139,7 +139,8 @@ const styles = StyleSheet.create({
   listItem: {
     borderBottomWidth: 1,
     borderBottomColor: '#CCCCCC',
-    textAlign: right
+    textAlign: right,
+    fontFamily: 'Assistant-Bold'
   },
   groupName: {
     fontSize: 25,
@@ -147,21 +148,24 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingRight: 10,
     backgroundColor: '#f6f6f6',
-    textAlign: right
+    textAlign: right,
+    fontFamily: 'Assistant-Bold'
   },
   titleName: {
     paddingVertical: 10,
     paddingRight: 10,
     textDecorationLine: 'underline',
     fontSize: 25,
-    textAlign: right
+    textAlign: right,
+    fontFamily: 'Assistant-Bold'
   },
   studentName: {
     fontSize: 18,
     paddingVertical: 10,
     paddingRight: 10,
     textAlign: right,
-    marginLeft: 'auto'
+    marginLeft: 'auto',
+    fontFamily: 'Assistant-Bold'
   },
   spaceAtTheEnd: {
     height: 100
@@ -169,20 +173,23 @@ const styles = StyleSheet.create({
 
   messageBox: {
     textAlign: right,
-    marginLeft: 'auto'
+    marginLeft: 'auto',
+    fontFamily: 'Assistant-Bold'
   },
 
   afterSubmit: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 150
+    marginBottom: 150,
+    fontFamily: 'Assistant-Bold'
   },
 
   messageTextDysplay: {
     fontSize: 30,
     textAlign: 'center',
     paddingHorizontal: 20,
-    color: 'white'
+    color: 'white',
+    fontFamily: 'Assistant-Bold'
   }
 });
 
