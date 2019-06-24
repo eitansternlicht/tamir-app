@@ -34,13 +34,7 @@ class PhoneInputScene extends React.Component {
           <Button
             style={styles.buttonTwoStyle}
             onPress={() => {
-              firebase
-                .auth()
-                .signInWithEmailAndPassword('pass123456@test.com', '123456')
-                .then(() => {
-                  console.log('signed in with uid', firebase.auth().currentUser.uid);
-                  this.props.navigation.navigate('MainScene');
-                });
+              this.props.navigation.navigate('SmsCodeConfirmScene');
               return;
               // TODO replace with this for phone auth
               if (this.phone.isValidNumber()) {
