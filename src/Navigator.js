@@ -140,7 +140,12 @@ const AppWithDrawer = createDrawerNavigator(
   {
     initialRouteName: 'MainStack',
     order: ['MainStack', 'PotentialStudentsStack', 'SettingsStack'],
-    drawerPosition: 'right'
+    drawerPosition: 'right',
+    contentOptions: {
+      itemStyle: {
+        justifyContent: 'flex-end'
+      }
+    }
   }
 );
 
