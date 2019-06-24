@@ -8,7 +8,8 @@ import {
   Icon,
   Title,
   Button as NBButton,
-  Text
+  Text,
+  Body
 } from 'native-base';
 import { View, StyleSheet, Button } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -127,7 +128,9 @@ class GroupActivityDetailsScene extends Component {
                     }
                   }}>
                   <CheckBox style={[rowItem, { marginHorizontal: 10 }]} checked={attended} />
-                  <Text style={rowItem}>{groupName}</Text>
+                  <Body>
+                    <Text style={rowItem}>{groupName}</Text>
+                  </Body>
                 </TouchableOpacity>
                 {attended ? (
                   <TouchableOpacity
