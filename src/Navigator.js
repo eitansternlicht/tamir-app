@@ -21,10 +21,10 @@ import {
   EditDiscussionDetailsScene,
   PhoneInputScene,
   SmsCodeConfirmScene,
-  SettingsScene,
   AuthLoadingScene
 } from './scenes';
 import MainScene from './scenes/MainScene';
+import { Drawer } from './components';
 
 const MainStack = createStackNavigator(
   {
@@ -107,14 +107,6 @@ const PotentialStudentsStack = createStackNavigator({
     }
   }
 });
-const SettingsStack = createStackNavigator({
-  SettingsScene: {
-    screen: SettingsScene,
-    navigationOptions: {
-      title: 'הגדרות'
-    }
-  }
-});
 
 const AppWithDrawer = createDrawerNavigator(
   {
@@ -122,12 +114,6 @@ const AppWithDrawer = createDrawerNavigator(
       screen: MainStack,
       navigationOptions: {
         title: 'חזרה לבית'
-      }
-    },
-    SettingsStack: {
-      screen: SettingsStack,
-      navigationOptions: {
-        title: 'הגדרות'
       }
     },
     PotentialStudentsStack: {
@@ -138,8 +124,9 @@ const AppWithDrawer = createDrawerNavigator(
     }
   },
   {
+    contentComponent: Drawer,
     initialRouteName: 'MainStack',
-    order: ['MainStack', 'PotentialStudentsStack', 'SettingsStack'],
+    order: ['MainStack', 'PotentialStudentsStack'],
     drawerPosition: 'right',
     contentOptions: {
       itemStyle: {
