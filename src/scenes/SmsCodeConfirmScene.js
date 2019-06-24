@@ -8,6 +8,9 @@ class SmsCodeConfirmScene extends React.Component {
   constructor(props) {
     super(props);
     this.state = { loading: false, code: '' };
+    this.state = {
+      textinput: ''
+    };
   }
 
   componentDidMount() {
@@ -15,7 +18,16 @@ class SmsCodeConfirmScene extends React.Component {
     GlobalFont.applyGlobal(fontName);
   }
 
+  handleInputChange = textinput => {
+    if (/^\d+$/.test(textinput)) {
+      this.setState({
+        textinput
+      });
+    }
+  };
+
   render() {
+    const disabled = !(this.state.textinput.length > 5);
     return (
       <Container>
         <Content>
@@ -24,11 +36,15 @@ class SmsCodeConfirmScene extends React.Component {
               <Label>Confirmation code</Label>
               <Input
                 autoFocus
-                onChangeText={text => this.setState({ code: text })}
-                value={this.state.code}
+                onChangeText={this.handleInputChange}
+                value={this.state.textinput}
+                keyboardType="numeric"
+                maxLength={6}
               />
             </Item>
             <Button
+              disabled={disabled}
+              color="secondary"
               style={[styles.buttonOneStyle, { alignSelf: 'center', marginTop: 40 }]}
               onPress={() => {
                 if (this.state.code !== '') {
@@ -66,7 +82,8 @@ const styles = {
   },
   buttonOneStyle: {
     width: 120,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    backgroundColor: '#007aff'
   }
 };
 export { SmsCodeConfirmScene };
