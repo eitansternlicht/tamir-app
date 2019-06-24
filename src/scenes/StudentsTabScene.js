@@ -98,13 +98,14 @@ class StudentsTabScene extends React.PureComponent {
 
   onPressDeleteStudents() {
     deleteStudentsFromGroups(this.props.db, this.filterableListRef.current.state.normalizedData);
-    this.props.navigation.setParams({ longPressedState: false });
+    this.props.navigation.setParams({ longPressedState: false, firstSelected: false });
   }
 
   render() {
     const { navigation, db } = this.props;
     const longPressedState = navigation.getParam('longPressedState');
     const firstSelected = navigation.getParam('firstSelected');
+    console.log('firstSelected before render', firstSelected);
     const reactNativeModalProps = {
       onBackdropPress: this.onCancel
     };
@@ -119,12 +120,9 @@ class StudentsTabScene extends React.PureComponent {
           withCategories
           data={db}
           onPress={student => navigation.navigate('StudentDetailsScene', { student })}
-          onLongPress={index => {
-            navigation.navigate('MainScene', {
-              longPressedState: true,
-              firstSelected: index
-            });
-          }}
+          onLongPress={index =>
+            navigation.setParams({ longPressedState: true, firstSelected: index })
+          }
           firstSelected={firstSelected}
           onAddToCategory={this.onPressAddToGroup}
           onEditCategoryName={this.onPressEditGroupName}
@@ -132,7 +130,7 @@ class StudentsTabScene extends React.PureComponent {
           onCancel={this.onCancel}
         />
         <Fab
-         style={{ backgroundColor: '#5EC8F2' }}
+          style={{ backgroundColor: '#5EC8F2' }}
           position="bottomLeft"
           onPress={() =>
             Alert.alert(

@@ -15,7 +15,9 @@ class MainScene extends React.PureComponent {
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Button
               transparent
-              onPress={() => navigation.navigate('MainScene', { longPressedState: false })}>
+              onPress={() =>
+                navigation.navigate('MainScene', { longPressedState: false, firstSelected: false })
+              }>
               <Icon name="arrow-back" />
             </Button>
             <Button transparent onPress={() => navigation.state.params.onPressDeleteStudents()}>

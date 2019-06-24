@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Text, Container } from 'native-base';
+import { Button, Text, Container, Icon } from 'native-base';
 import GlobalFont from 'react-native-global-font';
 import { firebase } from '../utils/firebase/firebase-db';
 
