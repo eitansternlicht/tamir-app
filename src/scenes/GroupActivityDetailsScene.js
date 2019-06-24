@@ -111,6 +111,7 @@ class GroupActivityDetailsScene extends Component {
             {groups.map(({ uid, groupName, attended, participants }, index) => (
               <View key={uid} style={groupRow}>
                 <TouchableOpacity
+                  style={{ flexDirection: 'row-reverse' }}
                   onPress={() => {
                     if (attended) {
                       groups[index].attended = !groups[index].attended;
@@ -128,9 +129,8 @@ class GroupActivityDetailsScene extends Component {
                     }
                   }}>
                   <CheckBox style={[rowItem, { marginHorizontal: 10 }]} checked={attended} />
-                  <Body>
-                    <Text style={rowItem}>{groupName}</Text>
-                  </Body>
+
+                  <Text style={[rowItem, { marginRight: 10 }]}>{groupName}</Text>
                 </TouchableOpacity>
                 {attended ? (
                   <TouchableOpacity
