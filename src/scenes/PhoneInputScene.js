@@ -13,6 +13,7 @@ class PhoneInputScene extends React.Component {
   }
 
   render() {
+    const disabled = !(this.state.textinput.length > 12);
     return (
       <Container>
         <Content>
@@ -32,7 +33,8 @@ class PhoneInputScene extends React.Component {
             </Form>
           </Card>
           <Button
-            style={styles.buttonTwoStyle}
+            disabled={disabled}
+            style={!this.phone.isValidNumber}
             onPress={() => {
               this.props.navigation.navigate('SmsCodeConfirmScene');
               return;

@@ -45,7 +45,10 @@ class SmsCodeConfirmScene extends React.Component {
             <Button
               disabled={disabled}
               color="secondary"
-              style={[styles.buttonOneStyle, { alignSelf: 'center', marginTop: 40 }]}
+              style={[
+                !(this.state.textinput.length > 5) ? styles.buttontwoStyles : styles.buttonOneStyle,
+                { alignSelf: 'center', marginTop: 40 }
+              ]}
               onPress={() => {
                 if (this.state.code !== '') {
                   firebase
@@ -84,6 +87,12 @@ const styles = {
     width: 120,
     justifyContent: 'center',
     backgroundColor: '#007aff'
+  },
+
+  buttontwoStyle: {
+    width: 120,
+    justifyContent: 'center',
+    backgroundColor: '##d7d7d7'
   }
 };
 export { SmsCodeConfirmScene };
