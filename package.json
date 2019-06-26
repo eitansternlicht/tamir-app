@@ -21,7 +21,7 @@
     "react-native-gesture-handler": "^1.2.1",
     "react-native-global-font": "^1.0.2",
     "react-native-modal-datetime-picker": "^7.4.0",
-    "react-native-phone-input": "^0.2.1",
+    "react-native-phone-input": "^0.2.2",
     "react-navigation": "^3.9.1",
     "tcomb-form-native": "^0.6.20"
   },

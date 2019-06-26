@@ -5,7 +5,25 @@ import PhoneInput from 'react-native-phone-input';
 import GlobalFont from 'react-native-global-font';
 import { firebase } from '../utils/firebase/firebase-db';
 
+const signInWithPhone = phone =>
+  firebase
+    .auth()
+    .signInWithPhoneNumber(phone)
+    .then(confirmResult => {
+      if (firebase.auth().currentUser) {
+        this.props.navigation.navigate('MainScene');
+      } else {
+        this.props.navigation.navigate('SmsCodeConfirmScene', { confirmResult });
+      }
+    })
+    .catch(error => console.log('error', error));
+
 class PhoneInputScene extends React.Component {
+  constructor(props) {
+    super(props);
+    this.phone = React.createRef();
+  }
+
   componentDidMount() {
     this.phone.focus();
     const fontName = 'Assistant-Bold';
@@ -13,7 +31,6 @@ class PhoneInputScene extends React.Component {
   }
 
   render() {
-    const disabled = !(this.state.textinput.length > 12);
     return (
       <Container>
         <Content>
@@ -33,29 +50,16 @@ class PhoneInputScene extends React.Component {
             </Form>
           </Card>
           <Button
-            disabled={disabled}
-            style={!this.phone.isValidNumber}
             onPress={() => {
-              this.props.navigation.navigate('SmsCodeConfirmScene');
-              return;
               // TODO replace with this for phone auth
               if (this.phone.isValidNumber()) {
                 const phone = this.phone.getValue();
-                // TODO: send request with phone (this.phone.getValue())
-                firebase
-                  .auth()
-                  .signInWithPhoneNumber(phone)
-                  .then(confirmResult => {
-                    if (firebase.auth().currentUser) {
-                      this.props.navigation.navigate('MainScene');
-                    } else {
-                      this.props.navigation.navigate('SmsCodeConfirmScene', { confirmResult });
-                    }
-                  })
-                  .catch(error => console.log('error', error));
-              } else {
-                Alert.alert('Please enter a valid phone number ');
+                this.props.navigation.navigate('SmsCodeConfirmScene');
+                return;
+                // TODO: send request with phone (this.phone.getValue()) when not using emulator
+                signInWithPhone(phone);
               }
+              Alert.alert('Please enter a valid phone number ');
             }}>
             <Text style={styles.textStyle}>Get Password By Sms</Text>
           </Button>
