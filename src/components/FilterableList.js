@@ -248,7 +248,9 @@ const styles = StyleSheet.create({
     fontSize: 22,
     alignSelf: 'center',
     textAlign: right,
-    fontFamily: 'Assistant-Regular'
+    fontFamily: 'Assistant-Regular',
+    paddingBottom: 7,
+    paddingTop: 7
   },
   spaceAtTheEnd: {
     height: 100

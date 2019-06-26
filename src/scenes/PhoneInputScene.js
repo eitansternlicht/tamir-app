@@ -40,6 +40,7 @@ class PhoneInputScene extends React.Component {
                 autoFormat
                 allowZeroAfterCountryCode
                 initialCountry="il"
+                maxLength={14}
                 style={{
                   padding: 15
                 }}
@@ -50,6 +51,7 @@ class PhoneInputScene extends React.Component {
             </Form>
           </Card>
           <Button
+            style={styles.buttonTwoStyle}
             onPress={() => {
               // TODO replace with this for phone auth
               if (this.phone.isValidNumber()) {

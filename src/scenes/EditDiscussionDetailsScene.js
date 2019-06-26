@@ -16,7 +16,11 @@ import { right } from '../utils/style-utils';
 const showStudent = student => (
   <Text style={styles.studentName}>
     {student ? student.fullName : 'בחירת חניך'}
-    {student ? <Icon type="Entypo" size={20} name="edit" /> : <Icon name="person-add" />}
+    {student ? (
+      <Icon type="Entypo" size={20} name="edit" style={{ color: '#787878' }} />
+    ) : (
+      <Icon name="person-add" style={{ color: '#787878' }} />
+    )}
   </Text>
 );
 
@@ -134,7 +138,8 @@ class EditDiscussionDetailsScene extends Component {
 
 const styles = StyleSheet.create({
   searchBox: {
-    textAlign: right
+    textAlign: right,
+    color: '#787878'
   },
   listItem: {
     borderBottomWidth: 1,
@@ -154,6 +159,7 @@ const styles = StyleSheet.create({
   titleName: {
     paddingVertical: 10,
     paddingRight: 10,
+    color: '#787878',
     textDecorationLine: 'underline',
     fontSize: 25,
     textAlign: right,
@@ -165,7 +171,8 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     textAlign: right,
     marginLeft: 'auto',
-    fontFamily: 'Assistant-Bold'
+    fontFamily: 'Assistant-Bold',
+    color: '#787878'
   },
   spaceAtTheEnd: {
     height: 100

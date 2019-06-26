@@ -96,10 +96,10 @@ class GroupActivityDetailsScene extends Component {
           ) : (
             <View />
           )}
-          <Title style={{ color: 'black', fontFamily: 'Assistant-Bold' }}>{subtype}</Title>
+          <Title style={{ fontFamily: 'Assistant-Bold', color: '#787878' }}>{subtype}</Title>
           <Form style={{ padding: 10 }}>
             <Textarea
-              style={{ fontFamily: 'Assistant-Regular' }}
+              style={{ fontFamily: 'Assistant-Regular', color: '#787878' }}
               rowSpan={5}
               bordered
               placeholder="תוכן הפעילות"
@@ -130,7 +130,18 @@ class GroupActivityDetailsScene extends Component {
                   }}>
                   <CheckBox style={[rowItem, { marginHorizontal: 10 }]} checked={attended} />
 
-                  <Text style={[rowItem, { marginRight: 10 }]}>{groupName}</Text>
+                  <Text
+                    style={[
+                      rowItem,
+                      {
+                        marginRight: 10,
+                        paddingRight: 10,
+                        fontFamily: 'Assistant-Regular',
+                        color: '#787878'
+                      }
+                    ]}>
+                    {groupName}
+                  </Text>
                 </TouchableOpacity>
                 {attended ? (
                   <TouchableOpacity
@@ -201,6 +212,7 @@ const styles = StyleSheet.create({
   },
 
   textStyle: {
+    paddingRight: 5,
     fontSize: 30,
     textAlign: 'center',
     paddingHorizontal: 20,

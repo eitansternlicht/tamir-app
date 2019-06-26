@@ -1,28 +1,25 @@
 import React from 'react';
 import { StyleSheet, View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { Icon } from 'native-base';
-import GlobalFont from 'react-native-global-font';
 import { right } from '../utils/style-utils';
 import { getStudentName } from '../utils/student/student-utils';
 
 const groups = [
-  { categoryName: 'פעילות קבוצתית' },
+  { categoryName: ' פעילות קבוצתית ' },
   { groupName: 'פעילות קבוצתית', title: 'תהליך תוכן' },
   { groupName: 'פעילות קבוצתית', title: 'מפגש עם דמות להזדהות' },
   { groupName: 'פעילות קבוצתית', title: ' חוויה ערכית / משמעותית / קודש' },
   { groupName: 'פעילות קבוצתית', title: 'שונות' },
-  { categoryName: 'שיחה אישית' },
+  { categoryName: ' שיחה אישית ' },
   { groupName: 'שיחה אישית', title: 'מזדמנת' },
   { groupName: 'שיחה אישית', title: 'הכרות' },
   { groupName: 'שיחה אישית', title: 'עמוקה' },
   { groupName: 'שיחה אישית', title: 'קושי/בעיה' },
-  { groupName: 'שיחה אישית', title: 'שונות' },
-  { categoryName: 'שונות' },
-  { groupName: 'שונות', title: 'שונות' }
+  { groupName: 'שיחה אישית', title: 'שונות' }
 ];
 function tIcon(title) {
-  if (title === 'פעילות קבוצתית') return <Icon name="people" />;
-  if (title === 'שיחה אישית') return <Icon name="person" />;
+  if (title === ' פעילות קבוצתית ') return <Icon style={{ paddingRight: 5 }} name="people" />;
+  if (title === ' שיחה אישית ') return <Icon style={{ paddingRight: 5 }} name="person" />;
   return undefined;
 }
 const INITIAL_STATE = {
@@ -32,11 +29,6 @@ class ChooseActivityTypeScene extends React.Component {
   constructor(props) {
     super(props);
     this.state = INITIAL_STATE;
-  }
-
-  componentDidMount() {
-    const fontName = 'Assistant-Bold';
-    GlobalFont.applyGlobal(fontName);
   }
 
   render() {
@@ -83,7 +75,7 @@ class ChooseActivityTypeScene extends React.Component {
                   }
                 }}>
                 <Text style={styles.studentName}>
-                  <Icon type="Entypo" key={groupName + title} name="chevron-right" /> {title}
+                  <Icon key={groupName + title} /> {title}
                 </Text>
               </TouchableOpacity>
             ) : (
@@ -107,7 +99,7 @@ const styles = StyleSheet.create({
   listItem: {
     borderBottomWidth: 1,
     borderBottomColor: '#CCCCCC',
-    fontFamily: 'Assistant-Bold',
+    fontFamily: 'Assistant-Regular',
     textAlign: right
   },
   groupName: {
@@ -121,7 +113,7 @@ const styles = StyleSheet.create({
   },
   studentName: {
     fontSize: 18,
-    fontFamily: 'Assistant-Bold',
+    fontFamily: 'Assistant-Regular',
     paddingVertical: 10,
     paddingRight: 20,
     textAlign: right,

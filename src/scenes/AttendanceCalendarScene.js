@@ -5,6 +5,7 @@ import { StyleSheet, Dimensions, View, TouchableOpacity } from 'react-native';
 import { Divider } from 'react-native-elements';
 import GlobalFont from 'react-native-global-font';
 import moment from 'moment';
+import { right } from '../utils/style-utils';
 import {
   formatDate,
   formatYearAndMonth,
@@ -170,16 +171,20 @@ class AttendanceCalendarScene extends Component {
     !last ? (
       <TouchableOpacity
         onPress={() => this.onPressEditShift({ startTime, endTime, activities, day, uid })}
-        style={[styles.item, { height: null }]}>
-        <Text>{toClockRange({ startTime: startTime.toDate(), endTime: endTime.toDate() })}</Text>
+        style={[styles.item, { height: null, textAlign: right }]}>
+        <Text style={{ textAlign: right }}>
+          {toClockRange({ startTime: startTime.toDate(), endTime: endTime.toDate() })}
+        </Text>
         {renderListOfActivities(activities)}
       </TouchableOpacity>
     ) : (
       <View>
         <TouchableOpacity
           onPress={() => this.onPressEditShift({ startTime, endTime, activities, day, uid })}
-          style={[styles.item, { height: null }]}>
-          <Text>{toClockRange({ startTime: startTime.toDate(), endTime: endTime.toDate() })}</Text>
+          style={[styles.item, { height: null, textAlign: right }]}>
+          <Text style={{ textAlign: right }}>
+            {toClockRange({ startTime: startTime.toDate(), endTime: endTime.toDate() })}
+          </Text>
           {renderListOfActivities(activities)}
         </TouchableOpacity>
         {this.renderAddNewItem(day, uid)}
