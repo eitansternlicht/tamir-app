@@ -98,7 +98,7 @@ class AttendanceTabScene extends React.Component {
                 navigation.navigate('AttendanceCalendarScene', { db: dbWithNoGroupAdded })
               }>
               <Icon name="calendar" />
-              <Text style={{ color: '#ffffff', fontFamily: 'Assistant-Bold' }}>נוכחות קודמת</Text>
+              <Text style={{ color: '#ffffff', fontFamily: 'Assistant-Regular' }}>נוכחות קודמת</Text>
             </Button>
           </View>
           <ShiftEditor

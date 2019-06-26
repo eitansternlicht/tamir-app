@@ -6,22 +6,40 @@ import GlobalFont from 'react-native-global-font';
 import { toClockTime } from '../utils/date-utils';
 import { right } from '../utils/style-utils';
 
-const renderActivity = ({ type, subtype, groups, student }) => {
-  switch (type) {
-    case 'שיחה אישית':
-      return `${type} - ${subtype} עם: ${student.fullName}`;
-    case 'פעילות קבוצתית':
-      return `${type} - ${subtype} עם:\n ${groups
-        .filter(({ attended }) => attended)
-        .map(({ groupName }) => groupName)
-        .toString()}`;
-    case 'שונות':
-      return type;
-    default:
-      console.error('activity type not valid!');
-      return null;
-  }
-};
+const renderActivity = ({ type, subtype, groups, student }) => (
+  <View style={{ flexDirection: 'row-reverse', alignItems: 'flex-start' }}>
+    <Icon name="create" style={{ fontSize: 24, color: 'blue', paddingLeft: 10 }} />
+    <View style={{ flexDirection: 'column' }}>
+      <Text style={styles.activityListItem}>{type}</Text>
+      <Text style={[styles.textfont, { textAlign: right }]}>{subtype}</Text>
+      {type === 'שיחה אישית' ? (
+        <Text style={[styles.textfont, { textAlign: right }]}> עם {student.fullName}</Text>
+      ) : (
+        [<Text style={[styles.textfont, { textAlign: right }]}>עם:</Text>].concat(
+          groups
+            .filter(({ attended }) => attended)
+            .map(({ groupName }) => (
+              <View style={{ flexDirection: 'row-reverse' }}>
+                <Text style={{ paddingHorizontal: 5 }}>{`\u2022`}</Text>
+                <Text style={[styles.textfont, { textAlign: right }]}>{groupName}</Text>
+              </View>
+            ))
+        )
+      )}
+    </View>
+  </View>
+  //   switch (type) {
+  //     case 'שיחה אישית':
+  //       return `${type} - ${subtype} עם: ${student.fullName}`;
+  //     case 'פעילות קבוצתית':
+  //       return `${type} - ${subtype} עם:\n ${groups
+  //         .filter(({ attended }) => attended)
+  //         .map(({ groupName }) => groupName)
+  //         .toString()}`;
+  //     default:
+  //       return null;
+  // }
+);
 
 class ShiftEditor extends React.Component {
   constructor(props) {
@@ -127,8 +145,9 @@ class ShiftEditor extends React.Component {
             <TouchableOpacity
               onPress={() => this.props.onPressEditActivity(item, index)}
               tyle={{ flexDirection: 'row-reverse', alignItems: 'center' }}>
-              <Icon name="create" style={{ fontSize: 24, color: 'blue', paddingLeft: 10 }} />
-              <Text style={styles.activityListItem}>{renderActivity(item)}</Text>
+              {/* <Text style={styles.activityListItem}> */}
+              {renderActivity(item)}
+              {/* </Text> */}
             </TouchableOpacity>
           )}
         />
@@ -205,7 +224,7 @@ const styles = StyleSheet.create({
     color: '#787878'
   },
   textfont: {
-    fontFamily: 'Assistant-Bold'
+    fontFamily: 'Assistant-Regular'
   }
 });
 
