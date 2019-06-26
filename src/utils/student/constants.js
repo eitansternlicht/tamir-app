@@ -2,6 +2,7 @@ import t from 'tcomb-form-native';
 import moment from 'moment';
 import { stylesheet } from './formstyle';
 
+const { Form } = t.form;
 const studentFieldsOrder = [
   'lastName',
   'firstName',
@@ -172,7 +173,22 @@ const options = {
       label: 'איש צוות מטפל'
     },
     comments: {
-      label: 'הערות'
+      label: 'הערות',
+      multiline: true,
+      stylesheet: {
+        ...stylesheet,
+        textbox: {
+          ...stylesheet.textbox,
+          normal: {
+            ...stylesheet.textbox.normal,
+            height: 150
+          },
+          error: {
+            ...stylesheet.textbox.error,
+            height: 150
+          }
+        }
+      }
     }
   }
 };
