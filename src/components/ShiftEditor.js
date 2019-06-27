@@ -119,7 +119,16 @@ class ShiftEditor extends React.Component {
             <Text style={styles.textfont}>כניסה</Text>
           </Button>
         </View>
-        <View style={[styles.section, { marginBottom: 30 }]}>
+        <View
+          style={[
+            styles.section,
+            {
+              marginBottom: 30,
+              borderBottomWidth: 3,
+              borderBottomColor: '#CCCCCC',
+              paddingBottom: 30
+            }
+          ]}>
           {this.renderTime({ endTime: this.props.endTime })}
           <Button
             style={!this.props.startTime || !!this.props.endTime ? styles.disButton : styles.button}
@@ -135,7 +144,7 @@ class ShiftEditor extends React.Component {
 
         <View style={[styles.section, { paddingBottom: 5 }]}>
           <Text style={styles.activities}>פעילויות</Text>
-          <Icon name="arrow-dropdown" />
+          <Icon name="arrow-dropdown" style={{ color: '#787878' }} />
         </View>
         <FlatList
           style={{ paddingRight: 40 }}
@@ -144,7 +153,14 @@ class ShiftEditor extends React.Component {
           renderItem={({ item, index }) => (
             <TouchableOpacity
               onPress={() => this.props.onPressEditActivity(item, index)}
-              tyle={{ flexDirection: 'row-reverse', alignItems: 'center' }}>
+              style={{
+                paddingTop: 5,
+                paddingBottom: 5,
+                flexDirection: 'row-reverse',
+                alignItems: 'center',
+                borderBottomWidth: 3,
+                borderBottomColor: '#CCCCCC'
+              }}>
               {/* <Text style={styles.activityListItem}> */}
               {renderActivity(item)}
               {/* </Text> */}
