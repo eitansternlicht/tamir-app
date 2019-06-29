@@ -6,18 +6,23 @@ import PhoneInput from 'react-native-phone-input';
 import GlobalFont from 'react-native-global-font';
 import { firebase } from '../utils/firebase/firebase-db';
 
-const signInWithPhone = phone =>
+const signInWithPhone = phone => {
+  Alert.alert('Signing in with', phone);
   firebase
     .auth()
     .signInWithPhoneNumber(phone)
     .then(confirmResult => {
+      Alert.alert('Success confirmed', confirmResult);
       if (firebase.auth().currentUser) {
         this.props.navigation.navigate('MainScene');
       } else {
         this.props.navigation.navigate('SmsCodeConfirmScene', { confirmResult });
       }
     })
-    .catch(error => console.log('error', error));
+    .catch(error => {
+      Alert.alert('Phone auth error', error);
+    });
+};
 
 class PhoneInputScene extends React.Component {
   constructor(props) {
