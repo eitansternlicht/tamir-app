@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Image } from 'react-native';
 import { Container, Tabs, Tab, Button, Icon, Spinner, Text } from 'native-base';
 import GlobalFont from 'react-native-global-font';
+import NavigationBar from 'react-native-navbar';
 import { appName } from '../../app.json';
 import { AttendanceTabScene, StudentsTabScene } from '.';
 import { firebase, readDB } from '../utils/firebase/firebase-db';
@@ -30,8 +31,20 @@ class MainScene extends React.PureComponent {
     }
 
     return {
-      title: appName,
-      headerLeft: '',
+      title: '',
+      headerLeft: (
+        <Image
+          // eslint-disable-next-line global-require
+          source={require('../../assets/images/tamir_logoshakuf_notext.png')}
+          style={{
+            width: 80,
+            height: 50,
+            alignSelf: 'center',
+            // flexDirection: 'row'
+            marginLeft: 180
+          }}
+        />
+      ),
       headerRight: (
         <Button transparent onPress={() => navigation.openDrawer()}>
           <Icon name="menu" style={{ color: '#5EC8F2' }} />

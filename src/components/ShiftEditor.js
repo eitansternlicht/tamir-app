@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React from 'react';
 import { StyleSheet, FlatList, TouchableOpacity, View } from 'react-native';
 import { Button, Text, Icon } from 'native-base';
@@ -14,7 +15,7 @@ const renderActivity = ({ type, subtype, groups, student }) => (
       <Text style={[styles.textfont, { textAlign: right }]}>{subtype}</Text>
       {type === 'שיחה אישית' ? (
         <Text style={[styles.textfont, { textAlign: right }]}> עם {student.fullName}</Text>
-      ) : (
+      ) : groups.filter(({ attended }) => attended).length === 0 ? null : (
         [<Text style={[styles.textfont, { textAlign: right }]}>עם:</Text>].concat(
           groups
             .filter(({ attended }) => attended)

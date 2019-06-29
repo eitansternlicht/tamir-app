@@ -70,6 +70,8 @@
 		AEB28C1CF7624964A0A37190 /* Assistant-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = D22B5F0F60F44A8AAC1543B6 /* Assistant-Light.otf */; };
 		96B5AC2504A94EFF88741C6C /* Assistant-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 36190BB75C7D43D7A8635031 /* Assistant-Regular.otf */; };
 		9FD0CD08B1D742A1A902E57D /* Assistant-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5CBB2F5A38B84237A5C4F383 /* Assistant-SemiBold.otf */; };
+		C7C809C110334A6AB7AE361D /* Fontisto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 10A001CFDD114966A4979F42 /* Fontisto.ttf */; };
+		CAD03091B7D34F819F585B21 /* icomoon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 10BA99DE894F47A283A3D481 /* icomoon.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -464,6 +466,8 @@
 		D22B5F0F60F44A8AAC1543B6 /* Assistant-Light.otf */ = {isa = PBXFileReference; name = "Assistant-Light.otf"; path = "../assets/fonts/Assistant-Light.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		36190BB75C7D43D7A8635031 /* Assistant-Regular.otf */ = {isa = PBXFileReference; name = "Assistant-Regular.otf"; path = "../assets/fonts/Assistant-Regular.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		5CBB2F5A38B84237A5C4F383 /* Assistant-SemiBold.otf */ = {isa = PBXFileReference; name = "Assistant-SemiBold.otf"; path = "../assets/fonts/Assistant-SemiBold.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		10A001CFDD114966A4979F42 /* Fontisto.ttf */ = {isa = PBXFileReference; name = "Fontisto.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		10BA99DE894F47A283A3D481 /* icomoon.ttf */ = {isa = PBXFileReference; name = "icomoon.ttf"; path = "../assets/fonts/icomoon.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -697,6 +701,8 @@
 				D22B5F0F60F44A8AAC1543B6 /* Assistant-Light.otf */,
 				36190BB75C7D43D7A8635031 /* Assistant-Regular.otf */,
 				5CBB2F5A38B84237A5C4F383 /* Assistant-SemiBold.otf */,
+				10A001CFDD114966A4979F42 /* Fontisto.ttf */,
+				10BA99DE894F47A283A3D481 /* icomoon.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1365,6 +1371,8 @@
 				AEB28C1CF7624964A0A37190 /* Assistant-Light.otf in Resources */,
 				96B5AC2504A94EFF88741C6C /* Assistant-Regular.otf in Resources */,
 				9FD0CD08B1D742A1A902E57D /* Assistant-SemiBold.otf in Resources */,
+				C7C809C110334A6AB7AE361D /* Fontisto.ttf in Resources */,
+				CAD03091B7D34F819F585B21 /* icomoon.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

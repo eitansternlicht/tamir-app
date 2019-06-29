@@ -65,6 +65,8 @@
 		<string>Assistant-Light.otf</string>
 		<string>Assistant-Regular.otf</string>
 		<string>Assistant-SemiBold.otf</string>
+		<string>Fontisto.ttf</string>
+		<string>icomoon.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
