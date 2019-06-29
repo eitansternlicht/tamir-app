@@ -62,8 +62,7 @@ class PhoneInputScene extends React.Component {
                   return;
                 }
                 signInWithPhone(phone);
-              }
-              Alert.alert('Please enter a valid phone number ');
+              } else Alert.alert('Please enter a valid phone number ');
             }}>
             <Text style={styles.textStyle}>Get Password By Sms</Text>
           </Button>

@@ -2,8 +2,6 @@ import React from 'react';
 import { View, StyleSheet, Image } from 'react-native';
 import { Container, Tabs, Tab, Button, Icon, Spinner, Text } from 'native-base';
 import GlobalFont from 'react-native-global-font';
-import NavigationBar from 'react-native-navbar';
-import { appName } from '../../app.json';
 import { AttendanceTabScene, StudentsTabScene } from '.';
 import { firebase, readDB } from '../utils/firebase/firebase-db';
 import { removeParticipantsThatDontExist } from '../utils/firebase/local-db';
