@@ -1,6 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
-import { Button } from 'react-native-elements';
+import { Button, View } from 'react-native';
 import { Container, Content, Button as NBButton, Text } from 'native-base';
 import t from 'tcomb-form-native';
 import { Student, options } from '../utils/student/constants';
@@ -16,13 +15,6 @@ class StudentFormScene extends React.Component {
     return {
       headerRight: (
         <Button
-          type="clear"
-          style={{
-            color: '#FFFFFF',
-            shadowOffset: { height: 0, width: 0 },
-            shadowOpacity: 0,
-            elevation: 0
-          }}
           onPress={navigation.state.params.onSave}
           title={navigation.state.params.actionType === 'newStudent' ? 'הוסף' : 'שמור'}
         />
