@@ -28,9 +28,9 @@ class ManageGroupParticipantsScene extends React.Component {
 
   renderFabIcon() {
     return this.state.fabMenuOpen ? (
-      <Icon name="close" type="Ionicons" />
+      <Icon name="close" type="Ionicons" color="#5EC8F2" />
     ) : (
-      <Icon name="edit" type="MaterialIcons" style={{ color: '#5EC8F2' }} />
+      <Icon name="edit" type="MaterialIcons" color="#5EC8F2" />
     );
   }
 

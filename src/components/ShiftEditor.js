@@ -9,7 +9,7 @@ import { right } from '../utils/style-utils';
 
 const renderActivity = ({ type, subtype, groups, student }) => (
   <View style={{ flexDirection: 'row-reverse', alignItems: 'flex-start' }}>
-    <Icon name="create" style={{ fontSize: 24, color: 'blue', paddingLeft: 10 }} />
+    <Icon name="create" style={{ fontSize: 24, color: '#5EC8F2', paddingLeft: 10 }} />
     <View style={{ flexDirection: 'column' }}>
       <Text style={styles.activityListItem}>{type}</Text>
       <Text style={[styles.textfont, { textAlign: right }]}>{subtype}</Text>

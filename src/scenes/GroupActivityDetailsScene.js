@@ -159,7 +159,7 @@ class GroupActivityDetailsScene extends Component {
                     </Text>
                     <Icon
                       name="create"
-                      style={{ fontSize: 20, color: 'blue', paddingTop: 5, paddingRight: 5 }}
+                      style={{ fontSize: 20, color: '#5EC8F2', paddingTop: 5, paddingRight: 5 }}
                     />
                   </TouchableOpacity>
                 ) : (
