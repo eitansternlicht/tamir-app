@@ -6,11 +6,18 @@ import PhoneInput from 'react-native-phone-input';
 import GlobalFont from 'react-native-global-font';
 import { firebase } from '../utils/firebase/firebase-db';
 
+const format = phone =>
+  phone
+    .split(' ')
+    .join('')
+    .split('-')
+    .join('');
+
 const signInWithPhone = phone => {
   Alert.alert('Signing in with', phone);
   firebase
     .auth()
-    .signInWithPhoneNumber(phone)
+    .signInWithPhoneNumber(format(phone))
     .then(confirmResult => {
       Alert.alert('Success confirmed', confirmResult);
       if (firebase.auth().currentUser) {
