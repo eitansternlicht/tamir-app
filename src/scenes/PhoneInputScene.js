@@ -13,24 +13,6 @@ const format = phone =>
     .split('-')
     .join('');
 
-const signInWithPhone = phone => {
-  Alert.alert('Signing in with', phone);
-  firebase
-    .auth()
-    .signInWithPhoneNumber(format(phone))
-    .then(confirmResult => {
-      // Alert.alert('Success confirmed', confirmResult);
-      if (firebase.auth().currentUser) {
-        this.props.navigation.navigate('MainScene');
-      } else {
-        this.props.navigation.navigate('SmsCodeConfirmScene', { confirmResult });
-      }
-    })
-    .catch(error => {
-      Alert.alert('Phone auth error', JSON.stringify(error));
-    });
-};
-
 class PhoneInputScene extends React.Component {
   constructor(props) {
     super(props);
@@ -41,6 +23,24 @@ class PhoneInputScene extends React.Component {
     this.phone.focus();
     const fontName = 'Assistant-Bold';
     GlobalFont.applyGlobal(fontName);
+  }
+
+  signInWithPhone(phone) {
+    console.log('eitan is logged in before', firebase.auth().currentUser);
+    firebase
+      .auth()
+      .signInWithPhoneNumber(format(phone), true)
+      .then(confirmResult => {
+        // Alert.alert('Success confirmed', confirmResult);
+        if (firebase.auth().currentUser) {
+          this.props.navigation.navigate('MainScene');
+        } else {
+          this.props.navigation.navigate('SmsCodeConfirmScene', { confirmResult });
+        }
+      })
+      .catch(error => {
+        console.log('Phone auth error', error);
+      });
   }
 
   render() {
@@ -70,7 +70,7 @@ class PhoneInputScene extends React.Component {
               if (this.phone.isValidNumber()) {
                 if (Platform.OS === 'ios') {
                   this.props.navigation.navigate('SmsCodeConfirmScene');
-                } else signInWithPhone(this.phone.getValue());
+                } else this.signInWithPhone(this.phone.getValue());
               } else Alert.alert('Please enter a valid phone number');
             }}>
             <Text style={styles.textStyle}>Get Password By Sms</Text>
