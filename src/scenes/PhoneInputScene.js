@@ -19,7 +19,7 @@ const signInWithPhone = phone => {
     .auth()
     .signInWithPhoneNumber(format(phone))
     .then(confirmResult => {
-      Alert.alert('Success confirmed', confirmResult);
+      // Alert.alert('Success confirmed', confirmResult);
       if (firebase.auth().currentUser) {
         this.props.navigation.navigate('MainScene');
       } else {
