@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Content, Icon, Text, List, ListItem, Button } from 'native-base';
+import { Container, Content, Icon, Text, List, ListItem, Button, Right } from 'native-base';
 import { Agenda } from 'react-native-calendars';
 import { StyleSheet, Dimensions, View, TouchableOpacity } from 'react-native';
 import { Divider } from 'react-native-elements';
@@ -29,8 +29,8 @@ const renderListOfActivities = activities =>
   ) : (
     <List>
       {activities.map(activity => (
-        <ListItem key={JSON.stringify(activity)}>
-          <Text>{`${activity.type} ${activity.subtype}`}</Text>
+        <ListItem style={{ justifyContent: 'flex-end' }} key={JSON.stringify(activity)}>
+          <Text style={{ textAlign: right }}>{`${activity.type} ${activity.subtype}`}</Text>
         </ListItem>
       ))}
     </List>
@@ -182,7 +182,7 @@ class AttendanceCalendarScene extends Component {
         <TouchableOpacity
           onPress={() => this.onPressEditShift({ startTime, endTime, activities, day, uid })}
           style={[styles.item, { height: null, textAlign: right }]}>
-          <Text style={{ textAlign: right }}>
+          <Text style={{ textAlign: 'right' }}>
             {toClockRange({ startTime: startTime.toDate(), endTime: endTime.toDate() })}
           </Text>
           {renderListOfActivities(activities)}
@@ -218,7 +218,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     marginRight: 10,
-    marginTop: 17
+    marginTop: 17,
+    textAlign: right
   },
   emptyDate: {
     backgroundColor: 'rgba(0, 0, 0, 0)',
@@ -239,7 +240,8 @@ const styles = StyleSheet.create({
     height: 100,
     backgroundColor: 'rgba(0, 0, 0, 0)',
     borderBottomColor: '#BDC0C9',
-    borderBottomWidth: 1
+    borderBottomWidth: 1,
+    textAlign: right
   },
 
   insideContainerAddNewItem: {
