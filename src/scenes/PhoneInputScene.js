@@ -1,6 +1,7 @@
 import React from 'react';
-import { Container, Text, Card, Content, Form, Button, Platform } from 'native-base';
-import { Alert } from 'react-native';
+import { Platform, Alert } from 'react-native';
+import { Container, Text, Card, Content, Form, Button } from 'native-base';
+
 import PhoneInput from 'react-native-phone-input';
 import GlobalFont from 'react-native-global-font';
 import { firebase } from '../utils/firebase/firebase-db';
