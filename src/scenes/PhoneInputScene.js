@@ -84,7 +84,7 @@ const styles = {
   textStyle: {
     alignSelf: 'center',
     color: '#fff',
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '600'
   },
   buttonOneStyle: {
