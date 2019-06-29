@@ -27,7 +27,7 @@ const signInWithPhone = phone => {
       }
     })
     .catch(error => {
-      Alert.alert('Phone auth error', error);
+      Alert.alert('Phone auth error', JSON.stringify(error));
     });
 };
 
