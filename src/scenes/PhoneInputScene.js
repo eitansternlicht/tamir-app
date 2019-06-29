@@ -56,13 +56,10 @@ class PhoneInputScene extends React.Component {
             onPress={() => {
               // TODO replace with this for phone auth
               if (this.phone.isValidNumber()) {
-                const phone = this.phone.getValue();
                 if (Platform.OS === 'ios') {
                   this.props.navigation.navigate('SmsCodeConfirmScene');
-                  return;
-                }
-                signInWithPhone(phone);
-              } else Alert.alert('Please enter a valid phone number ');
+                } else signInWithPhone(this.phone.getValue());
+              } else Alert.alert('Please enter a valid phone number');
             }}>
             <Text style={styles.textStyle}>Get Password By Sms</Text>
           </Button>
