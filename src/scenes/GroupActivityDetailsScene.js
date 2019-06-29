@@ -134,7 +134,6 @@ class GroupActivityDetailsScene extends Component {
                     style={[
                       rowItem,
                       {
-                        marginRight: 10,
                         paddingRight: 10,
                         fontFamily: 'Assistant-Regular',
                         color: '#787878'
@@ -152,7 +151,7 @@ class GroupActivityDetailsScene extends Component {
                       });
                     }}
                     style={{ flexDirection: 'row-reverse' }}>
-                    <Text>{groupName}: </Text>
+                    <Text style={{ paddingLeft: 10 }}>{groupName}: </Text>
                     <Text>
                       חניכים {participants.filter(({ attended }) => attended).length}/
                       {participants.length}

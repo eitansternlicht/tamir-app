@@ -1,8 +1,9 @@
 import React from 'react';
-import { Button, View } from 'react-native';
+import { View } from 'react-native';
 import { Container, Content, Button as NBButton, Text } from 'native-base';
-import { StudentDetails } from '../components';
 import GlobalFont from 'react-native-global-font';
+import { Button } from 'react-native-elements';
+import { StudentDetails } from '../components';
 import { getStudentName } from '../utils/student/student-utils';
 import { removeEmptyFields } from '../utils/general-utils';
 import { setStudentStatus } from '../utils/firebase/firebase-db';
@@ -15,6 +16,13 @@ class StudentDetailsScene extends React.PureComponent {
       title: getStudentName(student),
       headerRight: (
         <Button
+          type="clear"
+          style={{
+            color: '#FFFFFF',
+            shadowOffset: { height: 0, width: 0 },
+            shadowOpacity: 0,
+            elevation: 0
+          }}
           onPress={() => {
             if (isPotentialStudent) {
               setStudentStatus(student, 'normal');
