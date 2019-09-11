@@ -7,6 +7,7 @@ import { initNativeFirebase, firebase } from '../utils/firebase/firebase-db';
 class AuthLoadingScene extends React.Component {
   constructor(props) {
     super(props);
+    console.disableYellowBox = true;
     initNativeFirebase().then(() => {
       const user = firebase.auth().currentUser;
       if (user) {
