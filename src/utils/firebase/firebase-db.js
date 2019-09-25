@@ -18,46 +18,7 @@ const firebase = rnfirebase.initializeApp(
  * */
 const initNativeFirebase = () => firebase.onReady();
 
-/**
- * reads all COLLECTIONS from firebase
- * returns a promise retuning DB as a JS object.
- * e.g.
- * db = {
- *      AttendanceDays: {
- * TODO update to new format
- *          lh1Ssmo: {name: "פעילות א", groupsAttended: {…}, startTime: Timestamp}
- *      },
- *      Groups: {
- *          Jfkudx: {name: "קבוצה א", participants: {…}},
- *          hTy8OP: {name: "קבוצה ב", participants: {…}}
- *      },
- *      Students: {
- *          AcQDADi: {שם משפחה: "ה", תעודת זהות: "204070635", מידה חולצה: "S", מוסד לימודים: "בית ספר דוגמה", קבוצות: null, …}
- *          FeglvpLl: {שם משפחה: "ג", תעודת זהות: "204070635", מידה חולצה: "S", מוסד לימודים: "בית ספר דוגמה", קבוצות: null, …}
- *      }
- * }
- * usage:
- * readDB().then(db => console.log(db));
- * */
-// const readDB = async uid => {
-//   const promises = COLLECTIONS.map(collection =>
-//     collection === 'Tutors'
-//       ? firebase
-//           .firestore()
-//           .collection(collection)
-//           .doc(uid)
-//           .get()
-//           .then(doc => entriesToObj([[uid, doc.data()]]))
-//       : firebase
-//           .firestore()
-//           .collection(collection)
-//           .where('owners.tutors', 'array-contains', uid)
-//           .get()
-//           .then(snapshot => entriesToObj(snapshot.docs.map(doc => [doc.id, doc.data()])))
-//   );
-//   const list = await Promise.all(promises);
-//   return entriesToObj(zip(COLLECTIONS, list));
-// };
+
 const toState = (collection, docsSnapshot, prevState, applyToDoc) => {
   const otherCollections = COLLECTIONS.filter(c => c !== collection);
   const existAlready = otherCollections.filter(c => prevState[c]);
@@ -93,40 +54,41 @@ const toStateDoc = (collection, docSnapshot, prevState, applyToDoc) => {
 };
 
 const readDB = (uid, that) => {
-  COLLECTIONS.forEach(collection => {
+  return COLLECTIONS.map(collection => {
     if (collection === 'AttendanceDays')
-      firebase
+      return firebase
         .firestore()
         .collection(collection)
         .where('owners.tutors', 'array-contains', uid)
         .where('day', '==', removeTime(new Date()))
-        .onSnapshot(snapshot =>
-          that.setState(prevState => toState(collection, snapshot, prevState))
-        );
-    else if (collection === 'Students')
-      firebase
+        .onSnapshot(snapshot => {
+          that.setState(prevState => toState(collection, snapshot, prevState));
+        });
+    if (collection === 'Students')
+      return firebase
         .firestore()
         .collection(collection)
         .where('owners.tutors', 'array-contains', { uid, studentStatus: 'normal' })
-        .onSnapshot(snapshot =>
-          that.setState(prevState => toState(collection, snapshot, prevState, timestampsToDates))
-        );
-    else if (collection === 'Users')
-      firebase
+        .onSnapshot(snapshot => {
+          that.setState(prevState => toState(collection, snapshot, prevState, timestampsToDates));
+        });
+    if (collection === 'Users')
+      return firebase
         .firestore()
         .collection(collection)
         .doc(uid)
-        .onSnapshot(snapshot =>
-          that.setState(prevState => toStateDoc(collection, snapshot, prevState, timestampsToDates))
-        );
-    else
-      firebase
-        .firestore()
-        .collection(collection)
-        .where('owners.tutors', 'array-contains', uid)
-        .onSnapshot(snapshot =>
-          that.setState(prevState => toState(collection, snapshot, prevState))
-        );
+        .onSnapshot(snapshot => {
+          that.setState(prevState =>
+            toStateDoc(collection, snapshot, prevState, timestampsToDates)
+          );
+        });
+    return firebase
+      .firestore()
+      .collection(collection)
+      .where('owners.tutors', 'array-contains', uid)
+      .onSnapshot(snapshot => {
+        that.setState(prevState => toState(collection, snapshot, prevState));
+      });
   });
 };
 
@@ -137,7 +99,6 @@ const updateDoc = (collection, uid, obj) =>
     .doc(uid)
     .set(
       obj
-      // , { merge: true }
     );
 
 const createNewGroup = newGroupName =>

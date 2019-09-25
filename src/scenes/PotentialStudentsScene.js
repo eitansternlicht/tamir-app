@@ -23,7 +23,7 @@ class PotentialStudentsScene extends React.PureComponent {
     };
     const { uid } = firebase.auth().currentUser;
 
-    firebase
+    this.unsubscribe = firebase
       .firestore()
       .collection('Students')
       .where('owners.tutors', 'array-contains', { uid, studentStatus: 'potential' })
@@ -36,6 +36,9 @@ class PotentialStudentsScene extends React.PureComponent {
       });
   }
 
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
   render() {
     const { db, loading } = this.state;
     const { navigation } = this.props;
@@ -44,16 +47,16 @@ class PotentialStudentsScene extends React.PureComponent {
         {loading ? (
           <Spinner />
         ) : (
-          <FilterableList
-            data={db}
-            onPress={student =>
-              navigation.navigate('StudentDetailsScene', {
-                student,
-                previous: 'PotentialStudentsScene'
-              })
-            }
-          />
-        )}
+            <FilterableList
+              data={db}
+              onPress={student =>
+                navigation.navigate('StudentDetailsScene', {
+                  student,
+                  previous: 'PotentialStudentsScene'
+                })
+              }
+            />
+          )}
       </Container>
     );
   }
