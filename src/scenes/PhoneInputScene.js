@@ -1,7 +1,6 @@
 import React from 'react';
-import { Platform, Alert } from 'react-native';
+import { Alert } from 'react-native';
 import { Container, Text, Card, Content, Form, Button } from 'native-base';
-
 import PhoneInput from 'react-native-phone-input';
 import GlobalFont from 'react-native-global-font';
 import { firebase } from '../utils/firebase/firebase-db';
@@ -26,20 +25,14 @@ class PhoneInputScene extends React.Component {
   }
 
   signInWithPhone(phone) {
-    console.log('eitan is logged in before', firebase.auth().currentUser);
     firebase
       .auth()
       .signInWithPhoneNumber(format(phone), true)
       .then(confirmResult => {
-        // Alert.alert('Success confirmed', confirmResult);
-        if (firebase.auth().currentUser) {
-          this.props.navigation.navigate('MainScene');
-        } else {
-          this.props.navigation.navigate('SmsCodeConfirmScene', { confirmResult });
-        }
+        this.props.navigation.navigate('SmsCodeConfirmScene', { confirmResult });
       })
       .catch(error => {
-        console.log('Phone auth error', error);
+        Alert.alert('Phone auth error', error);
       });
   }
 
@@ -68,10 +61,15 @@ class PhoneInputScene extends React.Component {
             onPress={() => {
               // TODO replace with this for phone auth
               if (this.phone.isValidNumber()) {
-                if (Platform.OS === 'ios') {
-                  this.props.navigation.navigate('SmsCodeConfirmScene');
-                } else this.signInWithPhone(this.phone.getValue());
-              } else Alert.alert('Please enter a valid phone number');
+                this.signInWithPhone(this.phone.getValue());
+                // if (Platform.OS === 'ios') {
+                //   this.props.navigation.navigate('SmsCodeConfirmScene');
+                // } else {
+                //   this.signInWithPhone(this.phone.getValue());
+                // }
+              } else {
+                Alert.alert('Please enter a valid phone number');
+              }
             }}>
             <Text style={styles.textStyle}>Get Password By Sms</Text>
           </Button>

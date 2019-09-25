@@ -1,20 +1,18 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Spinner } from 'native-base';
-import GlobalFont from 'react-native-global-font';
 import { initNativeFirebase, firebase } from '../utils/firebase/firebase-db';
 
 class AuthLoadingScene extends React.Component {
   constructor(props) {
     super(props);
+    // eslint-disable-next-line no-console
     console.disableYellowBox = true;
     initNativeFirebase().then(() => {
       const user = firebase.auth().currentUser;
       if (user) {
-        console.log('signed in', user.uid);
         props.navigation.navigate('MainScene');
       } else {
-        console.log('not signed in');
         props.navigation.navigate('PhoneInputScene');
       }
     });

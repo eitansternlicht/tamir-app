@@ -7,8 +7,9 @@ import { firebase } from '../utils/firebase/firebase-db';
 class SmsCodeConfirmScene extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { loading: false, code: '' };
     this.state = {
+      loading: false,
+      code: '',
       textinput: ''
     };
   }
@@ -56,7 +57,6 @@ class SmsCodeConfirmScene extends React.Component {
                       .auth()
                       .signInWithEmailAndPassword('pass123456@test.com', '123456')
                       .then(() => {
-                        console.log('signed in with uid', firebase.auth().currentUser.uid);
                         this.props.navigation.navigate('MainScene');
                       });
                     return;
