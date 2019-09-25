@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "463912944330-jdtli7thhq0fabmbdgttvqnvukmselam.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tamir.tamirapp",
+            "certificate_hash": "2585c032147bd0ee9ad668a56f1075b5ab1b710c"
+          }
+        },
+        {
           "client_id": "463912944330-gghode112ilnbp2r91dfbt07udfp38lb.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
