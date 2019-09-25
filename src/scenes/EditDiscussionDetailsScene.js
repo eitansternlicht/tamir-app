@@ -19,8 +19,8 @@ const showStudent = student => (
     {student ? (
       <Icon type="Entypo" size={20} name="edit" style={{ color: '#787878' }} />
     ) : (
-      <Icon name="person-add" style={{ color: '#787878' }} />
-    )}
+        <Icon name="person-add" style={{ color: '#787878' }} />
+      )}
   </Text>
 );
 
@@ -61,32 +61,28 @@ class EditDiscussionDetailsScene extends Component {
       actionType,
       editedActivityIndex
     } = this.props.navigation.state.params;
-    if (student) {
-      if (actionType === 'editActivity')
-        this.props.navigation.navigate(returnTo || 'MainScene', {
-          editedActivity: {
-            type: 'שיחה אישית',
-            subtype,
-            student,
-            comments: this.state.comments
-          },
-          editedActivityIndex,
-          actionType: 'deleteActivity'
-        });
-      else if (actionType === 'newActivity')
-        this.props.navigation.navigate(returnTo || 'MainScene', {
-          newActivity: {
-            type: 'שיחה אישית',
-            subtype,
-            student,
-            comments: this.state.comments
-          },
-          actionType
-        });
-    } else {
-      // TODO
-      console.log('No Student was Picked! This WILL BE a dialog');
-    }
+    if (actionType === 'editActivity')
+      this.props.navigation.navigate(returnTo || 'MainScene', {
+        editedActivity: {
+          type: 'שיחה אישית',
+          subtype,
+          student,
+          comments: this.state.comments
+        },
+        editedActivityIndex,
+        actionType: 'deleteActivity'
+      });
+    else if (actionType === 'newActivity')
+      this.props.navigation.navigate(returnTo || 'MainScene', {
+        newActivity: {
+          type: 'שיחה אישית',
+          subtype,
+          student,
+          comments: this.state.comments
+        },
+        actionType
+      });
+
   }
 
   render() {
@@ -107,8 +103,8 @@ class EditDiscussionDetailsScene extends Component {
               <Text>מחיקת פעילות</Text>
             </NBButton>
           ) : (
-            <View />
-          )}
+              <View />
+            )}
           <Text style={styles.titleName}>{this.props.navigation.state.params.subtype}</Text>
           <Body style={styles.messageBox}>
             <TouchableOpacity

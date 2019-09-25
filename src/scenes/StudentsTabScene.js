@@ -105,7 +105,6 @@ class StudentsTabScene extends React.PureComponent {
     const { navigation, db } = this.props;
     const longPressedState = navigation.getParam('longPressedState');
     const firstSelected = navigation.getParam('firstSelected');
-    console.log('firstSelected before render', firstSelected);
     const reactNativeModalProps = {
       onBackdropPress: this.onCancel
     };

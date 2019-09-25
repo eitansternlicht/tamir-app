@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, TouchableOpacity } from 'react-native';
+import { Image, TouchableOpacity, Alert } from 'react-native';
 import { Container, Text, Content } from 'native-base';
 import { DrawerItems } from 'react-navigation';
 import { firebase } from '../utils/firebase/firebase-db';
@@ -21,6 +21,9 @@ const Drawer = props => (
             .auth()
             .signOut()
             .then(() => props.navigation.navigate('AuthLoadingScene'))
+            .catch(err => {
+              Alert.alert('Error Signing Out! : ', err.message);
+            })
         }>
         <Text
           style={{
