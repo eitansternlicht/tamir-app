@@ -38,7 +38,6 @@ class MainScene extends React.PureComponent {
             width: 80,
             height: 50,
             alignSelf: 'center',
-            // flexDirection: 'row'
             marginLeft: 180
           }}
         />
@@ -55,12 +54,18 @@ class MainScene extends React.PureComponent {
     super(props);
     this.state = {};
     const tutorUID = firebase.auth().currentUser.uid;
-    readDB(tutorUID, this);
+    this.allUnsubscribes = readDB(tutorUID, this);
   }
 
   componentDidMount() {
     const fontName = 'Assistant-Bold';
     GlobalFont.applyGlobal(fontName);
+  }
+
+  componentWillUnmount() {
+    this.allUnsubscribes.forEach(f => {
+      f();
+    });
   }
 
   render() {
@@ -70,39 +75,39 @@ class MainScene extends React.PureComponent {
         {!loadedAll ? (
           <Spinner />
         ) : (
-          <Tabs tabBarUnderlineStyle={{ borderBottomWidth: -3, backgroundColor: '#5EC8F2' }}>
-            <Tab
-              heading="חניכים"
-              tabStyle={{ backgroundColor: '#FFFFFF' }}
-              textStyle={{ fontFamily: 'Assistant-Bold', color: '#787878' }}
-              activeTabStyle={{ backgroundColor: '#FFFFFF' }}
-              activeTextStyle={{ fontFamily: 'Assistant-Bold', color: '#787878' }}>
-              <StudentsTabScene
-                navigation={this.props.navigation}
-                db={{
-                  AttendanceDays,
-                  Groups: removeParticipantsThatDontExist(Groups, Students),
-                  Students
-                }}
-              />
-            </Tab>
-            <Tab
-              heading="נוכחות"
-              tabStyle={{ backgroundColor: '#FFFFFF' }}
-              textStyle={{ fontFamily: 'Assistant-Bold', color: '#787878' }}
-              activeTabStyle={{ backgroundColor: '#FFFFFF' }}
-              activeTextStyle={{ fontFamily: 'Assistant-Bold', color: '#787878' }}>
-              <AttendanceTabScene
-                navigation={this.props.navigation}
-                db={{
-                  AttendanceDays,
-                  Groups: removeParticipantsThatDontExist(Groups, Students),
-                  Students
-                }}
-              />
-            </Tab>
-          </Tabs>
-        )}
+            <Tabs tabBarUnderlineStyle={{ borderBottomWidth: -3, backgroundColor: '#5EC8F2' }}>
+              <Tab
+                heading="חניכים"
+                tabStyle={{ backgroundColor: '#FFFFFF' }}
+                textStyle={{ fontFamily: 'Assistant-Bold', color: '#787878' }}
+                activeTabStyle={{ backgroundColor: '#FFFFFF' }}
+                activeTextStyle={{ fontFamily: 'Assistant-Bold', color: '#787878' }}>
+                <StudentsTabScene
+                  navigation={this.props.navigation}
+                  db={{
+                    AttendanceDays,
+                    Groups: removeParticipantsThatDontExist(Groups, Students),
+                    Students
+                  }}
+                />
+              </Tab>
+              <Tab
+                heading="נוכחות"
+                tabStyle={{ backgroundColor: '#FFFFFF' }}
+                textStyle={{ fontFamily: 'Assistant-Bold', color: '#787878' }}
+                activeTabStyle={{ backgroundColor: '#FFFFFF' }}
+                activeTextStyle={{ fontFamily: 'Assistant-Bold', color: '#787878' }}>
+                <AttendanceTabScene
+                  navigation={this.props.navigation}
+                  db={{
+                    AttendanceDays,
+                    Groups: removeParticipantsThatDontExist(Groups, Students),
+                    Students
+                  }}
+                />
+              </Tab>
+            </Tabs>
+          )}
       </Container>
     );
   }

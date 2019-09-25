@@ -32,9 +32,10 @@ class PhoneInputScene extends React.Component {
         this.props.navigation.navigate('SmsCodeConfirmScene', { confirmResult });
       })
       .catch(error => {
-        Alert.alert('Phone auth error', error);
+        Alert.alert('Phone auth error: ', error.message);
       });
   }
+
 
   render() {
     return (
@@ -59,14 +60,8 @@ class PhoneInputScene extends React.Component {
           <Button
             style={styles.buttonTwoStyle}
             onPress={() => {
-              // TODO replace with this for phone auth
               if (this.phone.isValidNumber()) {
                 this.signInWithPhone(this.phone.getValue());
-                // if (Platform.OS === 'ios') {
-                //   this.props.navigation.navigate('SmsCodeConfirmScene');
-                // } else {
-                //   this.signInWithPhone(this.phone.getValue());
-                // }
               } else {
                 Alert.alert('Please enter a valid phone number');
               }
