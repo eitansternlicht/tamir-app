@@ -19,8 +19,8 @@ const showStudent = student => (
     {student ? (
       <Icon type="Entypo" size={20} name="edit" style={{ color: '#787878' }} />
     ) : (
-        <Icon name="person-add" style={{ color: '#787878' }} />
-      )}
+      <Icon name="person-add" style={{ color: '#787878' }} />
+    )}
   </Text>
 );
 
@@ -82,11 +82,10 @@ class EditDiscussionDetailsScene extends Component {
         },
         actionType
       });
-
   }
 
   render() {
-    const { returnTo, actionType, editedActivityIndex, db } = this.props.navigation.state.params;
+    const { returnTo, actionType, editedActivityIndex } = this.props.navigation.state.params;
     return (
       <Container>
         <Content padder>
@@ -103,8 +102,8 @@ class EditDiscussionDetailsScene extends Component {
               <Text>מחיקת פעילות</Text>
             </NBButton>
           ) : (
-              <View />
-            )}
+            <View />
+          )}
           <Text style={styles.titleName}>{this.props.navigation.state.params.subtype}</Text>
           <Body style={styles.messageBox}>
             <TouchableOpacity

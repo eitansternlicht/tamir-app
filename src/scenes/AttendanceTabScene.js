@@ -63,7 +63,7 @@ class AttendanceTabScene extends React.Component {
         .firestore()
         .collection('AttendanceDays')
         .add(attendanceDay)
-        .then(ref => {
+        .then(() => {
           this.resetState();
         });
     }

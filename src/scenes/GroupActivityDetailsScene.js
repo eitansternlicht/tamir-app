@@ -8,8 +8,7 @@ import {
   Icon,
   Title,
   Button as NBButton,
-  Text,
-  Body
+  Text
 } from 'native-base';
 import { View, StyleSheet, Button } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -153,8 +152,7 @@ class GroupActivityDetailsScene extends Component {
                     style={{ flexDirection: 'row-reverse' }}>
                     <Text style={{ paddingLeft: 10 }}>{groupName}: </Text>
                     <Text>
-                      חניכים {participants.filter(({ attended }) => attended).length}/
-                      {participants.length}
+                      חניכים {participants.filter(p => p.attended).length}/{participants.length}
                     </Text>
                     <Icon
                       name="create"
@@ -168,20 +166,6 @@ class GroupActivityDetailsScene extends Component {
             ))}
           </View>
         </Content>
-        {/* <Footer>
-          <Button style={[button, { justifyContent: 'center' }]} onPress={this.onSave}>
-            <Text
-              onPress={this.onSave}
-              style={{
-                fontSize: 30,
-                textAlign: 'center',
-                paddingHorizontal: 20,
-                color: 'white'
-              }}>
-              שמור
-            </Text>
-          </Button>
-        </Footer> */}
       </Container>
     );
   }

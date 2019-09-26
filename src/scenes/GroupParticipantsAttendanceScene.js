@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, FlatList, StyleSheet, TouchableOpacity, Button } from 'react-native';
-import { Container, Left, Text, Footer, CheckBox } from 'native-base';
+import { Container, Text, CheckBox } from 'native-base';
 import GlobalFont from 'react-native-global-font';
 import { right } from '../utils/style-utils';
 
@@ -132,31 +132,9 @@ class GroupParticipantsAttendanceScene extends React.Component {
             )}
           />
         </View>
-        {/* <Footer>
-          <Left>
-            <Button
-              style={{ alignSelf: 'flex-start', marginLeft: 10 }}
-              onPress={() => {
-                const groups = [...this.state.groups];
-                groups[this.props.navigation.state.params.index].attended = true;
-                this.props.navigation.navigate('GroupActivityDetailsScene', { groups });
-              }}>
-              <Text>שמור</Text>
-            </Button>
-          </Left>
-        </Footer> */}
       </Container>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  previousAttendanceIcons: {
-    marginRight: 10,
-    marginTop: 10,
-    marginBottom: 10,
-    fontSize: 20
-  }
-});
 
 export { GroupParticipantsAttendanceScene };

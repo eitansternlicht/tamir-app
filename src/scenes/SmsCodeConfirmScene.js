@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Content, Input, Label, Form, Item, Button, Spinner, Text } from 'native-base';
-import { Platform, Alert } from 'react-native';
+import { Alert } from 'react-native';
 import GlobalFont from 'react-native-global-font';
 import { firebase } from '../utils/firebase/firebase-db';
 
@@ -70,7 +70,7 @@ class SmsCodeConfirmScene extends React.Component {
                     if (user) this.props.navigation.navigate('MainScene');
                     else Alert.alert('Wrong code entered!');
                   })
-                  .catch((err) => {
+                  .catch(err => {
                     this.setState({ loading: false });
                     Alert.alert('Wrong code entered!: ', err.message);
                   });

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Content, Icon, Text, List, ListItem, Button, Right } from 'native-base';
+import { Container, Content, Icon, Text, List, ListItem, Button } from 'native-base';
 import { Agenda } from 'react-native-calendars';
 import { StyleSheet, Dimensions, View, TouchableOpacity } from 'react-native';
 import { Divider } from 'react-native-elements';
@@ -27,14 +27,14 @@ const renderListOfActivities = activities =>
   !activities || activities.length === 0 ? (
     <View />
   ) : (
-      <List>
-        {activities.map(activity => (
-          <ListItem style={{ justifyContent: 'flex-end' }} key={JSON.stringify(activity)}>
-            <Text style={{ textAlign: right }}>{`${activity.type} ${activity.subtype}`}</Text>
-          </ListItem>
-        ))}
-      </List>
-    );
+    <List>
+      {activities.map(activity => (
+        <ListItem style={{ justifyContent: 'flex-end' }} key={JSON.stringify(activity)}>
+          <Text style={{ textAlign: right }}>{`${activity.type} ${activity.subtype}`}</Text>
+        </ListItem>
+      ))}
+    </List>
+  );
 
 class AttendanceCalendarScene extends Component {
   constructor(props) {
@@ -109,17 +109,17 @@ class AttendanceCalendarScene extends Component {
                   formatDate(day),
                   data.shifts
                     ? data.shifts
-                      .sort((a, b) => {
-                        if (a.startTime > b.startTime) return 1;
-                        if (b.startTime > a.startTime) return -1;
-                        return 0;
-                      })
-                      .map((s, i) => ({
-                        ...s,
-                        uid: doc.id,
-                        day,
-                        last: data.shifts.length - 1 === i
-                      }))
+                        .sort((a, b) => {
+                          if (a.startTime > b.startTime) return 1;
+                          if (b.startTime > a.startTime) return -1;
+                          return 0;
+                        })
+                        .map((s, i) => ({
+                          ...s,
+                          uid: doc.id,
+                          day,
+                          last: data.shifts.length - 1 === i
+                        }))
                     : []
                 ];
               })
@@ -168,8 +168,8 @@ class AttendanceCalendarScene extends Component {
             <Icon type="MaterialIcons" name="add-circle" style={{ color: '#5EC8F2' }} />
           </Button>
         ) : (
-            <View />
-          )}
+          <View />
+        )}
         <Divider style={styles.dividerAddNewItem} />
       </Container>
     );
@@ -186,18 +186,18 @@ class AttendanceCalendarScene extends Component {
         {renderListOfActivities(activities)}
       </TouchableOpacity>
     ) : (
-        <View>
-          <TouchableOpacity
-            onPress={() => this.onPressEditShift({ startTime, endTime, activities, day, uid })}
-            style={[styles.item, { height: null, textAlign: right }]}>
-            <Text style={{ textAlign: 'right' }}>
-              {toClockRange({ startTime: startTime.toDate(), endTime: endTime.toDate() })}
-            </Text>
-            {renderListOfActivities(activities)}
-          </TouchableOpacity>
-          {this.renderAddNewItem(day, uid)}
-        </View>
-      );
+      <View>
+        <TouchableOpacity
+          onPress={() => this.onPressEditShift({ startTime, endTime, activities, day, uid })}
+          style={[styles.item, { height: null, textAlign: right }]}>
+          <Text style={{ textAlign: 'right' }}>
+            {toClockRange({ startTime: startTime.toDate(), endTime: endTime.toDate() })}
+          </Text>
+          {renderListOfActivities(activities)}
+        </TouchableOpacity>
+        {this.renderAddNewItem(day, uid)}
+      </View>
+    );
 
   render() {
     return (

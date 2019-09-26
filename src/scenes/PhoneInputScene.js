@@ -36,7 +36,6 @@ class PhoneInputScene extends React.Component {
       });
   }
 
-
   render() {
     return (
       <Container>

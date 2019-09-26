@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Image } from 'react-native';
+import { View, Image } from 'react-native';
 import { Container, Tabs, Tab, Button, Icon, Spinner, Text } from 'native-base';
 import GlobalFont from 'react-native-global-font';
 import { AttendanceTabScene, StudentsTabScene } from '.';
@@ -75,53 +75,42 @@ class MainScene extends React.PureComponent {
         {!loadedAll ? (
           <Spinner />
         ) : (
-            <Tabs tabBarUnderlineStyle={{ borderBottomWidth: -3, backgroundColor: '#5EC8F2' }}>
-              <Tab
-                heading="חניכים"
-                tabStyle={{ backgroundColor: '#FFFFFF' }}
-                textStyle={{ fontFamily: 'Assistant-Bold', color: '#787878' }}
-                activeTabStyle={{ backgroundColor: '#FFFFFF' }}
-                activeTextStyle={{ fontFamily: 'Assistant-Bold', color: '#787878' }}>
-                <StudentsTabScene
-                  navigation={this.props.navigation}
-                  db={{
-                    AttendanceDays,
-                    Groups: removeParticipantsThatDontExist(Groups, Students),
-                    Students
-                  }}
-                />
-              </Tab>
-              <Tab
-                heading="נוכחות"
-                tabStyle={{ backgroundColor: '#FFFFFF' }}
-                textStyle={{ fontFamily: 'Assistant-Bold', color: '#787878' }}
-                activeTabStyle={{ backgroundColor: '#FFFFFF' }}
-                activeTextStyle={{ fontFamily: 'Assistant-Bold', color: '#787878' }}>
-                <AttendanceTabScene
-                  navigation={this.props.navigation}
-                  db={{
-                    AttendanceDays,
-                    Groups: removeParticipantsThatDontExist(Groups, Students),
-                    Students
-                  }}
-                />
-              </Tab>
-            </Tabs>
-          )}
+          <Tabs tabBarUnderlineStyle={{ borderBottomWidth: -3, backgroundColor: '#5EC8F2' }}>
+            <Tab
+              heading="חניכים"
+              tabStyle={{ backgroundColor: '#FFFFFF' }}
+              textStyle={{ fontFamily: 'Assistant-Bold', color: '#787878' }}
+              activeTabStyle={{ backgroundColor: '#FFFFFF' }}
+              activeTextStyle={{ fontFamily: 'Assistant-Bold', color: '#787878' }}>
+              <StudentsTabScene
+                navigation={this.props.navigation}
+                db={{
+                  AttendanceDays,
+                  Groups: removeParticipantsThatDontExist(Groups, Students),
+                  Students
+                }}
+              />
+            </Tab>
+            <Tab
+              heading="נוכחות"
+              tabStyle={{ backgroundColor: '#FFFFFF' }}
+              textStyle={{ fontFamily: 'Assistant-Bold', color: '#787878' }}
+              activeTabStyle={{ backgroundColor: '#FFFFFF' }}
+              activeTextStyle={{ fontFamily: 'Assistant-Bold', color: '#787878' }}>
+              <AttendanceTabScene
+                navigation={this.props.navigation}
+                db={{
+                  AttendanceDays,
+                  Groups: removeParticipantsThatDontExist(Groups, Students),
+                  Students
+                }}
+              />
+            </Tab>
+          </Tabs>
+        )}
       </Container>
     );
   }
 }
-const styles = StyleSheet.create({
-  button: {
-    color: '#5EC8F2'
-  },
-  text: {
-    fontFamily: 'Assistant-Bold'
-  },
-  tab: {
-    color: '#FFFFFF'
-  }
-});
 
 export default MainScene;
