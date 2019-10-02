@@ -1,4 +1,5 @@
 {
   "name": "TamirApp",
-  "appName": "טמיר"
+  "appName": "טמיר",
+  "runningOnEmulator": true
 }

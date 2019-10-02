@@ -1,14 +1,16 @@
 import React from 'react';
 import { Container, Content, Input, Label, Form, Item, Button, Spinner, Text } from 'native-base';
-import { Platform, Alert } from 'react-native';
+import { Alert } from 'react-native';
 import GlobalFont from 'react-native-global-font';
 import { firebase } from '../utils/firebase/firebase-db';
 
 class SmsCodeConfirmScene extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { loading: false, code: '' };
+    this.unsubscribe = null;
     this.state = {
+      loading: false,
+      code: '',
       textinput: ''
     };
   }
@@ -16,14 +18,23 @@ class SmsCodeConfirmScene extends React.Component {
   componentDidMount() {
     const fontName = 'Assistant-Bold';
     GlobalFont.applyGlobal(fontName);
+    this.unsubscribe = firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        this.props.navigation.navigate('MainScene');
+      }
+    });
+  }
+
+  componentWillUnmount() {
+    if (this.unsubscribe) {
+      this.unsubscribe();
+    }
   }
 
   handleInputChange = textinput => {
-    if (/^\d+$/.test(textinput)) {
-      this.setState({
-        textinput
-      });
-    }
+    this.setState({
+      textinput
+    });
   };
 
   render() {
@@ -50,25 +61,19 @@ class SmsCodeConfirmScene extends React.Component {
                 { alignSelf: 'center', marginTop: 40 }
               ]}
               onPress={() => {
-                if (this.state.code !== '') {
-                  if (Platform.OS === 'ios') {
-                    firebase
-                      .auth()
-                      .signInWithEmailAndPassword('pass123456@test.com', '123456')
-                      .then(() => {
-                        console.log('signed in with uid', firebase.auth().currentUser.uid);
-                        this.props.navigation.navigate('MainScene');
-                      });
-                    return;
-                  }
-                  const { confirmResult } = this.props.navigation.state.params;
-                  this.setState({ loading: true });
-                  confirmResult
-                    .confirm(this.state.code)
-                    .then(() => this.props.navigation.navigate('MainScene'))
-                    .catch(() => Alert.alert('Wrong code entered!'));
-                }
-                Alert.alert('Please enter the given code');
+                this.setState({ loading: true });
+                const { confirmResult } = this.props.navigation.state.params;
+                confirmResult
+                  .confirm(this.state.code)
+                  .then(user => {
+                    this.setState({ loading: false });
+                    if (user) this.props.navigation.navigate('MainScene');
+                    else Alert.alert('Wrong code entered!');
+                  })
+                  .catch(err => {
+                    this.setState({ loading: false });
+                    Alert.alert('Wrong code entered!: ', err.message);
+                  });
               }}>
               {this.state.loading ? <Spinner /> : <Text style={styles.textStyle}>Confirm</Text>}
             </Button>

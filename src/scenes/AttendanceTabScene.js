@@ -3,7 +3,6 @@ import { StyleSheet, View } from 'react-native';
 import { Button, Text, Icon, Content, Container, Footer, Spinner } from 'native-base';
 import { NavigationEvents } from 'react-navigation';
 import update from 'immutability-helper';
-import GlobalFont from 'react-native-global-font';
 import { addToEndIfDoesntExistAtEnd } from '../utils/general-utils';
 import { removeTime } from '../utils/date-utils';
 import { firebase } from '../utils/firebase/firebase-db';
@@ -44,7 +43,6 @@ class AttendanceTabScene extends React.Component {
         .doc(attendanceDayUID)
         .set(attendanceDay, { merge: true })
         .then(() => {
-          console.log('Document successfully updated!', attendanceDayUID);
           this.resetState();
         });
     } else {
@@ -65,8 +63,7 @@ class AttendanceTabScene extends React.Component {
         .firestore()
         .collection('AttendanceDays')
         .add(attendanceDay)
-        .then(ref => {
-          console.log('Document successfully created!', ref.id);
+        .then(() => {
           this.resetState();
         });
     }
@@ -98,7 +95,9 @@ class AttendanceTabScene extends React.Component {
                 navigation.navigate('AttendanceCalendarScene', { db: dbWithNoGroupAdded })
               }>
               <Icon name="calendar" />
-              <Text style={{ color: '#ffffff', fontFamily: 'Assistant-Regular' }}>נוכחות קודמת</Text>
+              <Text style={{ color: '#ffffff', fontFamily: 'Assistant-Regular' }}>
+                נוכחות קודמת
+              </Text>
             </Button>
           </View>
           <ShiftEditor

@@ -221,12 +221,4 @@ class EditPreviousShiftScene extends React.Component {
   }
 }
 
-const styles = StyleSheet.create({
-  section: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    paddingBottom: 15
-  }
-});
-
 export { EditPreviousShiftScene };

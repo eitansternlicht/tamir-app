@@ -14,7 +14,6 @@ import {
   StudentFormScene,
   PotentialStudentsScene,
   SelectMultipleStudentsScene,
-  // ManageGroupParticipantsScene,
   ManageGroupsScene,
   ChooseStudentScene,
   ChooseActivityTypeScene,

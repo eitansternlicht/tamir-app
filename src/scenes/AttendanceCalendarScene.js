@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Content, Icon, Text, List, ListItem, Button, Right } from 'native-base';
+import { Container, Content, Icon, Text, List, ListItem, Button } from 'native-base';
 import { Agenda } from 'react-native-calendars';
 import { StyleSheet, Dimensions, View, TouchableOpacity } from 'react-native';
 import { Divider } from 'react-native-elements';
@@ -45,11 +45,18 @@ class AttendanceCalendarScene extends Component {
       monthsLoaded: {},
       attendanceDays: {}
     };
+    this.allUnsubscribes = [];
   }
 
   componentDidMount() {
     const fontName = 'Assistant-Bold';
     GlobalFont.applyGlobal(fontName);
+  }
+
+  componentWillUnmount() {
+    this.allUnsubscribes.forEach(f => {
+      f();
+    });
   }
 
   onPressEditShift({ startTime, endTime, activities, day, uid }) {
@@ -86,7 +93,7 @@ class AttendanceCalendarScene extends Component {
       const firstOfMonth = new Date(date.getFullYear(), date.getMonth());
       const lastOfMonth = new Date(date.getFullYear(), date.getMonth(), getDaysCountInMonth(date));
 
-      firebase
+      const unsubscribe = firebase
         .firestore()
         .collection('AttendanceDays')
         .where('owners.tutors', 'array-contains', firebase.auth().currentUser.uid)
@@ -117,6 +124,7 @@ class AttendanceCalendarScene extends Component {
                 ];
               })
             );
+            this.allUnsubscribes.push(unsubscribe);
             const daysInMonth = getDaysInMonth({
               year: date.getFullYear(),
               month: date.getMonth() + 1

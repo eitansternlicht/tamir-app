@@ -23,7 +23,7 @@ class PotentialStudentsScene extends React.PureComponent {
     };
     const { uid } = firebase.auth().currentUser;
 
-    firebase
+    this.unsubscribe = firebase
       .firestore()
       .collection('Students')
       .where('owners.tutors', 'array-contains', { uid, studentStatus: 'potential' })
@@ -34,6 +34,10 @@ class PotentialStudentsScene extends React.PureComponent {
           loading: false
         });
       });
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
   }
 
   render() {
