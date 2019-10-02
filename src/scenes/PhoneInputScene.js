@@ -4,6 +4,7 @@ import { Container, Text, Card, Content, Form, Button } from 'native-base';
 import PhoneInput from 'react-native-phone-input';
 import GlobalFont from 'react-native-global-font';
 import { firebase } from '../utils/firebase/firebase-db';
+import { runningOnEmulator } from '../../app.json';
 
 const format = phone =>
   phone
@@ -59,6 +60,18 @@ class PhoneInputScene extends React.Component {
           <Button
             style={styles.buttonTwoStyle}
             onPress={() => {
+              if (runningOnEmulator) {
+                firebase
+                  .auth()
+                  .signInWithEmailAndPassword('emulator@test.com', '123456')
+                  .then(() => {
+                    this.props.navigation.navigate('MainScene');
+                  })
+                  .catch(({ message }) => {
+                    Alert.alert('Email Auth error: ', message);
+                  });
+                return;
+              }
               if (this.phone.isValidNumber()) {
                 this.signInWithPhone(this.phone.getValue());
               } else {

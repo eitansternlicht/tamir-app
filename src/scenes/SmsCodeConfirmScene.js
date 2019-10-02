@@ -61,8 +61,8 @@ class SmsCodeConfirmScene extends React.Component {
                 { alignSelf: 'center', marginTop: 40 }
               ]}
               onPress={() => {
-                const { confirmResult } = this.props.navigation.state.params;
                 this.setState({ loading: true });
+                const { confirmResult } = this.props.navigation.state.params;
                 confirmResult
                   .confirm(this.state.code)
                   .then(user => {

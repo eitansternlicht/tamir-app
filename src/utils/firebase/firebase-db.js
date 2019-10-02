@@ -18,7 +18,6 @@ const firebase = rnfirebase.initializeApp(
  * */
 const initNativeFirebase = () => firebase.onReady();
 
-
 const toState = (collection, docsSnapshot, prevState, applyToDoc) => {
   const otherCollections = COLLECTIONS.filter(c => c !== collection);
   const existAlready = otherCollections.filter(c => prevState[c]);
@@ -97,9 +96,7 @@ const updateDoc = (collection, uid, obj) =>
     .firestore()
     .collection(collection)
     .doc(uid)
-    .set(
-      obj
-    );
+    .set(obj);
 
 const createNewGroup = newGroupName =>
   firebase
@@ -126,11 +123,13 @@ const editGroupName = (groupUID, newName) =>
     .update({ name: newName });
 
 const timestampsToDates = obj =>
-  entriesToObj(
-    Object.entries(obj).map(([k, v]) =>
-      v instanceof rnfirebase.firestore.Timestamp ? [k, v.toDate()] : [k, v]
-    )
-  );
+  obj
+    ? entriesToObj(
+        Object.entries(obj).map(([k, v]) =>
+          v instanceof rnfirebase.firestore.Timestamp ? [k, v.toDate()] : [k, v]
+        )
+      )
+    : {};
 
 const setStudentStatus = (student, studentStatus) =>
   firebase
