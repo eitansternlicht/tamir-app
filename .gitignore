@@ -1,3 +1,5 @@
+android/app/keystore
+android/app/private_key.pepk
 # OSX
 #
 .DS_Store
