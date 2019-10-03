@@ -34,7 +34,15 @@ local.properties
 
 # node.js
 #
-node_modules/
+node_modules/*
+!node_modules/react-native/
+node_modules/react-native/*
+!node_modules/react-native/react.gradle
+
+# !*node_modules/react-native/react.gradle
+# node_modules/react-native/*
+# !react.gradle
+
 npm-debug.log
 yarn-error.log
 
@@ -248,7 +256,7 @@ bower_components
 build/Release
 
 # Dependency directories
-node_modules/
+# node_modules/
 jspm_packages/
 
 # TypeScript v1 declaration files
