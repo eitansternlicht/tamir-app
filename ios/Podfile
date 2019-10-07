@@ -11,6 +11,6 @@ target 'TamirApp' do
   # Pods for TamirApp
 
 
-  pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
+#  pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
 
 end
