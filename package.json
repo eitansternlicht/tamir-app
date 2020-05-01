@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
-    "ios": "react-native run-ios"
+    "ios": "react-native run-ios",
+    "snyk-protect": "snyk protect",
+    "prepare": "yarn run snyk-protect"
   },
   "dependencies": {
     "firebase": "^6.6.1",
@@ -26,7 +28,8 @@
     "react-native-phone-input": "^0.2.4",
     "react-native-vector-icons": "^6.6.0",
     "react-navigation": "^3.9.1",
-    "tcomb-form-native": "^0.6.20"
+    "tcomb-form-native": "^0.6.20",
+    "snyk": "^1.316.1"
   },
   "devDependencies": {
     "@babel/core": "^7.6.0",
@@ -45,5 +48,6 @@
     "assets": [
       "./assets/fonts/"
     ]
-  }
+  },
+  "snyk": true
 }
