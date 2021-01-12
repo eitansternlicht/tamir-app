@@ -7,7 +7,7 @@
     "ios": "react-native run-ios"
   },
   "dependencies": {
-    "firebase": "^6.6.1",
+    "firebase": "^7.14.0",
     "immutability-helper": "^3.0.1",
     "moment": "^2.24.0",
     "native-base": "^2.13.8",
